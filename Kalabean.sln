@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kalabean.Domain", "src\Kalabean.Domain\Kalabean.Domain.csproj", "{29ACCA0A-90B4-45AB-B6F1-D7E1BC3FB3A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kalabean.API", "src\Kalabean.API\Kalabean.API.csproj", "{FB66ABC1-B47F-4768-96A5-DB6B85AEC97B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kalabean.Infrastructure", "src\Kalabean.Infrastructure\Kalabean.Infrastructure.csproj", "{5D880574-3B6B-4643-99EE-520DBF21F0DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kalabean.MVC", "src\Kalabean.MVC\Kalabean.MVC.csproj", "{6631AAFA-6167-442F-A128-01723BBF324B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{29ACCA0A-90B4-45AB-B6F1-D7E1BC3FB3A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29ACCA0A-90B4-45AB-B6F1-D7E1BC3FB3A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29ACCA0A-90B4-45AB-B6F1-D7E1BC3FB3A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29ACCA0A-90B4-45AB-B6F1-D7E1BC3FB3A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB66ABC1-B47F-4768-96A5-DB6B85AEC97B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB66ABC1-B47F-4768-96A5-DB6B85AEC97B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB66ABC1-B47F-4768-96A5-DB6B85AEC97B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB66ABC1-B47F-4768-96A5-DB6B85AEC97B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D880574-3B6B-4643-99EE-520DBF21F0DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D880574-3B6B-4643-99EE-520DBF21F0DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D880574-3B6B-4643-99EE-520DBF21F0DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D880574-3B6B-4643-99EE-520DBF21F0DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6631AAFA-6167-442F-A128-01723BBF324B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6631AAFA-6167-442F-A128-01723BBF324B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6631AAFA-6167-442F-A128-01723BBF324B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6631AAFA-6167-442F-A128-01723BBF324B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98557E73-9C17-4B49-AA7D-FABF06AF2764}
+	EndGlobalSection
+EndGlobal
