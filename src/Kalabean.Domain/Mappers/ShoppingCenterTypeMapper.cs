@@ -19,7 +19,7 @@ namespace Kalabean.Domain.Mappers
 
             var type = new ShoppingCenterType
             {
-                Description  = request.Description,
+                Description = request.Description,
                 Name = request.Name,
                 Order = request.Order,
                 AccessRuleId = request.AccessRuleId,
@@ -60,7 +60,7 @@ namespace Kalabean.Domain.Mappers
             var response = new ShoppingCenterTypeResponse
             {
                 Id = type.Id,
-                Name  = type.Name,
+                Name = type.Name,
                 Order = type.Order,
                 Description = type.Description,
                 ImageUrl = null
@@ -72,6 +72,16 @@ namespace Kalabean.Domain.Mappers
                 response.AccessRule = _accessRuleMapper.Map(type.AccessRule);
             }
             return response;
+        }
+
+        public ThumbResponse<int> MapThump(ShoppingCenterType request)
+        {
+            if (request == null) return null;
+            return new ThumbResponse<int>()
+            {
+                Id = request.Id,
+                Name = request.Name
+            };
         }
     }
 }

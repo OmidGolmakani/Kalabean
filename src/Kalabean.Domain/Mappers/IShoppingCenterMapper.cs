@@ -9,5 +9,6 @@ namespace Kalabean.Domain.Mappers
         ShoppingCenter Map(AddShoppingCenterRequest request);
         ShoppingCenter Map(EditShoppingCenterRequest request);
         ShoppingCenterResponse Map(ShoppingCenter request);
+        ThumbResponse<int> MapThumb(ShoppingCenter request);
     }
 }

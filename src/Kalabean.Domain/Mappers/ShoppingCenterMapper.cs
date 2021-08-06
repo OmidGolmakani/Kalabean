@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Kalabean.Domain.Mappers
 {
-    public class ShoppingCenterMapper: IShoppingCenterMapper
+    public class ShoppingCenterMapper : IShoppingCenterMapper
     {
         private readonly ICityMapper _cityMapper;
         private readonly IShoppingCenterTypeMapper _typeMapper;
@@ -37,7 +37,7 @@ namespace Kalabean.Domain.Mappers
                 TypeId = request.TypeId,
                 CreatedDate = DateTime.Now,
                 WorkingHours = request.WorkingHours,
-                TelegramUrl  = request.TelegramUrl,
+                TelegramUrl = request.TelegramUrl,
                 VirtualTourUrl = request.VirtualTourUrl,
                 WebsiteUrl = request.WebsiteUrl
             };
@@ -99,7 +99,7 @@ namespace Kalabean.Domain.Mappers
                 ImageUrl = null,
                 Address = shoppingCenter.Address,
                 Email = shoppingCenter.Email,
-                City  = _cityMapper.Map(shoppingCenter.City),
+                CityThumb = _cityMapper.MapThumb(shoppingCenter.City),
                 HasAuction = shoppingCenter.HasAuction,
                 InstagramUrl = shoppingCenter.InstagramUrl,
                 IsEnabled = shoppingCenter.IsEnabled,
@@ -108,7 +108,7 @@ namespace Kalabean.Domain.Mappers
                 VirtualTourUrl = shoppingCenter.VirtualTourUrl,
                 WebsiteUrl = shoppingCenter.WebsiteUrl,
                 WorkingHours = shoppingCenter.WorkingHours,
-                Type = _typeMapper.Map(shoppingCenter.Type)
+                TypeThumb = _typeMapper.MapThump(shoppingCenter.Type)
             };
             if (shoppingCenter.HasImage)
                 response.ImageUrl = $"/KL_ImagesRepo/Sh_C/{shoppingCenter.Id}.jpeg";
@@ -121,6 +121,16 @@ namespace Kalabean.Domain.Mappers
                 response.Services = serviceIds.ToArray();
             }
             return response;
+        }
+
+        public ThumbResponse<int> MapThumb(ShoppingCenter request)
+        {
+            if (request == null) return null;
+            return new ThumbResponse<int>()
+            {
+                Id = request.Id,
+                Name = request.Name
+            };
         }
     }
 }

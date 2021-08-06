@@ -9,6 +9,7 @@ namespace Kalabean.Domain.Mappers
         City Map(AddCityRequest request);
         City Map(EditCityRequest request);
         CityResponse Map(City request);
+        ThumbResponse<int> MapThumb(City request);
 
     }
 }

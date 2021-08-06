@@ -4,7 +4,7 @@ using Kalabean.Domain.Responses;
 
 namespace Kalabean.Domain.Mappers
 {
-    public class CityMapper: ICityMapper
+    public class CityMapper : ICityMapper
     {
         IAccessRuleMapper _accessRuleMapper;
         public CityMapper(IAccessRuleMapper accessRuleMapper)
@@ -18,7 +18,7 @@ namespace Kalabean.Domain.Mappers
 
             var city = new City
             {
-                Description  = request.Description,
+                Description = request.Description,
                 Name = request.Name,
                 Order = request.Order,
                 AccessRuleId = request.AccessRuleId,
@@ -55,7 +55,7 @@ namespace Kalabean.Domain.Mappers
             var response = new CityResponse
             {
                 Id = city.Id,
-                Name  = city.Name,
+                Name = city.Name,
                 Order = city.Order,
                 Description = city.Description,
                 ImageUrl = null
@@ -67,6 +67,16 @@ namespace Kalabean.Domain.Mappers
                 response.AccessRule = _accessRuleMapper.Map(city.AccessRule);
             }
             return response;
+        }
+
+        public ThumbResponse<int> MapThumb(City request)
+        {
+            if (request == null) return null;
+            return new ThumbResponse<int>()
+            {
+                Id = request.Id,
+                Name = request.Name
+            };
         }
     }
 }

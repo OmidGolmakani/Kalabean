@@ -7,5 +7,6 @@ namespace Kalabean.Domain.Mappers
     public interface IFloorMapper
     {
         FloorResponse Map(Floor request);
+        ThumbResponse<int> MapThumb(Floor request);
     }
 }

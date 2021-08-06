@@ -19,5 +19,15 @@ namespace Kalabean.Domain.Mappers
             };
             return floor;
         }
+
+        public ThumbResponse<int> MapThumb(Floor request)
+        {
+            if (request == null) return null;
+            return new ThumbResponse<int>()
+            {
+                Id = request.Id,
+                Name = request.Name
+            };
+        }
     }
 }

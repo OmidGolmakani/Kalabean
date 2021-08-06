@@ -9,9 +9,9 @@ namespace Kalabean.Domain.Responses
         public int Id { get; set; }
         public string Name { get; set; }
         public ShoppingCenterTypeResponse Type { get; set; }
-        public ShoppingCenterResponse ShoppingCenter { get; set; }
-        public CategoryResponse Category { get; set; }
-        public FloorResponse Floor { get; set; }
+        public ThumbResponse<int> ShoppingCenter { get; set; }
+        public ThumbResponse<int> Category { get; set; }
+        public ThumbResponse<int> Floor { get; set; }
         public string Address { get; set; }
         public string Description { get; set; }
         public float DiscountPercentage { get; set; }
