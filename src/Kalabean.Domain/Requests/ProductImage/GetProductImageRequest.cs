@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Requests.ProductImage
 {
-    public class GetProductImageResponse
+    public class GetProductImageRequest
     {
         public long Id { get; set; }
     }
