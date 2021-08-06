@@ -12,7 +12,7 @@ namespace Kalabean.Infrastructure.Repositories
         //private readonly DbFactory _dbFactory;
         public ProductRepository(DbFactory dbFactory) : base(dbFactory) { }
 
-        public Task<Product> GetById(int id, bool includeDeleted = false)
+        public Task<Product> GetById(long id, bool includeDeleted = false)
         {
             return this.DbSet
                 .Where(p => p.Id == id && (includeDeleted || !p.IsDeleted))
