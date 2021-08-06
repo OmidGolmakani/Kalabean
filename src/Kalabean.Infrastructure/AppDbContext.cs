@@ -17,6 +17,9 @@ namespace Kalabean.Infrastructure
         public DbSet<ShoppingCenter> ShoppingCenters { get; set; }
         public DbSet<Floor> Floors { get; set; }
         public DbSet<Store> Stores { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new RuleEntitySchemaDefinition());
@@ -26,6 +29,8 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new ShoppingCenterEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new FloorEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new StoreEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new ProductEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new ProductImageEntitySchemaDefinition());
             base.OnModelCreating(modelBuilder);
         }
     }

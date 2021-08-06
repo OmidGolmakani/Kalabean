@@ -15,11 +15,9 @@ namespace Kalabean.Infrastructure.Repositories
         public Task<Product> GetById(int id, bool includeDeleted = false)
         {
             return this.DbSet
-                .Where(c => c.Id == id && (includeDeleted || !c.IsDeleted))
-                .Include(c => c.AccessRule)
-                .Include(c => c.Category)
-                .Include(c => c.Store)
-                .Include(c => c.AccessRule)
+                .Where(p => p.Id == id && (includeDeleted || !p.IsDeleted))
+                .Include(p => p.Category)
+                .Include(p => p.Store)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
@@ -27,11 +25,9 @@ namespace Kalabean.Infrastructure.Repositories
         public async Task<IQueryable<Product>> Get(bool includeDeleted = false)
         {
             return this
-                .List(c => includeDeleted || !c.IsDeleted)
-                 .Include(c => c.AccessRule)
-                .Include(c => c.Category)
-                .Include(c => c.Store)
-                .Include(c => c.AccessRule);
+                .List(p => includeDeleted || !p.IsDeleted)
+                .Include(pi => pi.Category)
+                .Include(pi => pi.Store);
         }
     }
 }

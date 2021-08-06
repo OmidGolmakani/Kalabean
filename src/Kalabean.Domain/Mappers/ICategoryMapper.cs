@@ -9,5 +9,6 @@ namespace Kalabean.Domain.Mappers
         Category Map(AddCategoryRequest request);
         Category Map(EditCategoryRequest request);
         CategoryResponse Map(Category request);
+        ThumbResponse<int> MapThumb(Category request);
     }
 }

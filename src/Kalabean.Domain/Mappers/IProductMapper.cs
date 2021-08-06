@@ -14,5 +14,6 @@ namespace Kalabean.Domain.Mappers
         Product Map(AddProductRequest request);
         Product Map(EditProductRequest request);
         ProductResponse Map(Product request);
+        ThumbResponse<long> MapThumb(Product request);
     }
 }

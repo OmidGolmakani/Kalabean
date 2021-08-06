@@ -17,16 +17,19 @@ namespace Kalabean.Domain.Entities
         public string ProductName { get; set; }
         public int Num { get; set; }
         public decimal Price { get; set; }
-        public Nullable<decimal> Discount { get; set; }
+        public decimal? Discount { get; set; }
         public string Creator { get; set; }
-        public Guid? AccessRuleId { get; set; }
         public DateTime DatePublish { get; set; }
         public DateTime DateArchive { get; set; }
-        [ForeignKey("AccessRuleId")]
-        public AccessRule AccessRule { get; set; }
-        [ForeignKey("StoreId")]
+        public string Model { get; set; }
+        public string Series { get; set; }
+        public string LinkProduct { get; set; }
+        public string Properties { get; set; }
+        public string Description { get; set; }
+        public bool IsNew { get; set; }
+        public bool Publish { get; set; }
         public Store Store { get; set; }
-        [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+        public ICollection<ProductImage> ProductImages { get; set; }
     }
 }

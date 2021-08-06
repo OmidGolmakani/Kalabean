@@ -9,5 +9,6 @@ namespace Kalabean.Domain.Mappers
         Store Map(AddStoreRequest request);
         Store Map(EditStoreRequest request);
         StoreResponse Map(Store request);
+        ThumbResponse<int> MapThumb(Store request);
     }
 }

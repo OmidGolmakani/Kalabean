@@ -19,5 +19,12 @@ namespace Kalabean.Domain.Requests.Product
         public Guid? AccessRuleId { get; set; }
         public DateTime DatePublish { get; set; }
         public DateTime DateArchive { get; set; }
+        public string Model { get; set; }
+        public string Series { get; set; }
+        public string LinkProduct { get; set; }
+        public string Properties { get; set; }
+        public string Description { get; set; }
+        public bool IsNew { get; set; }
+        public bool Publish { get; set; }
     }
 }

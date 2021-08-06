@@ -126,5 +126,15 @@ namespace Kalabean.Domain.Mappers
                 response.ImageUrl = $"/KL_ImagesRepo/Stores/{store.Id}.jpeg";
             return response;
         }
+
+        public ThumbResponse<int> MapThumb(Store request)
+        {
+            var response = new ThumbResponse<int>()
+            {
+                Id = request.Id,
+                Name = request.Name
+            };
+            return response;
+        }
     }
 }

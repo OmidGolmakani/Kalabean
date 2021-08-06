@@ -17,5 +17,6 @@ namespace Kalabean.Domain.Entities
         public Guid? AccessRuleId { get; set; }
         public AccessRule AccessRule { get; set; }
         public ICollection<Store> Stores { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

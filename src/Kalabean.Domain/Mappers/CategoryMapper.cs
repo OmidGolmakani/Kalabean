@@ -72,8 +72,19 @@ namespace Kalabean.Domain.Mappers
             {
                 response.Children = new List<CategoryResponse>();
                 foreach (Category child in category.Children)
-                        response.Children.Add(getCategoryResponse(child, true));
+                    response.Children.Add(getCategoryResponse(child, true));
             }
+            return response;
+        }
+
+        public ThumbResponse<int> MapThumb(Category request)
+        {
+            if (request == null) return null;
+            var response = new ThumbResponse<int>()
+            {
+                Id = request.Id,
+                Name = request.Name
+            };
             return response;
         }
 
