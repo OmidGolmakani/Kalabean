@@ -9,7 +9,7 @@ namespace Kalabean.Domain.Repositories
 {
     public interface IProductRepository : IRepository<Product>
     {
-        Task<Product> GetById(int id, bool includeDeleted = false);
+        Task<Product> GetById(long id, bool includeDeleted = false);
         Task<IQueryable<Product>> Get(bool includeDeleted = false);
     }
 }

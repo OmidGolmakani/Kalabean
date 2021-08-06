@@ -9,9 +9,9 @@ namespace Kalabean.Domain.Services
     public interface IProductService
     {
         Task<IEnumerable<ProductResponse>> GetProductsAsync();
-        Task<ProductResponse> GetCityAsync(GetProductRequest request);
-        Task<ProductResponse> AddCityAsync(AddProductRequest request);
-        Task<ProductResponse> EditCityAsync(EditProductRequest request);
-        Task BatchDeleteCitiesAsync(int[] Ids);
+        Task<ProductResponse> GetProductAsync(GetProductRequest request);
+        Task<ProductResponse> AddProductAsync(AddProductRequest request);
+        Task<ProductResponse> EditProductAsync(EditProductRequest request);
+        Task BatchDeleteProductsAsync(long[] Ids);
     }
 }
