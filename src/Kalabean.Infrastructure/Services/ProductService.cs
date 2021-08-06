@@ -14,21 +14,27 @@ namespace Kalabean.Infrastructure.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _ProductRepository;
+        private readonly IProductImageRepository _ProductImageRepository;
         private readonly IProductMapper _ProductMapper;
+        private readonly IProductImageMapper _ProductImageMapper;
         private readonly IUnitOfWork _unitOfWork;
         public ProductService(IProductRepository ProductRepository,
-            IProductMapper ProductMapper,
-            IUnitOfWork unitOfWork)
+                              IProductImageRepository ProductImageRepository,
+                              IProductMapper ProductMapper,
+                              IProductImageMapper ProductImageMapper,
+                              IUnitOfWork unitOfWork)
         {
             _ProductRepository = ProductRepository;
+            _ProductImageRepository = ProductImageRepository;
             _ProductMapper = ProductMapper;
+            _ProductImageMapper = ProductImageMapper;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<IEnumerable<ProductResponse>> GetProductsAsync()
         {
             var result = await _ProductRepository.Get();
-            return result.Select(c => _ProductMapper.Map(c));
+            return result.Select(p => _ProductMapper.Map(p));
         }
         public async Task<ProductResponse> GetProductAsync(GetProductRequest request)
         {

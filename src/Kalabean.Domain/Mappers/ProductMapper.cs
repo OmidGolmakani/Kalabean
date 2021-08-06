@@ -13,12 +13,15 @@ namespace Kalabean.Domain.Mappers
     {
         private readonly ICategoryMapper _category;
         private readonly IStoreMapper _store;
+        private readonly IProductImageMapper _productImage;
 
         public ProductMapper(ICategoryMapper category,
-                             IStoreMapper store)
+                             IStoreMapper store,
+                             IProductImageMapper productImage)
         {
             this._category = category;
             this._store = store;
+            this._productImage = productImage;
         }
 
         public Product Map(AddProductRequest request)
@@ -37,8 +40,27 @@ namespace Kalabean.Domain.Mappers
                 Price = request.Price,
                 ProductName = request.ProductName,
                 StoreId = request.StoreId,
+                LinkProduct = request.LinkProduct,
+                IsNew = request.IsNew,
+                Description = request.Description,
+                Model = request.Model,
+                Properties = request.Properties,
+                Publish = request.Publish,
+                Series = request.Series,
                 Id = 0
             };
+            foreach (var pi in request.Images)
+            {
+                var _pi = new ProductImage()
+                {
+                    Product = response,
+                    Id = 0,
+                    IsDeleted = false,
+                    ProductId = 0,
+                    Extention = System.IO.Path.GetExtension(pi.FileName)
+                };
+                response.ProductImages.Add(_pi);
+            }
             return response;
         }
 
@@ -58,7 +80,14 @@ namespace Kalabean.Domain.Mappers
                 Price = request.Price,
                 ProductName = request.ProductName,
                 StoreId = request.StoreId,
-                Id = request.Id
+                LinkProduct = request.LinkProduct,
+                IsNew = request.IsNew,
+                Description = request.Description,
+                Model = request.Model,
+                Properties = request.Properties,
+                Publish = request.Publish,
+                Series = request.Series,
+                Id = request.Id,
             };
             return response;
         }

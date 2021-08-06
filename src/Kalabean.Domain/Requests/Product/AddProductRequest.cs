@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,5 +27,6 @@ namespace Kalabean.Domain.Requests.Product
         public string Description { get; set; }
         public bool IsNew { get; set; }
         public bool Publish { get; set; }
+        public List<IFormFile> Images { get; set; }
     }
 }
