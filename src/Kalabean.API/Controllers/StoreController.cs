@@ -41,7 +41,7 @@ namespace Kalabean.API.Controllers
         [HttpPost("BatchDelete")]
         public async Task<IActionResult> BatchDelete(int[] Ids)
         {
-            await _storeService.BatchDeleteShoppingCentersAsync(Ids);
+            await _storeService.BatchDeleteStoresAsync(Ids);
             return Ok();
         }
 

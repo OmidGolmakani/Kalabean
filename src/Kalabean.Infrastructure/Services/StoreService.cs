@@ -80,7 +80,7 @@ namespace Kalabean.Infrastructure.Services
             return _storeMapper.Map(await _storeRepository.GetById(result.Id));
         }
 
-        public async Task BatchDeleteShoppingCentersAsync(int[] ids)
+        public async Task BatchDeleteStoresAsync(int[] ids)
         {
             List<Kalabean.Domain.Entities.Store> shoppings =
                 _storeRepository.List(c => ids.Contains(c.Id)).ToList();

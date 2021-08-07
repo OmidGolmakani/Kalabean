@@ -11,6 +11,6 @@ namespace Kalabean.Domain.Services
         Task<StoreResponse> GetStoreAsync(GetStoreRequest request);
         Task<StoreResponse> AddStoreAsync(AddStoreRequest request);
         Task<StoreResponse> EditStoreAsync(EditStoreRequest request);
-        Task BatchDeleteShoppingCentersAsync(int[] Ids);
+        Task BatchDeleteStoresAsync(int[] Ids);
     }
 }
