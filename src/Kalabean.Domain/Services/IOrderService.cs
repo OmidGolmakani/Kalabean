@@ -10,7 +10,7 @@ namespace Kalabean.Domain.Services
         Task<IEnumerable<OrderHeaderResponse>> GetOrdersAsync();
         Task<OrderHeaderResponse> GetOrderAsync(GetOrderHeaderRequest request);
         Task<OrderHeaderResponse> AddOrderAsync(AddOrderHeaderRequest request);
-        Task<OrderHeaderResponse> EditOrderHeaderAsync(EditOrderHeaderRequest request);
-        Task BatchDeleteOrderAsync(int[] Ids);
+        Task<OrderHeaderResponse> EditOrderAsync(EditOrderHeaderRequest request);
+        Task BatchDeleteOrdersAsync(long[] Ids);
     }
 }

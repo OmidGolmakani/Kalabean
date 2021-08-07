@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Mappers
 {
-    public class OrderHeaderMapper : IOrderHeader
+    public class OrderHeaderMapper : IOrderHeaderMapper
     {
         private readonly IStoreMapper _store;
         private readonly IOrderDetailMapper _orderDetail;

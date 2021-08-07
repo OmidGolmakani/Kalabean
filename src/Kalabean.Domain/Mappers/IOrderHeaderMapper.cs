@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Mappers
 {
-    public interface IOrderHeader
+    public interface IOrderHeaderMapper
     {
         OrderHeader Map(AddOrderHeaderRequest request);
         OrderHeader Map(EditOrderHeaderRequest request);
