@@ -19,6 +19,8 @@ namespace Kalabean.Infrastructure
         public DbSet<Store> Stores { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +33,10 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new StoreEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new ProductEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new ProductImageEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new ProductImageEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new OrderHeaderEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new OrderDetailEntitySchemaDefinition());
+
             base.OnModelCreating(modelBuilder);
         }
     }

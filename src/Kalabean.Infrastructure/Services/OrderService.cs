@@ -14,13 +14,16 @@ namespace Kalabean.Infrastructure.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderHeaderRepository _OrderRepository;
+        private readonly IOrderDetailRepository _OrderDetailsRepository;
         private readonly IOrderHeaderMapper _OrderMapper;
         private readonly IUnitOfWork _unitOfWork;
         public OrderService(IOrderHeaderRepository OrderRepository,
-            IOrderHeaderMapper OrderMapper,
-            IUnitOfWork unitOfWork)
+                            IOrderDetailRepository OrderDetailsRepository,
+                            IOrderHeaderMapper OrderMapper,
+                            IUnitOfWork unitOfWork)
         {
             _OrderRepository = OrderRepository;
+            _OrderDetailsRepository = OrderDetailsRepository;
             _OrderMapper = OrderMapper;
             _unitOfWork = unitOfWork;
         }
@@ -62,8 +65,17 @@ namespace Kalabean.Infrastructure.Services
             List<Kalabean.Domain.Entities.OrderHeader> orders =
                 _OrderRepository.List(c => ids.Contains(c.Id)).ToList();
             foreach (Kalabean.Domain.Entities.OrderHeader Order in orders)
+            {
+                List<Kalabean.Domain.Entities.OrderDetail> orderDetails =
+                _OrderDetailsRepository.List(c => ids.Contains(c.OrderId)).ToList();
+                foreach (var OrderDetails in orderDetails)
+                {
+                    Order.IsDeleted = true;
+                    _OrderDetailsRepository.UpdateBatch(orderDetails);
+                }
                 Order.IsDeleted = true;
-            _OrderRepository.UpdateBatch(orders);
+                _OrderRepository.UpdateBatch(orders);
+            }
 
             await _unitOfWork.CommitAsync();
         }

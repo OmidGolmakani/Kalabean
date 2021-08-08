@@ -11,7 +11,7 @@ namespace Kalabean.Domain.Entities
     {
         public long Id { get; set; }
         public long OrderId { get; set; }
-        public int ProductId { get; set; }
+        public long ProductId { get; set; }
         public int Num { get; set; }
         public int Price { get; set; }
         public OrderHeader OrderHeader { get; set; }

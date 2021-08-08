@@ -34,5 +34,7 @@ namespace Kalabean.Domain.Entities
         public double? Lat { get; set; }
         public double? Lng { get; set; }
         public ICollection<Product> Products { get; set; }
+        public ICollection<OrderHeader> Orders { get; set; }
+
     }
 }

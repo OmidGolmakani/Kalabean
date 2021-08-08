@@ -31,5 +31,6 @@ namespace Kalabean.Domain.Entities
         public Store Store { get; set; }
         public Category Category { get; set; }
         public ICollection<ProductImage> ProductImages { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
