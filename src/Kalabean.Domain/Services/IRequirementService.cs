@@ -7,10 +7,10 @@ namespace Kalabean.Domain.Services
 {
     public interface IRequirementService
     {
-        Task<IEnumerable<RequirementResponse>> GetCategoriesAsync();
+        Task<IEnumerable<RequirementResponse>> GetRequirementsAsync();
         Task<RequirementResponse> GetRequirementAsync(GetRequirementRequest request);
         Task<RequirementResponse> AddRequirementAsync(AddRequirementRequest request);
         Task<RequirementResponse> EditRequirementAsync(EditRequirementRequest request);
-        Task BatchDeleteCategoriesAsync(int[] ids);
+        Task BatchDeleteRequirementsAsync(long[] ids);
     }
 }

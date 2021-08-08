@@ -18,7 +18,10 @@ namespace Kalabean.Infrastructure.Extensions
                 .AddSingleton<IShoppingCenterTypeMapper, ShoppingCenterTypeMapper>()
                 .AddSingleton<IShoppingCenterMapper, ShoppingCenterMapper>()
                 .AddSingleton<IFloorMapper, FloorMapper>()
-                .AddSingleton<IStoreMapper, StoreMapper>();
+                .AddSingleton<IStoreMapper, StoreMapper>()
+                .AddSingleton<IProductMapper, ProductMapper>()
+                .AddSingleton<IOrderHeaderMapper, OrderHeaderMapper>()
+                .AddSingleton<IRequirementMapper, RequirementMapper>();
             return services;
         }
 
@@ -32,7 +35,10 @@ namespace Kalabean.Infrastructure.Extensions
                     .AddScoped<IShoppingCenterTypeService, ShoppingCenterTypeService>()
                     .AddScoped<IShoppingCenterService, ShoppingCenterService>()
                     .AddScoped<IFloorService, FloorService>()
-                    .AddScoped<IStoreService, StoreService>();
+                    .AddScoped<IStoreService, StoreService>()
+                    .AddScoped<IProductService, ProductService>()
+                    .AddScoped<IOrderService, OrderService>()
+                    .AddScoped<IRequirementService, RequirementService>();
             #endregion Data Services
             #region Other Services
             services.AddScoped<IResizeImageService, ResizeImageService>();

@@ -18,5 +18,6 @@ namespace Kalabean.Domain.Entities
         public AccessRule AccessRule { get; set; }
         public ICollection<Store> Stores { get; set; }
         public ICollection<Product> Products { get; set; }
+        public ICollection<Requirement> Requirements { get; set; }
     }
 }

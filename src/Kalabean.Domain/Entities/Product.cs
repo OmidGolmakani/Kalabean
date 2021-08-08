@@ -32,5 +32,7 @@ namespace Kalabean.Domain.Entities
         public Category Category { get; set; }
         public ICollection<ProductImage> ProductImages { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
+        public ICollection<Requirement> Requirements { get; set; }
+
     }
 }
