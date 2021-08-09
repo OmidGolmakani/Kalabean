@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-
 namespace Kalabean.Domain.Entities
 {
-    public class ApplicationUserLogin : IdentityUserLogin<long>
+    public class RoleClaim:IdentityRoleClaim<long>
     {
     }
 }

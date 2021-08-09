@@ -2,7 +2,7 @@
 
 namespace Kalabean.Domain.Entities
 {
-    public class ApplicationUserClaim : IdentityUserClaim<long>
+    public class UserClaim : IdentityUserClaim<long>
     {
     }
 }

@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Kalabean.Infrastructure
 {
-    public class AppDbContext : IdentityDbContext<ApplicationUser,
-                                                  ApplicationRole,
+    public class AppDbContext : IdentityDbContext<User,
+                                                  Role,
                                                   long,
-                                                  ApplicationUserClaim,
-                                                  ApplicationUserRole,
-                                                  ApplicationUserLogin,
-                                                  ApplicationRoleClaim,
-                                                  ApplicationUserToken>
+                                                  UserClaim,
+                                                  UserRole,
+                                                  UserLogin,
+                                                  RoleClaim,
+                                                  UserToken>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         //public DbSet<Category> Categories{ get; set; }
@@ -46,6 +46,9 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new OrderHeaderEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new OrderDetailEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new RequirementEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new UserEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new RoleEntitySchemaDefinition());
+
 
             base.OnModelCreating(modelBuilder);
         }

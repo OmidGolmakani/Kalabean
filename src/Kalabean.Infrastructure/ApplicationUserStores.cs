@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Entities
 {
-    public class ApplicationUserStore : UserStore<ApplicationUser,
-                                                  ApplicationRole,
+    public class ApplicationUserStore : UserStore<User,
+                                                  Role,
                                                   AppDbContext, 
                                                   long, 
-                                                  ApplicationUserClaim,
-                                                  ApplicationUserRole, 
-                                                  ApplicationUserLogin, 
-                                                  ApplicationUserToken, 
-                                                  ApplicationRoleClaim>
+                                                  UserClaim,
+                                                  UserRole, 
+                                                  UserLogin, 
+                                                  UserToken, 
+                                                  RoleClaim>
     {
         public ApplicationUserStore(AppDbContext context, IdentityErrorDescriber describer = null) : base(context, describer)
         {
