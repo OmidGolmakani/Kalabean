@@ -2,10 +2,18 @@
 using Microsoft.EntityFrameworkCore;
 using Kalabean.Domain.Entities;
 using Kalabean.Infrastructure.Extensions.SchemaDefinitions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Kalabean.Infrastructure
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser,
+                                                  ApplicationRole,
+                                                  long,
+                                                  ApplicationUserClaim,
+                                                  ApplicationUserRole,
+                                                  ApplicationUserLogin,
+                                                  ApplicationRoleClaim,
+                                                  ApplicationUserToken>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         //public DbSet<Category> Categories{ get; set; }

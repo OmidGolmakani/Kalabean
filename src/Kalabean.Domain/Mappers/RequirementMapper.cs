@@ -13,7 +13,6 @@ namespace Kalabean.Domain.Mappers
     {
         private readonly ICategoryMapper _category;
         private readonly IProductMapper _product;
-        private readonly IRequirementMapper _requirementMapper;
 
         public RequirementMapper(ICategoryMapper category,
                                  IProductMapper product)
