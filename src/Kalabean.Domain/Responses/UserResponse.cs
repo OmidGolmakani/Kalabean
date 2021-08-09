@@ -15,6 +15,9 @@ namespace Kalabean.Domain.Responses
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public ICollection<ThumbResponse<int>> StoresThumb { get; set; }
+        public ICollection<OrderHeaderResponse> Orders { get; set; }
+        public ICollection<RequirementResponse> Requirements { get; set; }
     }
 }
 
