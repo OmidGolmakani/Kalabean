@@ -324,6 +324,63 @@ namespace Kalabean.API.Migrations
                     b.ToTable("ProductImage");
                 });
 
+            modelBuilder.Entity("Kalabean.Domain.Entities.Requirement", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("AdminDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("AdminId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("HasImage")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<byte>("RequirementStatus")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("TypePricing")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint")
+                        .HasDefaultValue((byte)1);
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Requirement");
+                });
+
             modelBuilder.Entity("Kalabean.Domain.Entities.ShoppingCenter", b =>
                 {
                     b.Property<int>("Id")
@@ -665,6 +722,25 @@ namespace Kalabean.API.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Kalabean.Domain.Entities.Requirement", b =>
+                {
+                    b.HasOne("Kalabean.Domain.Entities.Category", "Category")
+                        .WithMany("Requirements")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Kalabean.Domain.Entities.Product", "Product")
+                        .WithMany("Requirements")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Kalabean.Domain.Entities.ShoppingCenter", b =>
                 {
                     b.HasOne("Kalabean.Domain.Entities.City", "City")
@@ -737,6 +813,8 @@ namespace Kalabean.API.Migrations
 
                     b.Navigation("Products");
 
+                    b.Navigation("Requirements");
+
                     b.Navigation("Stores");
                 });
 
@@ -760,6 +838,8 @@ namespace Kalabean.API.Migrations
                     b.Navigation("OrderDetails");
 
                     b.Navigation("ProductImages");
+
+                    b.Navigation("Requirements");
                 });
 
             modelBuilder.Entity("Kalabean.Domain.Entities.ShoppingCenter", b =>

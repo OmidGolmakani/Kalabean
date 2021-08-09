@@ -16,12 +16,10 @@ namespace Kalabean.Domain.Mappers
         private readonly IProductImageMapper _productImage;
 
         public ProductMapper(ICategoryMapper category,
-                             IStoreMapper store,
-                             IProductImageMapper productImage)
+                             IStoreMapper store)
         {
             this._category = category;
             this._store = store;
-            this._productImage = productImage;
         }
 
         public Product Map(AddProductRequest request)

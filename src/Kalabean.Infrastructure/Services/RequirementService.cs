@@ -17,8 +17,8 @@ namespace Kalabean.Infrastructure.Services
         private readonly IRequirementMapper _RequirementMapper;
         private readonly IUnitOfWork _unitOfWork;
         public RequirementService(IRequirementRepository RequirementRepository,
-                              IRequirementMapper RequirementMapper,
-                              IUnitOfWork unitOfWork)
+                                  IRequirementMapper RequirementMapper,
+                                   IUnitOfWork unitOfWork)
         {
             _RequirementRepository = RequirementRepository;
             _RequirementMapper = RequirementMapper;

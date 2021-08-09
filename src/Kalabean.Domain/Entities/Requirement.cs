@@ -10,7 +10,7 @@ namespace Kalabean.Domain.Entities
     public class Requirement : DeleteEntity
     {
         public long Id { get; set; }
-        public int ProductId { get; set; }
+        public long ProductId { get; set; }
         public int CategoryId { get; set; }
         public long UserId { get; set; }
         public byte RequirementStatus { get; set; }

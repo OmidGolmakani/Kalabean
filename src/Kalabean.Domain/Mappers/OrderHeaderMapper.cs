@@ -12,13 +12,10 @@ namespace Kalabean.Domain.Mappers
     public class OrderHeaderMapper : IOrderHeaderMapper
     {
         private readonly IStoreMapper _store;
-        private readonly IOrderDetailMapper _orderDetail;
 
-        public OrderHeaderMapper(IStoreMapper store,
-                                 IOrderDetailMapper orderDetail)
+        public OrderHeaderMapper(IStoreMapper store)
         {
             this._store = store;
-            this._orderDetail = orderDetail;
         }
 
         public OrderHeader Map(AddOrderHeaderRequest request)
@@ -65,8 +62,7 @@ namespace Kalabean.Domain.Mappers
                 PaymenyLink = request.PaymenyLink,
                 StoreId = request.StoreId,
                 UserId = request.UserId,
-                StoreThumb = _store.MapThumb(request.Store),
-                OrderDetails = request.OrderDetails.Select(x=> _orderDetail.Map(x)).ToList()
+                StoreThumb = _store.MapThumb(request.Store)
             };
         }
     }

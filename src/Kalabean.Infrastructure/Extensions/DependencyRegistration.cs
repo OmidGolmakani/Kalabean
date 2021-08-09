@@ -21,6 +21,9 @@ namespace Kalabean.Infrastructure.Extensions
                 .AddSingleton<IStoreMapper, StoreMapper>()
                 .AddSingleton<IProductMapper, ProductMapper>()
                 .AddSingleton<IOrderHeaderMapper, OrderHeaderMapper>()
+                .AddSingleton<IOrderDetailMapper, OrderDetailMapper>()
+                .AddSingleton<IProductImageMapper, ProductImageMapper>()
+                .AddSingleton<IOrderHeaderMapper, OrderHeaderMapper>()
                 .AddSingleton<IRequirementMapper, RequirementMapper>();
             return services;
         }

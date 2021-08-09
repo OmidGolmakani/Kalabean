@@ -12,7 +12,7 @@ namespace Kalabean.Domain.Mappers
     public interface IOrderDetailMapper
     {
         OrderDetail Map(AddOrderDetailRequest request);
-        OrderHeader Map(EditOrderDetailRequest request);
+        OrderDetail Map(EditOrderDetailRequest request);
         OrderDetailResponse Map(OrderDetail request);
     }
 }

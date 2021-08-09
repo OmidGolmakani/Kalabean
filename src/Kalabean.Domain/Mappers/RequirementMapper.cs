@@ -13,15 +13,13 @@ namespace Kalabean.Domain.Mappers
     {
         private readonly ICategoryMapper _category;
         private readonly IProductMapper _product;
-        private readonly IRequirementMapper _RequirementImage;
+        private readonly IRequirementMapper _requirementMapper;
 
         public RequirementMapper(ICategoryMapper category,
-                                 IProductMapper product,
-                                 IRequirementMapper RequirementImage)
+                                 IProductMapper product)
         {
             this._category = category;
             this._product = product;
-            this._RequirementImage = RequirementImage;
         }
 
         public Requirement Map(AddRequirementRequest request)

@@ -11,11 +11,11 @@ namespace Kalabean.Domain.Mappers
 {
     public class ProductImageMapper : IProductImageMapper
     {
-        private readonly IProductMapper _product;
+        //private readonly IProductMapper _product;
 
-        public ProductImageMapper(IProductMapper product)
+        public ProductImageMapper()
         {
-            this._product = product;
+            //this._product = product;
         }
 
         public ProductImage Map(AddProductImageRequest request)
@@ -51,8 +51,8 @@ namespace Kalabean.Domain.Mappers
             {
                 Id = request.Id,
                 Extention = request.Extention,
-                ProductId = request.ProductId,
-                ProductThumb = _product.MapThumb(request.Product)
+                ProductId = request.ProductId
+                //ProductThumb = _product.MapThumb(request.Product)
             };
             return response;
         }
