@@ -19,7 +19,6 @@ namespace Kalabean.Infrastructure
         //public DbSet<Category> Categories{ get; set; }
         //public DbSet<Article> Articles { get; set; }
         public DbSet<City> Cities { get; set; }
-        public DbSet<AccessRule> AccessRules { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ShoppingCenterType> ShoppingCenterTypes { get; set; }
         public DbSet<ShoppingCenter> ShoppingCenters { get; set; }
@@ -33,7 +32,6 @@ namespace Kalabean.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new RuleEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new CategoryEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new CityEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new ShoppingCenterTypeEntitySchemaDefinition());

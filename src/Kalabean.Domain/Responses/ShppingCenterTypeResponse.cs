@@ -12,6 +12,5 @@ namespace Kalabean.Domain.Responses
         public string ImageUrl { get; set; }
         public string Description { get; set; }
         public string HtmlContent { get; set; }
-        public AccessRuleResponse AccessRule { get; set; }
     }
 }

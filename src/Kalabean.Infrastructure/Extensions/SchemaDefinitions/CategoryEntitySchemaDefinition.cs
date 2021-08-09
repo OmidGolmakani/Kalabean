@@ -20,11 +20,6 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
                 HasOne(c => c.Parent).
                 WithMany(c => c.Children).
                 HasForeignKey(c => c.ParentId);
-
-            builder
-                .HasOne(c => c.AccessRule)
-                .WithMany(ar => ar.Category)
-                .HasForeignKey(c => c.AccessRuleId);
         }
     }
 }

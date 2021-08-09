@@ -19,7 +19,6 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this.DbSet
                 .Where(c => c.Id == id && (includeDeleted || !c.IsDeleted))
-                .Include(c => c.AccessRule)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }

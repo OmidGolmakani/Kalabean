@@ -23,6 +23,8 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(p => p.Description).HasMaxLength(200);
             builder.HasOne(p => p.Store).WithMany(p => p.Orders).OnDelete(DeleteBehavior.NoAction)
                 .HasForeignKey(p => p.StoreId);
+            builder.HasOne(p => p.OrderUser).WithMany(p => p.OrderHeaders).OnDelete(DeleteBehavior.NoAction)
+                .HasForeignKey(p => p.UserId);
         }
     }
 }

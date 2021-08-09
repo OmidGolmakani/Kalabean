@@ -17,10 +17,6 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(c => c.IsDeleted)
                 .HasDefaultValue(false);
 
-            builder
-                .HasOne(c => c.AccessRule)
-                .WithMany(ar => ar.City)
-                .HasForeignKey(c => c.AccessRuleId);
         }
     }
 }

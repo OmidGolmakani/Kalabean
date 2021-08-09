@@ -25,7 +25,10 @@ namespace Kalabean.Domain.Entities
         public override string NormalizedEmail { get => base.NormalizedEmail; set => base.NormalizedEmail = value; }
         public override string SecurityStamp { get => base.SecurityStamp; set => base.SecurityStamp = value; }
         public override string ConcurrencyStamp { get => base.ConcurrencyStamp; set => base.ConcurrencyStamp = value; }
-
+        public ICollection<Requirement> RequirementUsers { get; set; }
+        public ICollection<Requirement> RequirementAdmins { get; set; }
+        public ICollection<OrderHeader> OrderHeaders { get; set; }
+        public ICollection<Store> Stores { get; set; }
 
 
 

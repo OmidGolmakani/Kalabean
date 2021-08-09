@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Entities
 {
-    public class OrderHeader : DeleteEntity
+    public class OrderHeader : AuditDeleteEntity
     {
         public long Id { get; set; }
         public int StoreId { get; set; }
@@ -19,5 +19,6 @@ namespace Kalabean.Domain.Entities
         public bool HasImage { get; set; }
         public Store Store { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
+        public User OrderUser { get; set; }
     }
 }

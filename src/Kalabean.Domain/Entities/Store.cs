@@ -9,6 +9,7 @@ namespace Kalabean.Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public long UserId { get; set; }
         public int ShoppingCenterId { get; set; }
         public ShoppingCenter ShoppingCenter { get; set; }
         public int CategoryId { get; set; }
@@ -35,6 +36,7 @@ namespace Kalabean.Domain.Entities
         public double? Lng { get; set; }
         public ICollection<Product> Products { get; set; }
         public ICollection<OrderHeader> Orders { get; set; }
+        public User StoreUser { get; set; }
 
     }
 }

@@ -42,7 +42,6 @@ namespace Kalabean.MVC
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>)).
                 AddScoped<ICityRepository, CityRepository>()
-                .AddScoped<IAccessRulesRepository, AccessRulesRepository>()
                 .AddScoped<ICategoryRepository, CategoryRepository>()
                 .AddScoped<IShoppingCenterTypeRepository, ShoppingCenterTypeRepository>()
                 .AddScoped<IShoppingCenterRepository, ShoppingCenterRepository>();

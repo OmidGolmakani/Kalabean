@@ -21,10 +21,18 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(p => p.Price).HasPrecision(18, 2).IsRequired();
             builder.Property(p => p.TypePricing).IsRequired().HasDefaultValue(1);
             builder.Property(p => p.UserId).IsRequired();
+            
             builder.HasOne(p => p.Category).WithMany(p => p.Requirements)
                 .HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.NoAction);
+            
             builder.HasOne(p => p.Product).WithMany(p => p.Requirements)
                 .HasForeignKey(p => p.ProductId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(p => p.RequirementUser).WithMany(p => p.RequirementUsers)
+                .HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(p => p.AdminUser).WithMany(p => p.RequirementAdmins)
+                .HasForeignKey(p => p.AdminId).OnDelete(DeleteBehavior.NoAction);
 
 
 

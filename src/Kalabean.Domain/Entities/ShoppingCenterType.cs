@@ -12,8 +12,6 @@ namespace Kalabean.Domain.Entities
         public string Description { get; set; }
         public string HtmlContent { get; set; }
         public bool HasImage { get; set; }
-        public Guid? AccessRuleId { get; set; }
-        public AccessRule AccessRule { get; set; }
         public ICollection<ShoppingCenter> ShoppingCenters { get; set; }
         public ICollection<Store> Stores { get; set; }
     }

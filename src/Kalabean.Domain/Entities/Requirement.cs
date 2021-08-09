@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Entities
 {
-    public class Requirement : DeleteEntity
+    public class Requirement : AuditDeleteEntity
     {
         public long Id { get; set; }
         public long ProductId { get; set; }
@@ -22,6 +22,8 @@ namespace Kalabean.Domain.Entities
         public DateTime? AdminDate { get; set; }
         public Product Product { get; set; }
         public Category Category { get; set; }
+        public User RequirementUser { get; set; }
+        public User AdminUser { get; set; }
 
     }
 }

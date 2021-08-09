@@ -32,8 +32,7 @@ namespace Kalabean.Infrastructure.Services
 
         public async Task<IEnumerable<CityResponse>> GetCitiesAsync()
         {
-            var result = _cityRepository.List(c => !c.IsDeleted)
-                .Include(c => c.AccessRule);
+            var result = _cityRepository.List(c => !c.IsDeleted);
             return result.Select(c => _cityMapper.Map(c));
         }
         public async Task<CityResponse> GetCityAsync(GetCityRequest request)

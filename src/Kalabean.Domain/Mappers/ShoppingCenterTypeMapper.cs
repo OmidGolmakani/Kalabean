@@ -7,10 +7,8 @@ namespace Kalabean.Domain.Mappers
 {
     public class ShoppingCenterTypeMapper : IShoppingCenterTypeMapper
     {
-        IAccessRuleMapper _accessRuleMapper;
-        public ShoppingCenterTypeMapper(IAccessRuleMapper accessRuleMapper)
+        public ShoppingCenterTypeMapper()
         {
-            _accessRuleMapper = accessRuleMapper;
         }
 
         public ShoppingCenterType Map(AddShoppingCenterTypeRequest request)
@@ -22,7 +20,6 @@ namespace Kalabean.Domain.Mappers
                 Description = request.Description,
                 Name = request.Name,
                 Order = request.Order,
-                AccessRuleId = request.AccessRuleId,
                 HasImage = request.Image != null && request.Image.Length > 0,
                 HtmlContent = request.HtmlContent,
                 CreatedDate = DateTime.Now
@@ -41,7 +38,6 @@ namespace Kalabean.Domain.Mappers
                 Name = request.Name,
                 Order = request.Order,
                 Id = request.Id,
-                AccessRuleId = request.AccessRuleId,
                 HtmlContent = request.HtmlContent,
                 LastModified = DateTime.Now
             };
@@ -67,10 +63,6 @@ namespace Kalabean.Domain.Mappers
             };
             if (type.HasImage)
                 response.ImageUrl = $"/KL_ImagesRepo/Sh_C_Types/{type.Id}.jpeg";
-            if (type.AccessRuleId.HasValue)
-            {
-                response.AccessRule = _accessRuleMapper.Map(type.AccessRule);
-            }
             return response;
         }
 

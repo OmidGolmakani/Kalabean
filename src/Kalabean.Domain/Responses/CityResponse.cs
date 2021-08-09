@@ -11,6 +11,5 @@ namespace Kalabean.Domain.Responses
         public byte? Order { get; set; }
         public string ImageUrl { get; set; }
         public string Description { get; set; }
-        public AccessRuleResponse AccessRule { get; set; }
     }
 }

@@ -17,16 +17,14 @@ namespace Kalabean.API.Controllers
     [ApiController]
     public class RulesController : ControllerBase
     {
-        IAccessRulesService _rulesService;
-        public RulesController(IAccessRulesService rulesService)
+        public RulesController()
         {
-            _rulesService = rulesService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _rulesService.GetRulesAsync());
+            return Ok("");
         }
     }
 }

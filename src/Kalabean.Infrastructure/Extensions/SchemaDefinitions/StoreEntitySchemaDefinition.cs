@@ -19,6 +19,17 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(c => c.CategoryId)
                 .IsRequired();
 
+            builder.Property(c => c.DiscountCoupon)
+            .HasDefaultValue(0).HasPrecision(18, 2);
+
+            builder.Property(c => c.AuctionPercentage)
+                .HasDefaultValue(0);
+            builder.Property(c => c.DiscountPercentage)
+                .HasDefaultValue(0);
+
+            builder.Property(c => c.IsDeleted)
+                .HasDefaultValue(false);
+
             builder.HasOne(c => c.Category)
                 .WithMany(c => c.Stores)
                 .HasForeignKey(c => c.CategoryId);
@@ -31,14 +42,10 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
                 .WithMany(c => c.Stores)
                 .HasForeignKey(c => c.ShoppingCenterId);
 
-            builder.Property(c => c.DiscountCoupon)
-                .HasDefaultValue(0).HasPrecision(18,2);
-            builder.Property(c => c.AuctionPercentage)
-                .HasDefaultValue(0);
-            builder.Property(c => c.DiscountPercentage)
-                .HasDefaultValue(0);
-            builder.Property(c => c.IsDeleted)
-                .HasDefaultValue(false);
+            builder.HasOne(c => c.StoreUser)
+                .WithMany(c => c.Stores)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

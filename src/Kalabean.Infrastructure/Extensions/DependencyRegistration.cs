@@ -14,7 +14,6 @@ namespace Kalabean.Infrastructure.Extensions
         {
             services.AddSingleton<ICityMapper, CityMapper>()
                 .AddSingleton<ICategoryMapper, CategoryMapper>()
-                .AddSingleton<IAccessRuleMapper, AccessRuleMapper>()
                 .AddSingleton<IShoppingCenterTypeMapper, ShoppingCenterTypeMapper>()
                 .AddSingleton<IShoppingCenterMapper, ShoppingCenterMapper>()
                 .AddSingleton<IFloorMapper, FloorMapper>()
@@ -33,7 +32,6 @@ namespace Kalabean.Infrastructure.Extensions
             #region Data Servicees
             services
                     .AddScoped<ICityService, CityService>()
-                    .AddScoped<IAccessRulesService, AccessRulesService>()
                     .AddScoped<ICategoryService, CategoryService>()
                     .AddScoped<IShoppingCenterTypeService, ShoppingCenterTypeService>()
                     .AddScoped<IShoppingCenterService, ShoppingCenterService>()

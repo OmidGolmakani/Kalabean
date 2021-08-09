@@ -18,7 +18,6 @@ namespace Kalabean.Infrastructure.Repositories
                 .Where(c => c.Id == id && (includeDeleted || !c.IsDeleted))
                 .Include(c => c.Parent)
                 .Include(c => c.Children)
-                .Include(c => c.AccessRule)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
@@ -28,8 +27,7 @@ namespace Kalabean.Infrastructure.Repositories
             return this
                 .List(c => includeDeleted || !c.IsDeleted)
                 .Include(c => c.Parent)
-                .Include(c => c.Children)
-                .Include(c => c.AccessRule);
+                .Include(c => c.Children);
         }
     }
 }

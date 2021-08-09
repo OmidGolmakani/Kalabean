@@ -32,8 +32,7 @@ namespace Kalabean.Infrastructure.Services
 
         public async Task<IEnumerable<ShoppingCenterTypeResponse>> GetTypesAsync()
         {
-            var result = _typeRepository.List(c => !c.IsDeleted)
-                .Include(c => c.AccessRule);
+            var result = _typeRepository.List(c => !c.IsDeleted);
             return result.Select(c => _typeMapper.Map(c));
         }
         public async Task<ShoppingCenterTypeResponse> GetTypeAsync(GetShoppingCenterTypeRequest request)

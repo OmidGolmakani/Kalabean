@@ -6,10 +6,9 @@ namespace Kalabean.Domain.Mappers
 {
     public class CityMapper : ICityMapper
     {
-        IAccessRuleMapper _accessRuleMapper;
-        public CityMapper(IAccessRuleMapper accessRuleMapper)
+        public CityMapper()
         {
-            _accessRuleMapper = accessRuleMapper;
+
         }
 
         public City Map(AddCityRequest request)
@@ -21,7 +20,6 @@ namespace Kalabean.Domain.Mappers
                 Description = request.Description,
                 Name = request.Name,
                 Order = request.Order,
-                AccessRuleId = request.AccessRuleId,
                 HasImage = request.Image != null && request.Image.Length > 0
             };
 
@@ -37,8 +35,7 @@ namespace Kalabean.Domain.Mappers
                 Description = request.Description,
                 Name = request.Name,
                 Order = request.Order,
-                Id = request.Id,
-                AccessRuleId = request.AccessRuleId
+                Id = request.Id
             };
 
             if (request.ImageEdited)
@@ -62,10 +59,6 @@ namespace Kalabean.Domain.Mappers
             };
             if (city.HasImage)
                 response.ImageUrl = $"/KL_ImagesRepo/Cities/{city.Id}.jpeg";
-            if (city.AccessRuleId.HasValue)
-            {
-                response.AccessRule = _accessRuleMapper.Map(city.AccessRule);
-            }
             return response;
         }
 

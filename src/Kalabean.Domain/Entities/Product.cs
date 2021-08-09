@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Entities
 {
-    public class Product: DeleteEntity
+    public class Product: AuditDeleteEntity
     {
         public long Id { get; set; }
         public int CategoryId { get; set; }

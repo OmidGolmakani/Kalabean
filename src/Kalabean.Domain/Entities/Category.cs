@@ -14,8 +14,6 @@ namespace Kalabean.Domain.Entities
         public int? ParentId { get; set; }
         public ICollection<Category> Children { get; set; }
         public Category Parent { get; set; }
-        public Guid? AccessRuleId { get; set; }
-        public AccessRule AccessRule { get; set; }
         public ICollection<Store> Stores { get; set; }
         public ICollection<Product> Products { get; set; }
         public ICollection<Requirement> Requirements { get; set; }

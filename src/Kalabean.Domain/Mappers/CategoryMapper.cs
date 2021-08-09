@@ -7,10 +7,8 @@ namespace Kalabean.Domain.Mappers
 {
     public class CategoryMapper : ICategoryMapper
     {
-        private readonly IAccessRuleMapper _accessRuleMapper;
-        public CategoryMapper(IAccessRuleMapper accessRuleMapper)
+        public CategoryMapper()
         {
-            _accessRuleMapper = accessRuleMapper;
         }
 
         public Category Map(AddCategoryRequest request)
@@ -23,7 +21,6 @@ namespace Kalabean.Domain.Mappers
                 Order = request.Order,
                 Description = request.Description,
                 HtmlContent = request.HtmlContent,
-                AccessRuleId = request.AccessRuleId,
                 ParentId = request.ParentId
             };
             return category;
@@ -40,7 +37,6 @@ namespace Kalabean.Domain.Mappers
                 Order = request.Order,
                 Description = request.Description,
                 HtmlContent = request.HtmlContent,
-                AccessRuleId = request.AccessRuleId,
                 ParentId = request.ParentId
             };
             return category;
@@ -57,10 +53,6 @@ namespace Kalabean.Domain.Mappers
                 Name = category.Name,
                 Order = category.Order
             };
-            if (category.AccessRuleId.HasValue)
-            {
-                response.AccessRule = _accessRuleMapper.Map(category.AccessRule);
-            }
 
             if (category.Parent != null)
             {
