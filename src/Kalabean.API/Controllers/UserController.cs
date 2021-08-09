@@ -1,0 +1,41 @@
+﻿using Kalabean.Domain.Entities;
+using Kalabean.Domain.Requests.User;
+using Kalabean.Domain.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+namespace Kalabean.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
+    {
+        IUserService _userService = null;
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _userService.GetUsersAsync());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(await _userService.GetUserAsync(new GetUserRequest { Id = id }));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(AddUserRequest request)
+        {
+            var result = await _userService.AddUserAsync(request);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+        }
+    }
+}
