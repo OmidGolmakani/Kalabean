@@ -19,15 +19,22 @@ namespace Kalabean.Infrastructure.Services
         private readonly IUserMapper _UserMapper;
         private readonly UserManager<User> _userManager;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly AppDbContext _dbContext;
+        private readonly SignInManager<User> _signInManager;
+
         public UserService(IUserRepository UserRepository,
                            IUserMapper UserMapper,
                            UserManager<User> userManager,
-                           IUnitOfWork unitOfWork)
+                           IUnitOfWork unitOfWork,
+                           AppDbContext dbContext,
+                           SignInManager<User> signInManager)
         {
             _UserRepository = UserRepository;
             _UserMapper = UserMapper;
             this._userManager = userManager;
             _unitOfWork = unitOfWork;
+            this._dbContext = dbContext;
+            this._signInManager = signInManager;
         }
 
         public async Task<IEnumerable<UserResponse>> GetUsersAsync()
@@ -53,6 +60,49 @@ namespace Kalabean.Infrastructure.Services
             {
                 return null;
             }
+        }
+
+        public Task<SigninResponse> SignIn(LoginRequest request)
+        {
+            var _user = _userManager.FindByNameAsync(request.UserName);
+            Tuple<string, double> tokenInfo = null;
+            SigninResponse Result = null;
+            _user.Wait();
+            if (_user.Result == null || _user.Result.Id == 0)
+            {
+                return Task.FromResult(new SigninResponse() { SignIn = SignInResult.Failed });
+            }
+            else
+            {
+                var SigninResult = _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, false);
+                SigninResult.Wait();
+                if (SigninResult.Result.Succeeded)
+                {
+                    tokenInfo = Helpers.JWTTokenManager.GenerateToken(request.UserName, _dbContext);
+                    Result = new SigninResponse()
+                    {
+                        SignIn = SigninResult.Result,
+                        UserId = _user.Result.Id,
+                        Token = tokenInfo.Item1,
+                        ExprireDate = tokenInfo.Item2,
+                        IsAdmin = _userManager.GetRolesAsync(_user.Result).Result.Count(x => x == "Administrator") == 0 ? false : true,
+                    };
+                }
+                else
+                {
+                    Result = new SigninResponse()
+                    {
+                        UserId = _user.Result.Id,
+                        SignIn = SigninResult.Result
+                    };
+                }
+            }
+            return Task.FromResult(Result);
+        }
+
+        public Task SignOut()
+        {
+            throw new NotImplementedException();
         }
     }
 }

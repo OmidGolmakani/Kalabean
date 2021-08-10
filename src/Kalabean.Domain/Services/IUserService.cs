@@ -10,5 +10,7 @@ namespace Kalabean.Domain.Services
         Task<IEnumerable<UserResponse>> GetUsersAsync();
         Task<UserResponse> GetUserAsync(GetUserRequest request);
         Task<UserResponse> AddUserAsync(AddUserRequest request);
+        Task<SigninResponse> SignIn(LoginRequest request);
+        Task SignOut();
     }
 }

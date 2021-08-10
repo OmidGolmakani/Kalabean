@@ -29,6 +29,7 @@ namespace Kalabean.Infrastructure
         public DbSet<OrderHeader> OrderHeaders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Requirement> Requirements { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,7 +47,7 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new RequirementEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new UserEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new RoleEntitySchemaDefinition());
-
+            modelBuilder.ApplyConfiguration(new RolePermissionEntitySchemaDefinition());
 
             base.OnModelCreating(modelBuilder);
         }
