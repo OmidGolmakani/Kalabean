@@ -102,7 +102,8 @@ namespace Kalabean.Infrastructure.Services
 
         public Task SignOut()
         {
-            throw new NotImplementedException();
+            var Result = _signInManager.SignOutAsync();
+            return Result;
         }
     }
 }
