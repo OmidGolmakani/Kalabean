@@ -47,9 +47,10 @@ namespace Kalabean.Domain.Mappers
                 Family = user.Family,
                 Id = user.Id,
                 Name = user.Name,
-                Orders = user.OrderHeaders.Select(x => _order.Map(x)).ToList(),
-                StoresThumb = user.Stores.Select(x => _store.MapThumb(x)).ToList(),
-                Requirements = user.RequirementUsers.Select(x => _requirement.Map(x)).ToList()
+                UserName = user.UserName,
+                Orders = user.OrderHeaders != null ? user.OrderHeaders.Select(x => _order.Map(x)).ToList() : null,
+                StoresThumb = user.Stores != null ? user.Stores.Select(x => _store.MapThumb(x)).ToList() : null,
+                Requirements = user.RequirementUsers != null ? user.RequirementUsers.Select(x => _requirement.Map(x)).ToList() : null
             };
         }
 

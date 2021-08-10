@@ -4,6 +4,7 @@ using Kalabean.Domain.Services;
 using Kalabean.Infrastructure.Files;
 using Kalabean.Infrastructure.Services;
 using Kalabean.Infrastructure.Services.Image;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kalabean.Infrastructure.Extensions
@@ -54,6 +55,25 @@ namespace Kalabean.Infrastructure.Extensions
         {
             services
                 .AddScoped<IFileAccessProvider, FileAccessProvider>();
+            return services;
+        }
+        public static IServiceCollection AddMyIdentity(this IServiceCollection services)
+        {
+            services.AddIdentity<Kalabean.Domain.Entities.User, Kalabean.Domain.Entities.Role>(config =>
+            {
+                config.Password.RequireDigit = false;
+                //config.Password.RequiredLength = 10;
+                config.Password.RequireLowercase = false;
+                config.Password.RequireUppercase = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.User.RequireUniqueEmail = false;
+                config.SignIn.RequireConfirmedEmail = false;
+                config.SignIn.RequireConfirmedPhoneNumber = true;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddUserStore<Kalabean.Domain.Entities.ApplicationUserStore>()
+            .AddRoles<Kalabean.Domain.Entities.Role>()
+            .AddDefaultTokenProviders();
             return services;
         }
     }

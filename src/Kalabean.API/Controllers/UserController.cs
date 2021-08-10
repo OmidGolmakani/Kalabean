@@ -37,5 +37,16 @@ namespace Kalabean.API.Controllers
             var result = await _userService.AddUserAsync(request);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
+        [HttpPost("Signin")]
+        public async Task<IActionResult> Signin(LoginRequest request)
+        {
+            return Ok(await _userService.SignIn(request));
+        }
+        [HttpPost("Signout")]
+        public async Task<IActionResult> Signout()
+        {
+            await _userService.SignOut();
+            return Ok("");
+        }
     }
 }

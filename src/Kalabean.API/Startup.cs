@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kalabean.Infrastructure.Helpers;
 
 namespace Kalabean.API
 {
@@ -25,6 +26,7 @@ namespace Kalabean.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            JWTTokenManager.configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -32,6 +34,7 @@ namespace Kalabean.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<AppDbContext>(options =>
                 {
@@ -65,12 +68,39 @@ namespace Kalabean.API
             services.
                 AddFileProvider().
                 AddMappers().
-                AddServices();
+                AddServices().
+                AddMyIdentity();
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kala", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+         {
+             {
+                   new OpenApiSecurityScheme
+                     {
+                         Reference = new OpenApiReference
+                         {
+                             Type = ReferenceType.SecurityScheme,
+                             Id = "Bearer"
+                         }
+                     },
+                     new string[] {}
+                    }
+                });
             });
         }
 

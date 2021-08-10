@@ -51,7 +51,9 @@ namespace Kalabean.Infrastructure.Services
         public async Task<UserResponse> AddUserAsync(AddUserRequest request)
         {
             var item = _UserMapper.Map(request);
-            var Result = await _userManager.CreateAsync(item);
+            item.PhoneNumberConfirmed = true;
+            item.EmailConfirmed = true;
+            var Result = await _userManager.CreateAsync(item, request.Password);
             if (Result.Succeeded)
             {
                 return _UserMapper.Map(item);
@@ -74,7 +76,7 @@ namespace Kalabean.Infrastructure.Services
             }
             else
             {
-                var SigninResult = _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, false);
+                var SigninResult = _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, true);
                 SigninResult.Wait();
                 if (SigninResult.Result.Succeeded)
                 {
@@ -84,7 +86,6 @@ namespace Kalabean.Infrastructure.Services
                         SignIn = SigninResult.Result,
                         UserId = _user.Result.Id,
                         Token = tokenInfo.Item1,
-                        ExprireDate = tokenInfo.Item2,
                         IsAdmin = _userManager.GetRolesAsync(_user.Result).Result.Count(x => x == "Administrator") == 0 ? false : true,
                     };
                 }

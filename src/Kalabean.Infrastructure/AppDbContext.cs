@@ -50,6 +50,70 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new RolePermissionEntitySchemaDefinition());
 
             base.OnModelCreating(modelBuilder);
+
+            #region Seed
+            #region  User
+            modelBuilder.Entity<User>().HasData(new User()
+            {
+                Id = 1,
+                UserName = "09150000000",
+                NormalizedUserName = "09150000000",
+                PasswordHash = "AQAAAAEAACcQAAAAENSkzWsQZKhTh+7aBZLEAWRHo8O3XC0qp1d1RFJEdvxKt3rGy+8Agyt38iYrVR5Zyw==",
+                SecurityStamp = "JF5Z6SA4QDPB246AF2WKXR5B5QAMMN7O",
+                ConcurrencyStamp = "b4c38214-364e-4c16-9028-a2d7448435b1",
+                PhoneNumber = "09150000000",
+                PhoneNumberConfirmed = true,
+                TwoFactorEnabled = false,
+                LockoutEnabled = false,
+                AccessFailedCount = 0,
+                Name = "Admin",
+                Family = "Admin"
+            }, new User()
+            {
+                Id = 2,
+                UserName = "User1",
+                NormalizedUserName = "USER1",
+                PasswordHash = "AQAAAAEAACcQAAAAEEntwM294Ph6cmevAy6Q4LHVkhEEQC9Tqurw0jnG+J55aF0s2Ppsz4MRbR7ker9A8w==",
+                SecurityStamp = "UC7D6KUHK3PXCOTP2CGX6L7IMP4TFWKM",
+                ConcurrencyStamp = "8826450d-66b7-4a10-880a-cbad5790e841",
+                PhoneNumber = "09150000000",
+                PhoneNumberConfirmed = true,
+                TwoFactorEnabled = false,
+                LockoutEnabled = false,
+                AccessFailedCount = 0,
+                Name = "Admin",
+                Family = "Admin",
+            });
+            #endregion  User
+            #region  Role
+            modelBuilder.Entity<Role>().HasData(new Role()
+            {
+                Id = 1,
+                Name = "Administrator",
+                NormalizedName = "ADMINISTRATOR",
+                ConcurrencyStamp = "420d99de-7b2d-4a31-acd9-da52b0927bd0",
+            }, new Role()
+            {
+                Id = 2,
+                Name = "User",
+                NormalizedName = "USER",
+                ConcurrencyStamp = "47a274bd-9ea4-4475-a931-00ea4a3e86f7",
+            });
+            #endregion  User Role
+            #region  User Role
+            modelBuilder.Entity<UserRole>().HasData(
+                new UserRole()
+                {
+                    RoleId = 1,
+                    UserId = 1
+                },
+                new UserRole()
+                {
+                    RoleId = 2,
+                    UserId = 2
+                });
+            #endregion  User Role
+            #endregion Seed
         }
     }
 }
