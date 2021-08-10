@@ -106,5 +106,17 @@ namespace Kalabean.Infrastructure.Services
             var Result = _signInManager.SignOutAsync();
             return Result;
         }
+
+        public Task<List<IdentityResult>> AddUserToRole(AddUserToRoleRequest request)
+        {
+            var _user = _userManager.FindByIdAsync(request.Id.ToString());
+            List<IdentityResult> Result = new List<IdentityResult>();
+            foreach (string Role in request.Roles)
+            {
+                var RoleTask = _userManager.AddToRoleAsync(_user.Result, Role);
+                Result.Add(RoleTask.Result);
+            }
+            return Task.FromResult(Result);
+        }
     }
 }

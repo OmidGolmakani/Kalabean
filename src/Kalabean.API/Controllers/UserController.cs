@@ -35,6 +35,10 @@ namespace Kalabean.API.Controllers
         public async Task<IActionResult> Post(AddUserRequest request)
         {
             var result = await _userService.AddUserAsync(request);
+            if (result != null)
+            {
+                await _userService.AddUserToRole(new AddUserToRoleRequest() { Id = result.Id, Roles = new List<string>() { "User" } });
+            }
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         [HttpPost("Signin")]
@@ -47,6 +51,11 @@ namespace Kalabean.API.Controllers
         {
             await _userService.SignOut();
             return Ok("");
+        }
+        [HttpPost("AddUserToRole")]
+        public async Task<IActionResult> AddUserToRole(AddUserToRoleRequest request)
+        {
+            return Ok(await _userService.AddUserToRole(request));
         }
     }
 }
