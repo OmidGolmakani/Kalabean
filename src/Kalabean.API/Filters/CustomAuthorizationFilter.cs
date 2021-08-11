@@ -31,7 +31,7 @@ namespace CurrencyExchange.Filter
             IWebHostEnvironment env = context.HttpContext.RequestServices.GetRequiredService<IWebHostEnvironment>();
             if (env.EnvironmentName == "Development")
             {
-                return;
+                //return;
             }
             ErrorResponse Err = null;
             bool hasAllowAnonymous = context.ActionDescriptor.EndpointMetadata
