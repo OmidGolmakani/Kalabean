@@ -32,6 +32,10 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(p => p.StoreId).IsRequired();
             builder.Property(p => p.Properties).HasMaxLength(500);
             builder.Property(p => p.LinkProduct).HasMaxLength(200);
+            builder.Property(c => c.LastModified);
+            builder.Property(c => c.LastModifiedBy).HasMaxLength(120);
+            builder.Property(c => c.CreatedDate);
+            builder.Property(c => c.CreatedBy).HasMaxLength(120);
             builder.HasOne(p => p.Category).WithMany(p => p.Products)
                 .HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(p => p.Store).WithMany(p => p.Products)

@@ -39,6 +39,7 @@ namespace Kalabean.Infrastructure.Services
         public async Task<RolePermissionResponse> AddRolePermissionAsync(AddRolePermissionRequest request)
         {
             var item = _RolePermissionMapper.Map(request);
+            item.Token = Helpers.JWTTokenManager.GeneratePermissionToken(item);
             var result = _RolePermissionRepository.Add(item);
             await _unitOfWork.CommitAsync();
 
@@ -52,6 +53,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _RolePermissionMapper.Map(request);
+            entity.Token = Helpers.JWTTokenManager.GeneratePermissionToken(entity);
             var result = _RolePermissionRepository.Update(entity);
             await _unitOfWork.CommitAsync();
             return _RolePermissionMapper.Map(await _RolePermissionRepository.GetById(result.Id));

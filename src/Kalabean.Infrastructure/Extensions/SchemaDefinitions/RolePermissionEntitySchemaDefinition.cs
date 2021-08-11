@@ -12,7 +12,7 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.ToTable("RolePermission")
                 .HasKey(c => c.Id);
             builder.Property(p => p.RoleId).IsRequired();
-            builder.Property(p => p.Token).IsRequired().HasMaxLength(200);
+            builder.Property(p => p.Token).IsRequired().HasMaxLength(600);
             builder.Property(p => p.Url).IsRequired().HasMaxLength(300);
         }
     }

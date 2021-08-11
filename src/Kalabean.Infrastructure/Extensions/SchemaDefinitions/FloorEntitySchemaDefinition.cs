@@ -19,6 +19,10 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
                 .HasForeignKey(c => c.ShoppingCenterId);
             builder.Property(c => c.IsDeleted)
                 .HasDefaultValue(false);
+            builder.Property(c => c.LastModified);
+            builder.Property(c => c.LastModifiedBy).HasMaxLength(120);
+            builder.Property(c => c.CreatedDate);
+            builder.Property(c => c.CreatedBy).HasMaxLength(120);
         }
     }
 }

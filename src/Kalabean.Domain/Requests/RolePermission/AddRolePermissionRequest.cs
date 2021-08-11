@@ -10,6 +10,5 @@ namespace Kalabean.Domain.Requests.RolePermission
     {
         public long RoleId { get; set; }
         public string Url { get; set; }
-        public string Token { get; set; }
     }
 }

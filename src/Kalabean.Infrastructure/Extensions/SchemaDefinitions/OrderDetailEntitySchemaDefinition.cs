@@ -21,6 +21,10 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(p => p.Price).IsRequired();
             builder.Property(p => p.Num).IsRequired();
             builder.Property(p => p.ProductId).IsRequired();
+            builder.Property(c => c.LastModified);
+            builder.Property(c => c.LastModifiedBy).HasMaxLength(120);
+            builder.Property(c => c.CreatedDate);
+            builder.Property(c => c.CreatedBy).HasMaxLength(120);
             builder.HasOne(p => p.OrderHeader).WithMany(p => p.OrderDetails).OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(p => p.OrderId);
             builder.HasOne(p => p.Product).WithMany(p => p.OrderDetails).OnDelete(DeleteBehavior.NoAction)

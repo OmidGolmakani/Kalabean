@@ -25,7 +25,8 @@ namespace Kalabean.Infrastructure.Extensions
                 .AddSingleton<IProductImageMapper, ProductImageMapper>()
                 .AddSingleton<IOrderHeaderMapper, OrderHeaderMapper>()
                 .AddSingleton<IRequirementMapper, RequirementMapper>()
-                .AddSingleton<IUserMapper, UserMapper>();
+                .AddSingleton<IUserMapper, UserMapper>()
+                .AddSingleton<IRolePermissionMapper, RolePermissionMapper>();
             return services;
         }
 
@@ -42,7 +43,8 @@ namespace Kalabean.Infrastructure.Extensions
                     .AddScoped<IProductService, ProductService>()
                     .AddScoped<IOrderService, OrderService>()
                     .AddScoped<IRequirementService, RequirementService>()
-                    .AddScoped<IUserService, UserService>();
+                    .AddScoped<IUserService, UserService>()
+                    .AddScoped<IRolePermissionService, RolePermissionService>();
             #endregion Data Services
             #region Other Services
             services.AddScoped<IResizeImageService, ResizeImageService>();

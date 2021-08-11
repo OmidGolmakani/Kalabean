@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Kalabean.Domain.Entities
 {
-    public class City: DeleteEntity
+    public class City: AuditDeleteEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

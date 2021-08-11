@@ -24,8 +24,7 @@ namespace Kalabean.Infrastructure.Helpers
                 return authorizationOption;
             }
         }
-        public static string GeneratePermissionToken(RolePermission Permission,
-                                                       AppDbContext dbContext)
+        public static string GeneratePermissionToken(RolePermission Permission)
         {
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();

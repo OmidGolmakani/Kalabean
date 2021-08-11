@@ -21,6 +21,10 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(p => p.PaymenyLink).HasMaxLength(200);
             builder.Property(p => p.OrderStatus).IsRequired().HasDefaultValue((byte)OrderStatus.AwaitingApproval);
             builder.Property(p => p.Description).HasMaxLength(200);
+            builder.Property(c => c.LastModified);
+            builder.Property(c => c.LastModifiedBy).HasMaxLength(120);
+            builder.Property(c => c.CreatedDate);
+            builder.Property(c => c.CreatedBy).HasMaxLength(120);
             builder.HasOne(p => p.Store).WithMany(p => p.Orders).OnDelete(DeleteBehavior.NoAction)
                 .HasForeignKey(p => p.StoreId);
             builder.HasOne(p => p.OrderUser).WithMany(p => p.OrderHeaders).OnDelete(DeleteBehavior.NoAction)

@@ -22,7 +22,6 @@ namespace Kalabean.Domain.Mappers
                 Id = 0,
                 IsDeleted = false,
                 RoleId = request.RoleId,
-                Token = request.Token,
                 Url = request.Url
             };
             return RolePermission;
@@ -37,7 +36,6 @@ namespace Kalabean.Domain.Mappers
                 Id = request.Id,
                 IsDeleted = false,
                 RoleId = request.RoleId,
-                Token = request.Token,
                 Url = request.Url
             };
 

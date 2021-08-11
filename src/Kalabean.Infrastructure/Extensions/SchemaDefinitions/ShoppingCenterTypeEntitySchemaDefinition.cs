@@ -11,7 +11,10 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
         {
             builder.ToTable("ShoppingCenterTypes")
                 .HasKey(c => c.Id);
-
+            builder.Property(c => c.LastModified);
+            builder.Property(c => c.LastModifiedBy).HasMaxLength(120);
+            builder.Property(c => c.CreatedDate);
+            builder.Property(c => c.CreatedBy).HasMaxLength(120);
             builder.Property(c => c.Name)
                 .IsRequired();
             builder.Property(c => c.IsDeleted)

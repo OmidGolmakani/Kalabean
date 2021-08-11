@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Kalabean.Domain.Entities
 {
-    public class Category: DeleteEntity
+    public class Category: AuditDeleteEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
