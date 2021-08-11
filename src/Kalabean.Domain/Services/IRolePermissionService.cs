@@ -7,7 +7,7 @@ namespace Kalabean.Domain.Services
 {
     public interface IRolePermissionService
     {
-        Task<IEnumerable<RolePermissionResponse>> GetRolePermissionsAsync();
+        Task<IEnumerable<RolePermissionResponse>> GetRolePermissionsAsync(long RoleId);
         Task<RolePermissionResponse> GetRolePermissionAsync(GetRolePermissionRequest request);
         Task<RolePermissionResponse> AddRolePermissionAsync(AddRolePermissionRequest request);
         Task<RolePermissionResponse> EditRolePermissionAsync(EditRolePermissionRequest request);

@@ -4,9 +4,9 @@ using Kalabean.Domain.Entities;
 
 namespace Kalabean.Domain.Repositories
 {
-    public interface IStoreRepository : IRepository<RolePermission>
+    public interface IRolePermissionRepository : IRepository<RolePermission>
     {
-        Task<RolePermission> GetById(long id, bool includeDeleted = false);
-        Task<IQueryable<RolePermission>> Get(bool includeDeleted = false);
+        Task<RolePermission> GetById(long id);
+        Task<IQueryable<RolePermission>> Get(long RoleId);
     }
 }

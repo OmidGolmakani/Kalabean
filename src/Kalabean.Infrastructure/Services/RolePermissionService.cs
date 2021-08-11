@@ -17,17 +17,17 @@ namespace Kalabean.Infrastructure.Services
         private readonly IRolePermissionMapper _RolePermissionMapper;
         private readonly IUnitOfWork _unitOfWork;
         public RolePermissionService(IRolePermissionRepository RolePermissionRepository,
-                                  IRolePermissionMapper RolePermissionMapper,
-                                   IUnitOfWork unitOfWork)
+                                     IRolePermissionMapper RolePermissionMapper,
+                                     IUnitOfWork unitOfWork)
         {
             _RolePermissionRepository = RolePermissionRepository;
             _RolePermissionMapper = RolePermissionMapper;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<RolePermissionResponse>> GetRolePermissionsAsync()
+        public async Task<IEnumerable<RolePermissionResponse>> GetRolePermissionsAsync(long RoleId)
         {
-            var result = await _RolePermissionRepository.Get();
+            var result = await _RolePermissionRepository.Get(RoleId);
             return result.Select(p => _RolePermissionMapper.Map(p));
         }
         public async Task<RolePermissionResponse> GetRolePermissionAsync(GetRolePermissionRequest request)
