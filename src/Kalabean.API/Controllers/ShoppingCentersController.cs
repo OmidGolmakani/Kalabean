@@ -13,9 +13,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
-    [Route("api/shoppingcenters")]
-    [ApiController]
-    public class ShoppingCentersController : ControllerBase
+    public class ShoppingCentersController : BaseController
     {
         private readonly IShoppingCenterService _shoppingCenterService;
         public ShoppingCentersController(IShoppingCenterService shoppingCenterService)

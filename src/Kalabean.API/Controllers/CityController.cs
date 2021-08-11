@@ -13,9 +13,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
-    [Route("api/cities")]
-    [ApiController]
-    public class CityController : ControllerBase
+    public class CityController : BaseController
     {
         private readonly ICityService _cityService;
         public CityController(ICityService cityService)

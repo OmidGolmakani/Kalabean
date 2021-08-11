@@ -15,7 +15,7 @@ namespace Kalabean.API.Controllers
 {
     [Route("api/types")]
     [ApiController]
-    public class TypesController : ControllerBase
+    public class TypesController : BaseController
     {
         private readonly IShoppingCenterTypeService _typeService;
         public TypesController(IShoppingCenterTypeService typeService)

@@ -11,7 +11,7 @@ namespace Kalabean.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StoreController : ControllerBase
+    public class StoreController : BaseController
     {
         IStoreService _storeService = null;
         public StoreController(IStoreService storeService)

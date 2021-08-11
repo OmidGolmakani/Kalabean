@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController : BaseController
     {
         ICategoryService _categoryService = null;
         public CategoriesController(ICategoryService categoryService)

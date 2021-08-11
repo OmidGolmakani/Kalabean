@@ -13,9 +13,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
-    [Route("api/rules")]
-    [ApiController]
-    public class RulesController : ControllerBase
+    public class RulesController : BaseController
     {
         public RulesController()
         {
