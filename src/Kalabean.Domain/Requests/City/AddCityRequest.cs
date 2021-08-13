@@ -9,6 +9,5 @@ namespace Kalabean.Domain.Requests.City
         public string Description { get; set; }
         public byte Order { get; set; }
         public IFormFile Image{ get; set; }
-        public Guid? AccessRuleId { get; set; }
     }
 }

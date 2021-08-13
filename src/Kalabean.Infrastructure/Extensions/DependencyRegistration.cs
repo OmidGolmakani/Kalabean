@@ -26,7 +26,8 @@ namespace Kalabean.Infrastructure.Extensions
                 .AddSingleton<IOrderHeaderMapper, OrderHeaderMapper>()
                 .AddSingleton<IRequirementMapper, RequirementMapper>()
                 .AddSingleton<IUserMapper, UserMapper>()
-                .AddSingleton<IRolePermissionMapper, RolePermissionMapper>();
+                .AddSingleton<IRolePermissionMapper, RolePermissionMapper>()
+                .AddSingleton<IArticleMapper, ArticleMapper>(); ;
             return services;
         }
 

@@ -29,7 +29,7 @@ namespace Kalabean.Domain.Entities
         public ICollection<Requirement> RequirementAdmins { get; set; }
         public ICollection<OrderHeader> OrderHeaders { get; set; }
         public ICollection<Store> Stores { get; set; }
-
+        public ICollection<Article> Articles { get; set; }
 
 
 

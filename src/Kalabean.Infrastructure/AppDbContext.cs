@@ -48,6 +48,7 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new UserEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new RoleEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new RolePermissionEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new ArticleEntitySchemaDefinition());
 
             base.OnModelCreating(modelBuilder);
 
