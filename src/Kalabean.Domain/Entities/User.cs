@@ -30,7 +30,7 @@ namespace Kalabean.Domain.Entities
         public ICollection<OrderHeader> OrderHeaders { get; set; }
         public ICollection<Store> Stores { get; set; }
         public ICollection<Article> Articles { get; set; }
-
+        public RequirementUserSeen RequiremenUserSeen { get; set; }
 
 
     }

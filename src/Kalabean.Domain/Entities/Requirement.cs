@@ -24,6 +24,7 @@ namespace Kalabean.Domain.Entities
         public Category Category { get; set; }
         public User RequirementUser { get; set; }
         public User AdminUser { get; set; }
+        public RequirementUserSeen RequirementUserSeen { get; set; }
 
     }
 }

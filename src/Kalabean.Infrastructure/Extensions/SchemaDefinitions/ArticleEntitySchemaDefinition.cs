@@ -19,7 +19,7 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(a => a.CreatedDate);
             builder.Property(a => a.CreatedBy).HasMaxLength(120);
 
-            builder.Property(c => c.Name).IsRequired();
+            builder.Property(c => c.Name).IsRequired().HasMaxLength(150);
             builder.Property(a => a.KeyWords).HasMaxLength(500);
             builder.Property(a => a.Summary).HasMaxLength(1000);
             builder.Property(a => a.Description).HasMaxLength(1000);
