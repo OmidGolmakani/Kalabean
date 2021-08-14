@@ -18,27 +18,27 @@ namespace Kalabean.Infrastructure.Repositories
         {
             _dbFactory = dbFactory;
         }
-        public T Add(T entity)
+        public virtual T Add(T entity)
         {
             return DbSet.Add(entity).Entity;
         }
 
-        public T Delete(T entity)
+        public virtual T Delete(T entity)
         {
             return DbSet.Remove(entity).Entity;
         }
 
-        public IQueryable<T> List(Expression<Func<T, bool>> expression)
+        public virtual IQueryable<T> List(Expression<Func<T, bool>> expression)
         {
             return DbSet.Where(expression).AsNoTracking();
         }
 
-        public T Update(T entity)
+        public virtual T Update(T entity)
         {
             return DbSet.Update(entity).Entity;
         }
 
-        public void UpdateBatch(System.Collections.Generic.IEnumerable<T> entities)
+        public virtual void UpdateBatch(System.Collections.Generic.IEnumerable<T> entities)
         {
             DbSet.UpdateRange(entities);
         }
