@@ -1,5 +1,6 @@
 ﻿using Kalabean.Domain.Entities;
 using Kalabean.Domain.Requests.User;
+using Kalabean.Domain.Responses;
 using Kalabean.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -44,7 +45,12 @@ namespace Kalabean.API.Controllers
         [HttpPost("Signin")]
         public async Task<IActionResult> Signin(LoginRequest request)
         {
-            return Ok(await _userService.SignIn(request));
+            SigninResponse response = await _userService.SignIn(request);
+            if (!response.SignIn.Succeeded)
+            {
+                return BadRequest("نام کاربری یا رمز عبور اشتباه هست");
+            }
+            return Ok(response);
         }
         [HttpPost("Signout")]
         public async Task<IActionResult> Signout()
