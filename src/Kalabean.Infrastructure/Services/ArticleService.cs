@@ -20,7 +20,7 @@ namespace Kalabean.Infrastructure.Services
                               IArticleMapper ArticleMapper,
                               IUnitOfWork unitOfWork)
         {
-            _ArticleRepository = ArticleRepository;
+            //_ArticleRepository = ArticleRepository;
             _ArticleMapper = ArticleMapper;
             _unitOfWork = unitOfWork;
         }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
+    [Route("api/rolepermissions")]
     public class RolePermissionController : BaseController
     {
         IRolePermissionService _rolePermissionService = null;
