@@ -31,7 +31,7 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(AddArticleRequest request)
+        public async Task<IActionResult> Post([FromForm] AddArticleRequest request)
         {
             var result = await _ArticleService.AddArticleAsync(request);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
@@ -45,7 +45,7 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, EditArticleRequest request)
+        public async Task<IActionResult> Put(int id, [FromForm]EditArticleRequest request)
         {
             request.Id = id;
             var result = await _ArticleService.EditArticleAsync(request);

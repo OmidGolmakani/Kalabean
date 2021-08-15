@@ -11,6 +11,8 @@ namespace Kalabean.Infrastructure.Files
         private const string Types_Sub_Directory = "Sh_C_Types";
         private const string Shoppings_Sub_Directory = "Sh_C";
         private const string Stores_Sub_Directory = "Stores";
+        private const string Articles_Sub_Directory = "Articles";
+
 
         IFileAccessProvider _fileProvider;
         public KalabeanFileProvider(IFileAccessProvider fileProvider)
@@ -103,6 +105,42 @@ namespace Kalabean.Infrastructure.Files
             {
                 fileStream.CopyTo(outputFileStream);
             }
+        }
+        public bool SaveArticleImage(Stream stream, long id)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Articles_Sub_Directory);
+            if (!_fileProvider.DirectoryExists(path))
+                _fileProvider.CreateDirectory(path);
+            // TODO: What about other extensions like jpg and so on.
+            string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
+            saveStreamAsFile(filePath, stream);
+            return true;
+        }
+        public bool DeleteArticleImage(int id)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Articles_Sub_Directory);
+            string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
+            if (File.Exists(filePath))
+                _fileProvider.DeleteFile(filePath);
+            return true;
+        }
+        public bool SaveArticleFile(Stream stream, long id, string extention)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Articles_Sub_Directory);
+            if (!_fileProvider.DirectoryExists(path))
+                _fileProvider.CreateDirectory(path);
+            // TODO: What about other extensions like jpg and so on.
+            string filePath = _fileProvider.Combine(path, $"{id}{extention}");
+            saveStreamAsFile(filePath, stream);
+            return true;
+        }
+        public bool DeleteArticleFile(int id, string extention)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Articles_Sub_Directory);
+            string filePath = _fileProvider.Combine(path, $"{id}{extention}");
+            if (File.Exists(filePath))
+                _fileProvider.DeleteFile(filePath);
+            return true;
         }
     }
 }

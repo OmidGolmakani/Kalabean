@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System;
 using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
+using Kalabean.Infrastructure.Files;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -16,13 +17,17 @@ namespace Kalabean.Infrastructure.Services
         private readonly IArticleRepository _ArticleRepository;
         private readonly IArticleMapper _ArticleMapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly KalabeanFileProvider _fileProvider;
+
         public ArticleService(IArticleRepository ArticleRepository,
                               IArticleMapper ArticleMapper,
-                              IUnitOfWork unitOfWork)
+                              IUnitOfWork unitOfWork,
+                              KalabeanFileProvider fileProvider)
         {
-            //_ArticleRepository = ArticleRepository;
+            _ArticleRepository = ArticleRepository;
             _ArticleMapper = ArticleMapper;
             _unitOfWork = unitOfWork;
+            this._fileProvider = fileProvider;
         }
 
         public async Task<IEnumerable<ArticleResponse>> GetArticlesAsync()
@@ -39,10 +44,18 @@ namespace Kalabean.Infrastructure.Services
         public async Task<ArticleResponse> AddArticleAsync(AddArticleRequest request)
         {
             var item = _ArticleMapper.Map(request);
+            item.HasImage = request.Image != null;
             var result = _ArticleRepository.Add(item);
-            await _unitOfWork.CommitAsync();
+            if (await _unitOfWork.CommitAsync() > 0 &&
+                request.Image != null)
+            {
+                using (var fileContent = request.Image.OpenReadStream())
+                    _fileProvider.SaveArticleImage(fileContent, result.Id);
 
-            return _ArticleMapper.Map(await _ArticleRepository.GetById(result.Id));
+                using (var fileContent = request.File.OpenReadStream())
+                    _fileProvider.SaveArticleFile(fileContent, result.Id,System.IO.Path.GetExtension(request.File.FileName));
+            }
+            return await this.GetArticleAsync(new GetArticleRequest { Id = result.Id });
         }
         public async Task<ArticleResponse> EditArticleAsync(EditArticleRequest request)
         {

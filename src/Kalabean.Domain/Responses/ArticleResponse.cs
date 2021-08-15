@@ -19,5 +19,6 @@ namespace Kalabean.Domain.Responses
         public bool Suggestedcontent { get; set; }
         public bool ShowInPortal { get; set; }
         public bool SuggestedContent { get; set; }
+        public ThumbResponse<long> AdminThumb { get; set; }
     }
 }

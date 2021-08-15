@@ -7,9 +7,11 @@ namespace Kalabean.Domain.Mappers
 {
     public class ArticleMapper : IArticleMapper
     {
-        public ArticleMapper()
-        {
+        private readonly IUserMapper user;
 
+        public ArticleMapper(IUserMapper User)
+        {
+            user = User;
         }
 
         public Article Map(AddArticleRequest request)
@@ -25,7 +27,8 @@ namespace Kalabean.Domain.Mappers
                 KeyWords = request.KeyWords,
                 ShowInPortal = request.ShowInPortal,
                 SuggestedContent = request.SuggestedContent,
-                Summary = request.Summary
+                Summary = request.Summary,
+                AdminId = request.AdminId
             };
 
             Article.HasImage = request.Image != null && request.Image.Length > 0;
@@ -48,7 +51,8 @@ namespace Kalabean.Domain.Mappers
                 KeyWords = request.KeyWords,
                 ShowInPortal = request.ShowInPortal,
                 SuggestedContent = request.SuggestedContent,
-                Summary = request.Summary
+                Summary = request.Summary,
+                AdminId = request.AdminId
             };
 
             if (request.ImageEdited)
@@ -76,7 +80,8 @@ namespace Kalabean.Domain.Mappers
                 KeyWords = Article.KeyWords,
                 ShowInPortal = Article.ShowInPortal,
                 SuggestedContent = Article.SuggestedContent,
-                Summary = Article.Summary
+                Summary = Article.Summary,
+                AdminThumb = user.MapThumb(Article.AdminUser)
 
             };
             if (Article.HasImage)
