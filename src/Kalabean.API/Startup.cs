@@ -65,6 +65,7 @@ namespace Kalabean.API
                 .AddScoped<IOrderDetailRepository, OrderDetailRepository>()
                 .AddScoped<IRequirementRepository, RequirementRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
+                .AddScoped<IArticleRepository, ArticleRepository>()
                 .AddScoped<IRolePermissionRepository, RolePermissionRepository>();
             services.
                 AddFileProvider().

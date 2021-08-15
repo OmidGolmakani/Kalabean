@@ -17,8 +17,8 @@ namespace Kalabean.Infrastructure.Services
         private readonly IArticleMapper _ArticleMapper;
         private readonly IUnitOfWork _unitOfWork;
         public ArticleService(IArticleRepository ArticleRepository,
-            IArticleMapper ArticleMapper,
-            IUnitOfWork unitOfWork)
+                              IArticleMapper ArticleMapper,
+                              IUnitOfWork unitOfWork)
         {
             _ArticleRepository = ArticleRepository;
             _ArticleMapper = ArticleMapper;
