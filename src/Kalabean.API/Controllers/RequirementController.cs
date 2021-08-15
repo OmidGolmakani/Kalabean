@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
+    [Route("api/requirements")]
     public class RequirementController : BaseController
     {
         IRequirementService _RequirementService = null;

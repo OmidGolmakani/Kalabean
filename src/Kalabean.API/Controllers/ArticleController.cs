@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
+    [Route("api/articles")]
     public class ArticleController : BaseController
     {
         IArticleService _ArticleService = null;

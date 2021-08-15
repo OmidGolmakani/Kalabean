@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
-    [Route("api/[controller]")]
+    
     [ApiController]
     [CustomAuthorizationFilter]
     public class BaseController : ControllerBase

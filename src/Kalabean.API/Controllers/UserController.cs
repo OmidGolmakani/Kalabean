@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
-    public class UserController : BaseController
+    public class UserController : ControllerBase
     {
         IUserService _userService = null;
         public UserController(IUserService userService)

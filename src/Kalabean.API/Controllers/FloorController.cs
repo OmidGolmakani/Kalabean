@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
+    [Route("api/floors")]
     public class FloorController : BaseController
     {
         IFloorService _floorService = null;

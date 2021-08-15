@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
+    [Route("api/orders")]
     public class OrderController : BaseController
     {
         private readonly IOrderService _OrderService;
