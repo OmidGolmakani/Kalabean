@@ -55,6 +55,7 @@ namespace Kalabean.Infrastructure.Services
         }
         public async Task<ArticleResponse> AddArticleAsync(AddArticleRequest request)
         {
+            request.AdminId = Helpers.JWTTokenManager.GetUserIdByToken();
             var item = _ArticleMapper.Map(request);
             item.HasImage = request.Image != null;
             var result = _ArticleRepository.Add(item);

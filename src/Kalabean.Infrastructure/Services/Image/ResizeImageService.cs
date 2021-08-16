@@ -28,23 +28,31 @@ namespace Kalabean.Infrastructure.Services.Image
             if (request.ImageUrl == null || request.ImageSize == null) return null;
             request.ImageUrl = System.IO.Path.Combine(env.ContentRootPath, request.ImageUrl);
             var Img = System.Drawing.Image.FromFile(request.ImageUrl);
+            //if (Img.Width > Img.Height)
+            //{
+            //    var w = Img.Width / request.ImageSize.Width;
+            //    request.ImageSize = new System.Drawing.Size()
+            //    {
+            //        Width = w,
+            //        Height = Img.Height / w
+            //    };
+            //}
+            //else if (Img.Height > Img.Width)
+            //{
+            //    var h = Img.Height / request.ImageSize.Height;
+            //    request.ImageSize = new System.Drawing.Size()
+            //    {
+            //        Width = Img.Height / h,
+            //        Height = h
+            //    };
+            //}
             if (Img.Width > Img.Height)
             {
-                var w = Img.Width / request.ImageSize.Width;
-                request.ImageSize = new System.Drawing.Size()
-                {
-                    Width = w,
-                    Height = Img.Height / w
-                };
+                request.ImageSize = new System.Drawing.Size(request.ImageSize.Width, 0);
             }
-            else if (Img.Height > Img.Width)
+            if (Img.Width < Img.Height)
             {
-                var h = Img.Height / request.ImageSize.Height;
-                request.ImageSize = new System.Drawing.Size()
-                {
-                    Width = Img.Height / h,
-                    Height = h
-                };
+                request.ImageSize = new System.Drawing.Size(0, request.ImageSize.Height);
             }
             var OldFile = request.ImageUrl;
             var FileDir = System.IO.Path.GetDirectoryName(request.ImageUrl);

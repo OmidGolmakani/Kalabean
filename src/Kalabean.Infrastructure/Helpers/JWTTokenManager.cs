@@ -201,10 +201,16 @@ namespace Kalabean.Infrastructure.Helpers
                 throw new Exception("ValidateToken", ex);
             }
         }
-        public static long GetUserIdByToken(string token)
+        public static long GetUserIdByToken(string token = "")
         {
             try
             {
+                if (token == "")
+                {
+                    token = MyAppContext.Current.Request.Headers
+                        .FirstOrDefault(x => x.Key == "Authorization").Value.
+                        ToString().Replace("Bearer", "");
+                }
                 ClaimsPrincipal principal = GetPrincipal(token);
                 if (principal == null)
                     return 0;
@@ -227,12 +233,12 @@ namespace Kalabean.Infrastructure.Helpers
         }
         public static string GetTokenFromRequest()
         {
-            if (Helpers.AppContext.Current.Request.Headers.
+            if (Helpers.MyAppContext.Current.Request.Headers.
                    FirstOrDefault(x => x.Key == "Authorization").Value.FirstOrDefault() == null)
             {
                 throw new Exception("توکن ارسال نشده است");
             }
-            var Token = Helpers.AppContext.Current.Request.Headers.
+            var Token = Helpers.MyAppContext.Current.Request.Headers.
                 FirstOrDefault(x => x.Key == "Authorization").Value.FirstOrDefault().
                 Replace("Bearer", "").Trim();
             return Token;
