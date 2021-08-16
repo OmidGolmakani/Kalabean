@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Kalabean.Infrastructure.Repositories
 {
-   public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         private readonly DbFactory _dbFactory;
         private DbSet<T> _dbSet;
@@ -41,6 +41,11 @@ namespace Kalabean.Infrastructure.Repositories
         public virtual void UpdateBatch(System.Collections.Generic.IEnumerable<T> entities)
         {
             DbSet.UpdateRange(entities);
+        }
+
+        public long Count(Expression<Func<T, bool>> expression)
+        {
+            return DbSet.Where(expression).AsNoTracking().Count();
         }
     }
 }

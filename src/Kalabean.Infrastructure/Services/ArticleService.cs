@@ -31,10 +31,12 @@ namespace Kalabean.Infrastructure.Services
             this._fileProvider = fileProvider;
         }
 
-        public async Task<IEnumerable<ArticleResponse>> GetArticlesAsync()
+        public async Task<ListPageingResponse<ArticleResponse>> GetArticlesAsync(GetArticlesRequest request)
         {
-            var result = await _ArticleRepository.Get();
-            return result.Select(c => _ArticleMapper.Map(c));
+            var result = await _ArticleRepository.Get(request);
+            var list = result.Select(c => _ArticleMapper.Map(c));
+            var count = await _ArticleRepository.Count(request);
+            return new ListPageingResponse<ArticleResponse>() { Items = list, RecordCount = count };
         }
         public async Task<ArticleResponse> GetArticleAsync(GetArticleRequest request)
         {
@@ -84,6 +86,13 @@ namespace Kalabean.Infrastructure.Services
             _ArticleRepository.UpdateBatch(Articles);
 
             await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<long> Count(GetArticlesRequest request)
+        {
+            if (request == null) throw new ArgumentNullException();
+            var Article = await _ArticleRepository.Count(request);
+            return Article;
         }
     }
 }
