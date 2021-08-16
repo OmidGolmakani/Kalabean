@@ -21,7 +21,7 @@ namespace Kalabean.Infrastructure.Services.Image
             this.env = env;
         }
 
-        public Task<ImageResizeResponse> Resize(GetImageRequest<T> request)
+        public async Task<ImageResizeResponse> Resize(GetImageRequest<T> request)
         {
 
             if (request == null || request.ImageUrl == null) return null;
@@ -58,12 +58,14 @@ namespace Kalabean.Infrastructure.Services.Image
                 }
                 image.Save(System.IO.Path.Combine(FileDir, request.Folder, NewFile));
             }
-            return Task.FromResult(new ImageResizeResponse()
+            if (Img != null)
+                Img.Dispose();
+            return new ImageResizeResponse()
             {
                 FullPath = System.IO.Path.GetFullPath(request.ImageUrl),
                 FileName = request.ImageUrl,
                 Size = request.ImageSize
-            });
+            };
         }
     }
 }
