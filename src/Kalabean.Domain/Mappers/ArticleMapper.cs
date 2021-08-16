@@ -33,7 +33,7 @@ namespace Kalabean.Domain.Mappers
 
             Article.HasImage = request.Image != null && request.Image.Length > 0;
             Article.HasFile = request.File != null && request.File.Length > 0;
-
+            Article.FileExtention = request.File != null && request.File.Length > 0 ? System.IO.Path.GetExtension(request.File.FileName) : "";
             return Article;
         }
 
@@ -62,6 +62,7 @@ namespace Kalabean.Domain.Mappers
             if (request.ImageEdited)
             {
                 Article.HasFile = request.File != null && request.File.Length > 0;
+                Article.FileExtention = request.File != null && request.File.Length > 0 ? System.IO.Path.GetExtension(request.File.FileName) : "";
             }
 
             return Article;
@@ -87,7 +88,9 @@ namespace Kalabean.Domain.Mappers
             if (Article.HasImage)
                 response.ImageUrl = $"/KL_ImagesRepo/Articles/{Article.Id}.jpeg";
             if (Article.HasFile)
-                response.ImageUrl = $"/KL_ImagesRepo/ArticleFiles/{Article.Id}";
+            {
+                response.FileUrl = $"/KL_ImagesRepo/Files/Articles/{Article.Id}{Article.FileExtention}";
+            }
             return response;
         }
 

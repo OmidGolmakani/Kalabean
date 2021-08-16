@@ -25,6 +25,7 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(a => a.Description).HasMaxLength(1000);
             builder.Property(a => a.HasImage);
             builder.Property(a => a.HasFile);
+            builder.Property(a => a.FileExtention).HasMaxLength(5);
             builder.Property(a => a.SuggestedContent);
             builder.Property(a => a.ShowInPortal);
             builder.Property(a => a.AdminId).IsRequired();

@@ -71,7 +71,8 @@ namespace Kalabean.API
                 AddFileProvider().
                 AddMappers().
                 AddServices().
-                AddMyIdentity();
+                AddMyIdentity().
+                GetConfigs(Configuration);
 
             services.AddControllers();
 

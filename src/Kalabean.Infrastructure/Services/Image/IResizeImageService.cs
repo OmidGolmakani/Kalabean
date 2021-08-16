@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Infrastructure.Services.Image
 {
-    public interface IResizeImageService
+    public interface IResizeImageService<T>
     {
-        Task<ImageResizeResponse> Resize(GetImageRequest request);
+        Task<ImageResizeResponse> Resize(GetImageRequest<T> request);
     }
 }

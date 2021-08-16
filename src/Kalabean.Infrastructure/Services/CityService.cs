@@ -10,6 +10,11 @@ using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
 using Kalabean.Infrastructure.Files;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Kalabean.Infrastructure.AppSettingConfigs.Images;
+using Kalabean.Infrastructure.Services.Image;
+using Kalabean.Domain.Requests.ResizeImage;
+using System.Drawing;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -18,15 +23,24 @@ namespace Kalabean.Infrastructure.Services
         private readonly ICityRepository _cityRepository;
         private readonly ICityMapper _cityMapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IResizeImageService<int> _resizeImageService;
         private readonly KalabeanFileProvider _fileProvider;
+
+        public List<ImageSize> ImageConfig { get; }
+
         public CityService(ICityRepository cityRepository,
-            ICityMapper cityMapper,
-            IUnitOfWork unitOfWork,
-            IFileAccessProvider fileProvider)
+                           ICityMapper cityMapper,
+                           IUnitOfWork unitOfWork,
+                           IFileAccessProvider fileProvider,
+                           IResizeImageService<long> imageService,
+                           IOptions<ImageSize> _ImageConfig,
+                           IResizeImageService<int> ResizeImageService)
         {
             _cityRepository = cityRepository;
             _cityMapper = cityMapper;
             _unitOfWork = unitOfWork;
+            _resizeImageService = ResizeImageService;
+            this.ImageConfig = _ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.City).ToList();
             _fileProvider = new KalabeanFileProvider(fileProvider);
         }
 
@@ -46,11 +60,33 @@ namespace Kalabean.Infrastructure.Services
             var item = _cityMapper.Map(request);
             item.HasImage = request.Image != null;
             var result = _cityRepository.Add(item);
+            Tuple<bool, string> ImgResult = null;
             if (await _unitOfWork.CommitAsync() > 0 &&
                 request.Image != null)
             {
                 using (var fileContent = request.Image.OpenReadStream())
-                    _fileProvider.SaveCityImage(fileContent, result.Id);
+                {
+                    ImgResult = _fileProvider.SaveCityImage(fileContent, result.Id);
+                }
+            }
+            foreach (var ImageResize in ImageConfig)
+            {
+                //Tuple<bool, string> ImgResult;
+                //using (var fileContent = request.Image.OpenReadStream())
+                //{
+                //    ImgResult = _fileProvider.SaveCityImageResize(fileContent, string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height), new Size(ImageResize.Width, ImageResize.Height), result.Id);
+                //}
+
+                if (ImgResult.Item1)
+                {
+                    await _resizeImageService.Resize(new GetImageRequest<int>()
+                    {
+                        Id = result.Id,
+                        ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                        ImageUrl = ImgResult.Item2,
+                        Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                    });
+                }
             }
             return await this.GetCityAsync(new GetCityRequest { Id = result.Id });
         }
@@ -62,15 +98,18 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _cityMapper.Map(request);
-            if (entity.HasImage || request.Image != null) {
-                if (request.ImageEdited) {
+            if (entity.HasImage || request.Image != null)
+            {
+                if (request.ImageEdited)
+                {
                     if (request.Image != null)
                     {
                         using (var fileContent = request.Image.OpenReadStream())
                             _fileProvider.SaveCityImage(fileContent, entity.Id);
                         entity.HasImage = true;
                     }
-                    else {
+                    else
+                    {
                         _fileProvider.DeleteCityImage(entity.Id);
                         entity.HasImage = false;
                     }

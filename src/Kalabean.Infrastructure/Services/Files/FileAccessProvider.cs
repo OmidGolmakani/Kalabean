@@ -14,7 +14,7 @@ namespace Kalabean.Infrastructure.Files
 {
     public class FileAccessProvider : PhysicalFileProvider, IFileAccessProvider
     {
-        protected string RootPath { get; }
+        public string RootPath { get; }
 
         IWebHostEnvironment _webHostEnvironment;
         public FileAccessProvider(IWebHostEnvironment webHostEnvironment) :

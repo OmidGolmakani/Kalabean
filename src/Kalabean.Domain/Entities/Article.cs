@@ -16,6 +16,7 @@ namespace Kalabean.Domain.Entities
         public string Description { get; set; }
         public bool HasImage { get; set; }
         public bool HasFile { get; set; }
+        public string FileExtention { get; set; }
         public bool SuggestedContent { get; set; }
         public bool ShowInPortal { get; set; }
         public long AdminId { get; set; }

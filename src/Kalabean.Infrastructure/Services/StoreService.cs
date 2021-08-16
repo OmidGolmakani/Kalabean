@@ -61,15 +61,18 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _storeMapper.Map(request);
-            if (entity.HasImage || request.Image != null) {
-                if (request.ImageEdited) {
+            if (entity.HasImage || request.Image != null)
+            {
+                if (request.ImageEdited)
+                {
                     if (request.Image != null)
                     {
                         using (var fileContent = request.Image.OpenReadStream())
                             _fileProvider.SaveStoreImage(fileContent, entity.Id);
                         entity.HasImage = true;
                     }
-                    else {
+                    else
+                    {
                         _fileProvider.DeleteStoreImage(entity.Id);
                         entity.HasImage = false;
                     }

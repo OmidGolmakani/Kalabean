@@ -9,6 +9,7 @@ using System;
 using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
 using Kalabean.Infrastructure.Files;
+using System.IO;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -46,14 +47,18 @@ namespace Kalabean.Infrastructure.Services
             var item = _ArticleMapper.Map(request);
             item.HasImage = request.Image != null;
             var result = _ArticleRepository.Add(item);
-            if (await _unitOfWork.CommitAsync() > 0 &&
+            var Commit = await _unitOfWork.CommitAsync();
+            if (Commit > 0 &&
                 request.Image != null)
             {
                 using (var fileContent = request.Image.OpenReadStream())
                     _fileProvider.SaveArticleImage(fileContent, result.Id);
-
+            }
+            if (Commit > 0 &&
+                request.File != null)
+            {
                 using (var fileContent = request.File.OpenReadStream())
-                    _fileProvider.SaveArticleFile(fileContent, result.Id,System.IO.Path.GetExtension(request.File.FileName));
+                    _fileProvider.SaveArticleFile(fileContent, result.Id, Path.GetExtension(request.File.FileName));
             }
             return await this.GetArticleAsync(new GetArticleRequest { Id = result.Id });
         }

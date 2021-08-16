@@ -16,7 +16,7 @@ namespace Kalabean.Domain.Responses
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public string FileUrl { get; set; }
-        public bool Suggestedcontent { get; set; }
+        public string FileExtention { get; set; }
         public bool ShowInPortal { get; set; }
         public bool SuggestedContent { get; set; }
         public ThumbResponse<long> AdminThumb { get; set; }

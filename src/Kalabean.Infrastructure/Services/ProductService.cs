@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System;
 using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
+using Kalabean.Infrastructure.Files;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -18,17 +19,21 @@ namespace Kalabean.Infrastructure.Services
         private readonly IProductMapper _ProductMapper;
         private readonly IProductImageMapper _ProductImageMapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly KalabeanFileProvider _fileProvider;
+
         public ProductService(IProductRepository ProductRepository,
                               IProductImageRepository ProductImageRepository,
                               IProductMapper ProductMapper,
                               IProductImageMapper ProductImageMapper,
-                              IUnitOfWork unitOfWork)
+                              IUnitOfWork unitOfWork,
+                              KalabeanFileProvider fileProvider)
         {
             _ProductRepository = ProductRepository;
             _ProductImageRepository = ProductImageRepository;
             _ProductMapper = ProductMapper;
             _ProductImageMapper = ProductImageMapper;
             _unitOfWork = unitOfWork;
+            _fileProvider = fileProvider;
         }
 
         public async Task<IEnumerable<ProductResponse>> GetProductsAsync()
@@ -46,7 +51,17 @@ namespace Kalabean.Infrastructure.Services
         {
             var item = _ProductMapper.Map(request);
             var result = _ProductRepository.Add(item);
-            await _unitOfWork.CommitAsync();
+
+            if (await _unitOfWork.CommitAsync() > 0 &&
+               request.Images.Count != 0)
+            {
+                foreach (var Image in request.Images)
+                {
+                    //using (var fileContent = Image.OpenReadStream())
+                        //_fileProvider.SaveCityImage(fileContent, Image);
+                }
+            }
+
 
             return _ProductMapper.Map(await _ProductRepository.GetById(result.Id));
         }

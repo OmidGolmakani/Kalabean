@@ -5,6 +5,7 @@ using Kalabean.Infrastructure.Files;
 using Kalabean.Infrastructure.Services;
 using Kalabean.Infrastructure.Services.Image;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kalabean.Infrastructure.Extensions
@@ -34,6 +35,7 @@ namespace Kalabean.Infrastructure.Extensions
 
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            services.AddScoped<KalabeanFileProvider, KalabeanFileProvider>();
             #region Data Servicees
             services
                     .AddScoped<ICityService, CityService>()
@@ -50,7 +52,7 @@ namespace Kalabean.Infrastructure.Extensions
                     .AddScoped<IArticleService, ArticleService>();
             #endregion Data Services
             #region Other Services
-            services.AddScoped<IResizeImageService, ResizeImageService>();
+            services.AddScoped(typeof(IResizeImageService<>), typeof(ResizeImageService<>));
             #endregion Other Servises
 
             return services;
@@ -80,6 +82,11 @@ namespace Kalabean.Infrastructure.Extensions
             .AddRoles<Kalabean.Domain.Entities.Role>()
             .AddDefaultTokenProviders();
             return services;
+        }
+        public static IServiceCollection GetConfigs(this IServiceCollection services,
+                                                    IConfiguration configuration)
+        {
+            return services.Configure<AppSettingConfigs.Images.ImageSize>(configuration.GetSection("ImagesConfig"));
         }
     }
 }

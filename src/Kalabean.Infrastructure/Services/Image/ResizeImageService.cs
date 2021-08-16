@@ -1,23 +1,33 @@
 ﻿using Kalabean.Domain.Requests.ResizeImage;
 using Kalabean.Domain.Responses;
+using Microsoft.AspNetCore.Hosting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Kalabean.Infrastructure.Services.Image
 {
-    public class ResizeImageService : IResizeImageService
+    public class ResizeImageService<T> : IResizeImageService<T>
     {
-        public Task<ImageResizeResponse> Resize(GetImageRequest request)
+        private readonly IWebHostEnvironment env;
+
+        public ResizeImageService(IWebHostEnvironment env)
+        {
+            this.env = env;
+        }
+
+        public Task<ImageResizeResponse> Resize(GetImageRequest<T> request)
         {
 
-            if (request == null || request.Image == null) return null;
-            if (request.Image == null || request.ImageSize == null) return null;
-            var Img = System.Drawing.Image.FromStream(request.Image.OpenReadStream());
+            if (request == null || request.ImageUrl == null) return null;
+            if (request.ImageUrl == null || request.ImageSize == null) return null;
+            request.ImageUrl = System.IO.Path.Combine(env.ContentRootPath, request.ImageUrl);
+            var Img = System.Drawing.Image.FromFile(request.ImageUrl);
             if (Img.Width > Img.Height)
             {
                 var w = Img.Width / request.ImageSize.Width;
@@ -36,13 +46,22 @@ namespace Kalabean.Infrastructure.Services.Image
                     Height = h
                 };
             }
-            using var image = SixLabors.ImageSharp.Image.Load(request.Image.OpenReadStream());
-            image.Mutate(x => x.Resize(request.ImageSize.Width, request.ImageSize.Height));
-            image.Save(request.Image.FileName);
+            var OldFile = request.ImageUrl;
+            var FileDir = System.IO.Path.GetDirectoryName(request.ImageUrl);
+            var NewFile = System.IO.Path.GetFileName(request.ImageUrl);
+            using var image = SixLabors.ImageSharp.Image.Load(request.ImageUrl);
+            {
+                image.Mutate(x => x.Resize(request.ImageSize.Width, request.ImageSize.Height));
+                if (Directory.Exists(Path.Combine(FileDir, request.Folder)) == false)
+                {
+                    Directory.CreateDirectory(Path.Combine(FileDir, request.Folder));
+                }
+                image.Save(System.IO.Path.Combine(FileDir, request.Folder, NewFile));
+            }
             return Task.FromResult(new ImageResizeResponse()
             {
-                FullPath = System.IO.Path.GetFullPath(request.Image.FileName),
-                FileName = request.Image.FileName,
+                FullPath = System.IO.Path.GetFullPath(request.ImageUrl),
+                FileName = request.ImageUrl,
                 Size = request.ImageSize
             });
         }

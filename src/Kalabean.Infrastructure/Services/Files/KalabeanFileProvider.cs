@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Kalabean.Domain.Requests.ResizeImage;
+using Kalabean.Infrastructure.Services.Image;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.FileProviders;
+using System;
+using System.Drawing;
 using System.IO;
 
 namespace Kalabean.Infrastructure.Files
@@ -11,15 +15,19 @@ namespace Kalabean.Infrastructure.Files
         private const string Types_Sub_Directory = "Sh_C_Types";
         private const string Shoppings_Sub_Directory = "Sh_C";
         private const string Stores_Sub_Directory = "Stores";
+        private const string Products_Sub_Directory = "Products";
         private const string Articles_Sub_Directory = "Articles";
+        private const string File_Base_Path = @"KL_ImagesRepo\Files";
 
 
-        IFileAccessProvider _fileProvider;
+        private IFileAccessProvider _fileProvider;
+        private IResizeImageService<long> _imageService;
+
         public KalabeanFileProvider(IFileAccessProvider fileProvider)
         {
             _fileProvider = fileProvider;
         }
-        public bool SaveCityImage(Stream stream, int cityId)
+        public Tuple<bool, string> SaveCityImage(Stream stream, int cityId)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Cities_Sub_Directory);
             if (!_fileProvider.DirectoryExists(path))
@@ -27,7 +35,23 @@ namespace Kalabean.Infrastructure.Files
             // TODO: What about other extensions like jpg and so on.
             string filePath = _fileProvider.Combine(path, $"{cityId}.jpeg");
             saveStreamAsFile(filePath, stream);
-            return true;
+            return new Tuple<bool, string>(true, filePath);
+        }
+        public Tuple<bool, string> SaveCityImageResize(Stream stream, string ResizeFolder, Size ImageSize, int cityId)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Cities_Sub_Directory, ResizeFolder);
+            if (!_fileProvider.DirectoryExists(path))
+                _fileProvider.CreateDirectory(path);
+            // TODO: What about other extensions like jpg and so on.
+            string filePath = _fileProvider.Combine(path, $"{cityId}.jpeg");
+            saveStreamAsFile(filePath, stream);
+            //_imageService.Resize(new GetImageRequest<long>()
+            //{
+            //    ImageUrl = filePath,
+            //    Id = cityId,
+            //    ImageSize = ImageSize
+            //});
+            return new Tuple<bool, string>(true, filePath);
         }
 
         public bool DeleteCityImage(int cityId)
@@ -124,9 +148,27 @@ namespace Kalabean.Infrastructure.Files
                 _fileProvider.DeleteFile(filePath);
             return true;
         }
+        public bool SaveProductImage(Stream stream, long id)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Products_Sub_Directory);
+            if (!_fileProvider.DirectoryExists(path))
+                _fileProvider.CreateDirectory(path);
+            // TODO: What about other extensions like jpg and so on.
+            string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
+            saveStreamAsFile(filePath, stream);
+            return true;
+        }
+        public bool DeleteProductImage(int id)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Products_Sub_Directory);
+            string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
+            if (File.Exists(filePath))
+                _fileProvider.DeleteFile(filePath);
+            return true;
+        }
         public bool SaveArticleFile(Stream stream, long id, string extention)
         {
-            string path = _fileProvider.Combine(Image_Base_Path, Articles_Sub_Directory);
+            string path = _fileProvider.Combine(File_Base_Path, Articles_Sub_Directory);
             if (!_fileProvider.DirectoryExists(path))
                 _fileProvider.CreateDirectory(path);
             // TODO: What about other extensions like jpg and so on.
@@ -136,7 +178,7 @@ namespace Kalabean.Infrastructure.Files
         }
         public bool DeleteArticleFile(int id, string extention)
         {
-            string path = _fileProvider.Combine(Image_Base_Path, Articles_Sub_Directory);
+            string path = _fileProvider.Combine(File_Base_Path, Articles_Sub_Directory);
             string filePath = _fileProvider.Combine(path, $"{id}{extention}");
             if (File.Exists(filePath))
                 _fileProvider.DeleteFile(filePath);
