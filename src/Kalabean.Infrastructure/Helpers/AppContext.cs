@@ -11,9 +11,9 @@ namespace Kalabean.Infrastructure.Helpers
     {
         private static HttpContext _context;
 
-        public static void Configure(HttpContext context)
+        public static void Configure()
         {
-            _context = context;
+            //_context = new HttpContextAccessor().HttpContext;
         }
 
         public static HttpContext Current => _context;

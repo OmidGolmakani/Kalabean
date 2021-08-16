@@ -21,8 +21,6 @@ namespace Kalabean.Domain.Requests.Article
         public bool FileEdited { get; set; }
         public bool ShowInPortal { get; set; }
         public bool SuggestedContent { get; set; }
-        [JsonIgnore]
-        public long AdminId { get; set; }
 
     }
 }

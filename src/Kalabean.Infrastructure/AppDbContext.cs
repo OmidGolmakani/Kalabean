@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Kalabean.Domain.Entities;
 using Kalabean.Infrastructure.Extensions.SchemaDefinitions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace Kalabean.Infrastructure
 {
@@ -15,7 +16,11 @@ namespace Kalabean.Infrastructure
                                                   RoleClaim,
                                                   UserToken>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options,IHttpContextAccessor httpContext) : base(options)
+        {
+
+            Helpers.JWTTokenManager.HttpContext = httpContext.HttpContext;
+        }
         //public DbSet<Category> Categories{ get; set; }
         //public DbSet<Article> Articles { get; set; }
         public DbSet<City> Cities { get; set; }

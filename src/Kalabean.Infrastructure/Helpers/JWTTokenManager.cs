@@ -1,5 +1,6 @@
 ﻿using Kalabean.Domain.Entities;
 using Kalabean.Domain.Responses;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +25,7 @@ namespace Kalabean.Infrastructure.Helpers
                 return authorizationOption;
             }
         }
+        public static HttpContext HttpContext { get; set; }
         public static string GeneratePermissionToken(RolePermission Permission)
         {
 
@@ -207,9 +209,9 @@ namespace Kalabean.Infrastructure.Helpers
             {
                 if (token == "")
                 {
-                    token = MyAppContext.Current.Request.Headers
+                    token = HttpContext.Request.Headers
                         .FirstOrDefault(x => x.Key == "Authorization").Value.
-                        ToString().Replace("Bearer", "");
+                        ToString().Replace("Bearer", "").Trim();
                 }
                 ClaimsPrincipal principal = GetPrincipal(token);
                 if (principal == null)

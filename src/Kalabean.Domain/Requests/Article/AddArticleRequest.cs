@@ -18,7 +18,5 @@ namespace Kalabean.Domain.Requests.Article
         public IFormFile File { get; set; }
         public bool ShowInPortal { get; set; }
         public bool SuggestedContent { get; set; }
-        [JsonIgnore]
-        public long AdminId { get; set; }
     }
 }

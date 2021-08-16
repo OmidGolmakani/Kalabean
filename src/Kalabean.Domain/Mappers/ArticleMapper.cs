@@ -27,8 +27,7 @@ namespace Kalabean.Domain.Mappers
                 KeyWords = request.KeyWords,
                 ShowInPortal = request.ShowInPortal,
                 SuggestedContent = request.SuggestedContent,
-                Summary = request.Summary,
-                AdminId = request.AdminId
+                Summary = request.Summary
             };
 
             Article.HasImage = request.Image != null && request.Image.Length > 0;
@@ -51,8 +50,7 @@ namespace Kalabean.Domain.Mappers
                 KeyWords = request.KeyWords,
                 ShowInPortal = request.ShowInPortal,
                 SuggestedContent = request.SuggestedContent,
-                Summary = request.Summary,
-                AdminId = request.AdminId
+                Summary = request.Summary
             };
 
             if (request.ImageEdited)

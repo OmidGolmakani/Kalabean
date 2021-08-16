@@ -55,8 +55,8 @@ namespace Kalabean.Infrastructure.Services
         }
         public async Task<ArticleResponse> AddArticleAsync(AddArticleRequest request)
         {
-            request.AdminId = Helpers.JWTTokenManager.GetUserIdByToken();
             var item = _ArticleMapper.Map(request);
+            item.AdminId = Helpers.JWTTokenManager.GetUserIdByToken();
             item.HasImage = request.Image != null;
             var result = _ArticleRepository.Add(item);
             Tuple<bool, string> imgResult = null;
@@ -97,6 +97,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _ArticleMapper.Map(request);
+            entity.AdminId = Helpers.JWTTokenManager.GetUserIdByToken();
             if (entity.HasImage || request.Image != null)
             {
                 if (request.ImageEdited)

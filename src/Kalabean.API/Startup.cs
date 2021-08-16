@@ -36,7 +36,9 @@ namespace Kalabean.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            MyAppContext.Configure();
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<AppDbContext>(options =>
                 {
@@ -110,9 +112,8 @@ namespace Kalabean.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IHttpContextAccessor context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            MyAppContext.Configure(context.HttpContext);
             if (env.IsDevelopment())
             {
             }
