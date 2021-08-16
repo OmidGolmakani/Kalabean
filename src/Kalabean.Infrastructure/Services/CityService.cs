@@ -71,11 +71,6 @@ namespace Kalabean.Infrastructure.Services
             }
             foreach (var ImageResize in ImageConfig)
             {
-                //Tuple<bool, string> ImgResult;
-                //using (var fileContent = request.Image.OpenReadStream())
-                //{
-                //    ImgResult = _fileProvider.SaveCityImageResize(fileContent, string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height), new Size(ImageResize.Width, ImageResize.Height), result.Id);
-                //}
 
                 if (ImgResult.Item1)
                 {
@@ -102,11 +97,27 @@ namespace Kalabean.Infrastructure.Services
             {
                 if (request.ImageEdited)
                 {
+                    Tuple<bool, string> ImgResult = null;
                     if (request.Image != null)
                     {
                         using (var fileContent = request.Image.OpenReadStream())
                             _fileProvider.SaveCityImage(fileContent, entity.Id);
                         entity.HasImage = true;
+
+                        foreach (var ImageResize in ImageConfig)
+                        {
+
+                            if (ImgResult.Item1)
+                            {
+                                await _resizeImageService.Resize(new GetImageRequest<int>()
+                                {
+                                    Id = existingRecord.Id,
+                                    ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                                    ImageUrl = ImgResult.Item2,
+                                    Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                                });
+                            }
+                        }
                     }
                     else
                     {
