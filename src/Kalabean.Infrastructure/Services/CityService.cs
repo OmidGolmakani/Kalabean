@@ -26,21 +26,21 @@ namespace Kalabean.Infrastructure.Services
         private readonly IResizeImageService<int> _resizeImageService;
         private readonly KalabeanFileProvider _fileProvider;
 
-        public List<ImageSize> ImageConfig { get; }
+        private readonly List<ImageSize> _imageConfig;
 
         public CityService(ICityRepository cityRepository,
                            ICityMapper cityMapper,
                            IUnitOfWork unitOfWork,
                            IFileAccessProvider fileProvider,
                            IResizeImageService<long> imageService,
-                           IOptions<ImageSize> _ImageConfig,
+                           IOptions<ImageSize> ImageConfig,
                            IResizeImageService<int> ResizeImageService)
         {
             _cityRepository = cityRepository;
             _cityMapper = cityMapper;
             _unitOfWork = unitOfWork;
             _resizeImageService = ResizeImageService;
-            this.ImageConfig = _ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.City).ToList();
+            _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.City).ToList();
             _fileProvider = new KalabeanFileProvider(fileProvider);
         }
 
@@ -69,7 +69,7 @@ namespace Kalabean.Infrastructure.Services
                     ImgResult = _fileProvider.SaveCityImage(fileContent, result.Id);
                 }
             }
-            foreach (var ImageResize in ImageConfig)
+            foreach (var ImageResize in _imageConfig)
             {
 
                 if (ImgResult.Item1)
@@ -104,7 +104,7 @@ namespace Kalabean.Infrastructure.Services
                             _fileProvider.SaveCityImage(fileContent, entity.Id);
                         entity.HasImage = true;
 
-                        foreach (var ImageResize in ImageConfig)
+                        foreach (var ImageResize in _imageConfig)
                         {
 
                             if (ImgResult.Item1)

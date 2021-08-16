@@ -29,7 +29,7 @@ namespace Kalabean.Infrastructure.Repositories
         public async Task<IQueryable<Article>> Get(GetArticlesRequest request, bool includeDeleted = false)
         {
             var q = this
-                 .List(p => (includeDeleted || !p.IsDeleted) && 
+                 .List(p => (includeDeleted || !p.IsDeleted) &&
                  (string.IsNullOrEmpty(request.Name) || p.Name.Contains(request.Name)))
                  .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                  .Include(a => a.AdminUser);

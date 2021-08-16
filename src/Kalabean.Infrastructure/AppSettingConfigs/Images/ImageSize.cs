@@ -13,5 +13,5 @@ namespace Kalabean.Infrastructure.AppSettingConfigs.Images
         public int Height { get; set; }
         public List<ImageSize> ImageSizes { get; set; }
     }
-    public enum ImageType { City = 1, Product = 2 }
+    public enum ImageType { City = 1, Product = 2, Article = 3 }
 }

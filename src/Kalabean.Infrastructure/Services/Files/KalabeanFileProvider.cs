@@ -130,7 +130,7 @@ namespace Kalabean.Infrastructure.Files
                 fileStream.CopyTo(outputFileStream);
             }
         }
-        public bool SaveArticleImage(Stream stream, long id)
+        public Tuple<bool, string> SaveArticleImage(Stream stream, long id)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Articles_Sub_Directory);
             if (!_fileProvider.DirectoryExists(path))
@@ -138,9 +138,9 @@ namespace Kalabean.Infrastructure.Files
             // TODO: What about other extensions like jpg and so on.
             string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
             saveStreamAsFile(filePath, stream);
-            return true;
+            return new Tuple<bool, string>(true, filePath);
         }
-        public bool DeleteArticleImage(int id)
+        public bool DeleteArticleImage(long id)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Articles_Sub_Directory);
             string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
@@ -176,7 +176,7 @@ namespace Kalabean.Infrastructure.Files
             saveStreamAsFile(filePath, stream);
             return true;
         }
-        public bool DeleteArticleFile(int id, string extention)
+        public bool DeleteArticleFile(long id, string extention)
         {
             string path = _fileProvider.Combine(File_Base_Path, Articles_Sub_Directory);
             string filePath = _fileProvider.Combine(path, $"{id}{extention}");

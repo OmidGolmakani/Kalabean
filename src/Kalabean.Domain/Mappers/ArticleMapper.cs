@@ -59,7 +59,7 @@ namespace Kalabean.Domain.Mappers
             {
                 Article.HasImage = request.Image != null && request.Image.Length > 0;
             }
-            if (request.ImageEdited)
+            if (request.FileEdited)
             {
                 Article.HasFile = request.File != null && request.File.Length > 0;
                 Article.FileExtention = request.File != null && request.File.Length > 0 ? System.IO.Path.GetExtension(request.File.FileName) : "";
