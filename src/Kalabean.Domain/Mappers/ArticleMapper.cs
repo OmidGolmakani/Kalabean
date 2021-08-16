@@ -84,7 +84,7 @@ namespace Kalabean.Domain.Mappers
 
             };
             if (Article.HasImage)
-                response.ImageUrl = $"/KL_ImagesRepo/Articles/{Article.Id}.jpeg";
+                response.ImageUrl = $"/KL_ImagesRepo/Articles/250_250/{Article.Id}.jpeg";
             if (Article.HasFile)
             {
                 response.FileUrl = $"/KL_ImagesRepo/Files/Articles/{Article.Id}{Article.FileExtention}";

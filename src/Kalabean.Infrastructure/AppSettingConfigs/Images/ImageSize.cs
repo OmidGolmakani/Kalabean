@@ -14,5 +14,14 @@ namespace Kalabean.Infrastructure.AppSettingConfigs.Images
         public bool HasImage { get; set; }
         public List<ImageSize> ImageSizes { get; set; }
     }
-    public enum ImageType { City = 1, Product = 2, Article = 3 }
+    public enum ImageType
+    {
+        City = 1,
+        Product = 2,
+        Article = 3,
+        ShoppingCenter = 4,
+        ShoppingCenterTypes = 5,
+        Requirement = 6,
+        Order = 7
+    }
 }

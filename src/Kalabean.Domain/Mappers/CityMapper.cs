@@ -58,7 +58,7 @@ namespace Kalabean.Domain.Mappers
                 ImageUrl = null
             };
             if (city.HasImage)
-                response.ImageUrl = $"/KL_ImagesRepo/Cities/{city.Id}.jpeg";
+                response.ImageUrl = $"/KL_ImagesRepo/Cities/250_250/{city.Id}.jpeg";
             return response;
         }
 

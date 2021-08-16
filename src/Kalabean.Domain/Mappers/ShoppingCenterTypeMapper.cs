@@ -62,7 +62,7 @@ namespace Kalabean.Domain.Mappers
                 ImageUrl = null
             };
             if (type.HasImage)
-                response.ImageUrl = $"/KL_ImagesRepo/Sh_C_Types/{type.Id}.jpeg";
+                response.ImageUrl = $"/KL_ImagesRepo/Sh_C_Types/250_250/{type.Id}.jpeg";
             return response;
         }
 

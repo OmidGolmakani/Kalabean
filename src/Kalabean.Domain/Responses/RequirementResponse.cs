@@ -16,7 +16,7 @@ namespace Kalabean.Domain.Responses
         public byte TypePricing { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
-        public bool HasImage { get; set; }
+        public string ImageUrl { get; set; }
         public long? AdminId { get; set; }
         public DateTime? AdminDate { get; set; }
         public ThumbResponse<long> ProductThumb { get; set; }

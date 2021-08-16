@@ -111,7 +111,7 @@ namespace Kalabean.Domain.Mappers
                 TypeThumb = _typeMapper.MapThump(shoppingCenter.Type)
             };
             if (shoppingCenter.HasImage)
-                response.ImageUrl = $"/KL_ImagesRepo/Sh_C/{shoppingCenter.Id}.jpeg";
+                response.ImageUrl = $"/KL_ImagesRepo/Sh_C/250_250/{shoppingCenter.Id}.jpeg";
             if (shoppingCenter.ShoppingCenterServices != null)
             {
                 string[] services = shoppingCenter.ShoppingCenterServices.Split(SERVICES_SEPARATOR);

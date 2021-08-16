@@ -15,7 +15,7 @@ namespace Kalabean.Domain.Responses
         public string PaymenyLink { get; set; }
         public string Description { get; set; }
         public byte OrderStatus { get; set; }
-        public bool HasImage { get; set; }
+        public string ImageUrl { get; set; }
         public ThumbResponse<int> StoreThumb { get; set; }
         public ICollection<OrderDetailResponse> OrderDetails { get; set; }
     }

@@ -123,7 +123,7 @@ namespace Kalabean.Domain.Mappers
                 Lng = store.Lng
             };
             if (store.HasImage)
-                response.ImageUrl = $"/KL_ImagesRepo/Stores/{store.Id}.jpeg";
+                response.ImageUrl = $"/KL_ImagesRepo/Stores/250_250/{store.Id}.jpeg";
             return response;
         }
 

@@ -28,24 +28,6 @@ namespace Kalabean.Infrastructure.Services.Image
             if (request.ImageUrl == null || request.ImageSize == null) return null;
             request.ImageUrl = System.IO.Path.Combine(env.ContentRootPath, request.ImageUrl);
             var Img = System.Drawing.Image.FromFile(request.ImageUrl);
-            //if (Img.Width > Img.Height)
-            //{
-            //    var w = Img.Width / request.ImageSize.Width;
-            //    request.ImageSize = new System.Drawing.Size()
-            //    {
-            //        Width = w,
-            //        Height = Img.Height / w
-            //    };
-            //}
-            //else if (Img.Height > Img.Width)
-            //{
-            //    var h = Img.Height / request.ImageSize.Height;
-            //    request.ImageSize = new System.Drawing.Size()
-            //    {
-            //        Width = Img.Height / h,
-            //        Height = h
-            //    };
-            //}
             if (Img.Width > Img.Height)
             {
                 request.ImageSize = new System.Drawing.Size(request.ImageSize.Width, 0);
