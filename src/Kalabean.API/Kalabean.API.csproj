@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Kalabean.Infrastructure\Kalabean.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="KL_ImagesRepo\Files\Articles\" />
+  </ItemGroup>
+
 </Project>
