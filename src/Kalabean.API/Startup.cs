@@ -18,6 +18,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Kalabean.Infrastructure.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Kalabean.API
 {
@@ -34,7 +36,7 @@ namespace Kalabean.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<AppDbContext>(options =>
                 {
@@ -108,8 +110,9 @@ namespace Kalabean.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IHttpContextAccessor context)
         {
+            MyAppContext.Configure(context.HttpContext);
             if (env.IsDevelopment())
             {
             }

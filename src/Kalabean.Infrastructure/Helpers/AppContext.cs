@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Infrastructure.Helpers
 {
-    internal static class AppContext
+    public static class MyAppContext
     {
-        private static IHttpContextAccessor _httpContextAccessor;
+        private static HttpContext _context;
 
-        internal static void Configure(IHttpContextAccessor httpContextAccessor)
+        public static void Configure(HttpContext context)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _context = context;
         }
 
-        internal static HttpContext Current => _httpContextAccessor.HttpContext;
+        public static HttpContext Current => _context;
     }
 }
