@@ -27,11 +27,11 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this
                 .List(c => (includeDeleted || !c.IsDeleted) &&
-                (string.IsNullOrEmpty(request.Name) || c.Name.Contains(request.Name)) &&
-                (request.CityId == null || c.CityId == request.CityId) &&
-                (request.TypeId == null || c.CityId == request.TypeId) &&
-                (request.IsEnabled==null || c.IsEnabled == request.IsEnabled)
-                )
+                (string.IsNullOrEmpty(request.Name) || 
+                (!string.IsNullOrEmpty(c.Name) && c.Name.Contains(request.Name))) &&
+                (!request.CityId.HasValue || c.CityId == request.CityId) &&
+                (!request.TypeId.HasValue || c.TypeId == request.TypeId) &&
+                (!request.IsEnabled.HasValue || c.IsEnabled == request.IsEnabled))
                  .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(c => c.Type)
                 .Include(c => c.City);
@@ -41,10 +41,11 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this
                 .List(c => (includeDeleted || !c.IsDeleted) &&
-                (string.IsNullOrEmpty(request.Name) || c.Name.Contains(request.Name)) &&
-                (request.CityId == null || c.CityId == request.CityId) &&
-                (request.TypeId == null || c.CityId == request.TypeId) &&
-                (request.IsEnabled == null || c.IsEnabled == request.IsEnabled)).Count();
+                (string.IsNullOrEmpty(request.Name) ||
+                (!string.IsNullOrEmpty(c.Name) && c.Name.Contains(request.Name))) &&
+                (!request.CityId.HasValue || c.CityId == request.CityId) &&
+                (!request.TypeId.HasValue || c.TypeId == request.TypeId) &&
+                (!request.IsEnabled.HasValue || c.IsEnabled == request.IsEnabled)).Count();
         }
     }
 }

@@ -92,6 +92,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _cityMapper.Map(request);
+            entity.HasImage = entity.HasImage || (!request.ImageEdited && existingRecord.HasImage);
             if (entity.HasImage || request.Image != null)
             {
                 if (request.ImageEdited)

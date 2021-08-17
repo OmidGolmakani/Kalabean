@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Kalabean.Domain.Requests.Category
 {
-    public class GetCategoryRequest
+    public class GetCategoriesRequest
     {
-        public int Id { get; set; }
+        public string Name { get; set; }
+        public int? ParentId { get; set; }
     }
 }

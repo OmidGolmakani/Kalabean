@@ -7,7 +7,7 @@ namespace Kalabean.Domain.Services
 {
     public interface IArticleService
     {
-        Task<ListPageingResponse<ArticleResponse>> GetArticlesAsync(GetArticlesRequest request);
+        Task<ListPagingResponse<ArticleResponse>> GetArticlesAsync(GetArticlesRequest request);
         Task<ArticleResponse> GetArticleAsync(GetArticleRequest request);
         Task<ArticleResponse> AddArticleAsync(AddArticleRequest request);
         Task<ArticleResponse> EditArticleAsync(EditArticleRequest request);

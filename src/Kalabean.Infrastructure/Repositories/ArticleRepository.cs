@@ -22,7 +22,8 @@ namespace Kalabean.Infrastructure.Repositories
         {
             var Count = this
                  .List(p => (includeDeleted || !p.IsDeleted) &&
-                 (string.IsNullOrEmpty(request.Name) || p.Name.Contains(request.Name))).Count();
+                 (string.IsNullOrEmpty(request.Name) || ( !string.IsNullOrEmpty(p.Name)
+                 && p.Name.Contains(request.Name)))).Count();
             return Count;
         }
 
@@ -30,7 +31,8 @@ namespace Kalabean.Infrastructure.Repositories
         {
             var q = this
                  .List(p => (includeDeleted || !p.IsDeleted) &&
-                 (string.IsNullOrEmpty(request.Name) || p.Name.Contains(request.Name)))
+                 (string.IsNullOrEmpty(request.Name) || (!string.IsNullOrEmpty(p.Name)
+                 && p.Name.Contains(request.Name))))
                  .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                  .Include(a => a.AdminUser);
             return q;

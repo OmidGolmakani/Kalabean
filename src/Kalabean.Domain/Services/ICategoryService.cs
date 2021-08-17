@@ -7,7 +7,7 @@ namespace Kalabean.Domain.Services
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<CategoryResponse>> GetCategoriesAsync();
+        Task<IEnumerable<CategoryResponse>> GetCategoriesAsync(GetCategoriesRequest request);
         Task<CategoryResponse> GetCategoryAsync(GetCategoryRequest request);
         Task<CategoryResponse> AddCategoryAsync(AddCategoryRequest request);
         Task<CategoryResponse> EditCategoryAsync(EditCategoryRequest request);
