@@ -8,7 +8,6 @@ namespace Kalabean.Domain.Requests.OrderDetail
 {
     public class AddOrderDetailRequest
     {
-        public long OrderId { get; set; }
         public int ProductId { get; set; }
         public int Num { get; set; }
         public int Price { get; set; }

@@ -29,8 +29,8 @@ namespace Kalabean.Domain.Mappers
             {
                 CategoryId = request.CategoryId,
                 Creator = request.Creator,
-                DateArchive = request.DateArchive,
-                DatePublish = request.DatePublish,
+                DateArchive = (Helper.PersionDate.GetMiladi(request.DateArchive) ?? DateTime.Now),
+                DatePublish = (Helper.PersionDate.GetMiladi(request.DatePublish) ?? DateTime.Now),
                 Discount = request.Discount,
                 IsDeleted = false,
                 Num = request.Num,
@@ -47,17 +47,20 @@ namespace Kalabean.Domain.Mappers
                 Series = request.Series,
                 Id = 0
             };
-            foreach (var pi in request.Images)
+            if (request.Images != null)
             {
-                var _pi = new ProductImage()
+                foreach (var pi in request.Images)
                 {
-                    Product = response,
-                    Id = 0,
-                    IsDeleted = false,
-                    ProductId = 0,
-                    Extention = System.IO.Path.GetExtension(pi.FileName)
-                };
-                response.ProductImages.Add(_pi);
+                    var _pi = new ProductImage()
+                    {
+                        Product = response,
+                        Id = 0,
+                        IsDeleted = false,
+                        ProductId = 0,
+                        Extention = System.IO.Path.GetExtension(pi.FileName)
+                    };
+                    response.ProductImages.Add(_pi);
+                }
             }
             return response;
         }
@@ -69,8 +72,8 @@ namespace Kalabean.Domain.Mappers
             {
                 CategoryId = request.CategoryId,
                 Creator = request.Creator,
-                DateArchive = request.DateArchive,
-                DatePublish = request.DatePublish,
+                DateArchive = (Helper.PersionDate.GetMiladi(request.DateArchive) ?? DateTime.Now),
+                DatePublish = (Helper.PersionDate.GetMiladi(request.DatePublish) ?? DateTime.Now),
                 Discount = request.Discount,
                 IsDeleted = false,
                 Num = request.Num,
@@ -97,8 +100,8 @@ namespace Kalabean.Domain.Mappers
             {
                 CategoryId = request.CategoryId,
                 Creator = request.Creator,
-                DateArchive = request.DateArchive,
-                DatePublish = request.DatePublish,
+                DateArchive = Helper.PersionDate.GetShamsi(request.DateArchive),
+                DatePublish = Helper.PersionDate.GetShamsi(request.DatePublish),
                 Discount = request.Discount,
                 Num = request.Num,
                 Order = request.Order,

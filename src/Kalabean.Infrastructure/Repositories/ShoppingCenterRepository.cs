@@ -36,5 +36,15 @@ namespace Kalabean.Infrastructure.Repositories
                 .Include(c => c.Type)
                 .Include(c => c.City);
         }
+
+        public async Task<long> Count(GetShopingCentersRequest request, bool includeDeleted = false)
+        {
+            return this
+                .List(c => (includeDeleted || !c.IsDeleted) &&
+                (string.IsNullOrEmpty(request.Name) || c.Name.Contains(request.Name)) &&
+                (request.CityId == null || c.CityId == request.CityId) &&
+                (request.TypeId == null || c.CityId == request.TypeId) &&
+                (request.IsEnabled == null || c.IsEnabled == request.IsEnabled)).Count();
+        }
     }
 }

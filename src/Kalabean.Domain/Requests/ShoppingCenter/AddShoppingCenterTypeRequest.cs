@@ -10,6 +10,5 @@ namespace Kalabean.Domain.Requests.ShoppingCenter
         public string HtmlContent { get; set; }
         public byte? Order { get; set; }
         public IFormFile Image{ get; set; }
-        public Guid? AccessRuleId { get; set; }
     }
 }

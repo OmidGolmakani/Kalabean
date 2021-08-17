@@ -11,13 +11,10 @@ namespace Kalabean.Domain.Mappers
 {
     public class OrderDetailMapper : IOrderDetailMapper
     {
-        private readonly IOrderHeaderMapper _order;
         private readonly IProductMapper _product;
-
-        public OrderDetailMapper(IOrderHeaderMapper order,
-                                IProductMapper product)
+        
+        public OrderDetailMapper(IProductMapper product)
         {
-            this._order = order;
             this._product = product;
         }
 
@@ -29,7 +26,6 @@ namespace Kalabean.Domain.Mappers
                 Id = 0,
                 IsDeleted = false,
                 Num = request.Num,
-                OrderId = request.OrderId,
                 Price = request.Price,
                 ProductId = request.ProductId
             };
@@ -59,7 +55,7 @@ namespace Kalabean.Domain.Mappers
                 OrderId = request.OrderId,
                 Price = request.Price,
                 ProductId = request.ProductId,
-                OrderHeader = _order.Map(request.OrderHeader),
+                ThumbOrder = null,
                 ProductThumb = _product.MapThumb(request.Product)
             };
         }

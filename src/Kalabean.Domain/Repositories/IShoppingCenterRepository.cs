@@ -10,5 +10,6 @@ namespace Kalabean.Domain.Repositories
     {
         Task<ShoppingCenter> GetById (int id, bool includeDeleted = false);
         Task<IQueryable<ShoppingCenter>> Get(GetShopingCentersRequest request,bool includeDeleted = false);
+        Task<long> Count(GetShopingCentersRequest request, bool includeDeleted = false);
     }
 }

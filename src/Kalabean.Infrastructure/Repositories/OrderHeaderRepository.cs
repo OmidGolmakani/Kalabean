@@ -1,5 +1,6 @@
 ﻿using Kalabean.Domain.Entities;
 using Kalabean.Domain.Repositories;
+using Kalabean.Domain.Requests.OrderHeader;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,23 @@ namespace Kalabean.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IQueryable<OrderHeader>> Get(bool includeDeleted = false)
+        public async Task<IQueryable<OrderHeader>> Get(GetOrdersRequest request, bool includeDeleted = false)
         {
             return this
-                .List(p => includeDeleted || !p.IsDeleted)
+                .List(
+                p => (includeDeleted || !p.IsDeleted) &&
+                (request.StoreId == null || p.StoreId == request.StoreId) &&
+                (request.ProductId == null || p.OrderDetails.Any(d => d.ProductId == request.ProductId)))
                 .Include(pi => pi.Store)
                 .Include(p => p.OrderDetails);
+        }
+
+        public async Task<long> Count(GetOrdersRequest request, bool includeDeleted = false)
+        {
+            return this.List(
+                p => (includeDeleted || !p.IsDeleted) &&
+                (request.StoreId == null || p.StoreId == request.StoreId) &&
+                (request.ProductId == null || p.OrderDetails.Any(d => d.ProductId == request.ProductId))).Count();
         }
     }
 }

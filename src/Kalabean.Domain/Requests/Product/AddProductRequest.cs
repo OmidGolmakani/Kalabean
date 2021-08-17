@@ -17,9 +17,8 @@ namespace Kalabean.Domain.Requests.Product
         public decimal Price { get; set; }
         public Nullable<decimal> Discount { get; set; }
         public string Creator { get; set; }
-        public Guid? AccessRuleId { get; set; }
-        public DateTime DatePublish { get; set; }
-        public DateTime DateArchive { get; set; }
+        public string DatePublish { get; set; }
+        public string DateArchive { get; set; }
         public string Model { get; set; }
         public string Series { get; set; }
         public string LinkProduct { get; set; }

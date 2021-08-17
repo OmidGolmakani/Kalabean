@@ -53,7 +53,7 @@ namespace Kalabean.Infrastructure.Services
             var result = _ProductRepository.Add(item);
 
             if (await _unitOfWork.CommitAsync() > 0 &&
-               request.Images.Count != 0)
+               request.Images!=null && request.Images.Count != 0)
             {
                 foreach (var Image in request.Images)
                 {
