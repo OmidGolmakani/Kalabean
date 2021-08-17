@@ -8,7 +8,6 @@ namespace Kalabean.Domain.Requests.Store
     public class AddStoreRequest
     {
         public string Name { get; set; }
-        public int TypeId { get; set; }
         public int ShoppingCenterId { get; set; }
         public int CategoryId { get; set; }
         public int? FloorId { get; set; }
@@ -17,6 +16,7 @@ namespace Kalabean.Domain.Requests.Store
         public float DiscountPercentage { get; set; }
         public decimal DiscountCoupon { get; set; }
         public float AuctionPercentage { get; set; }
+        public long UserId { get; set; }
         public string Tel { get; set; }
         public string Mobile { get; set; }
         public string Email { get; set; }

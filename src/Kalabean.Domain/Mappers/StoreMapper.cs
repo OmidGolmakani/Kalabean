@@ -30,7 +30,7 @@ namespace Kalabean.Domain.Mappers
             var store = new Store
             {
                 Name = request.Name,
-                //TypeId = request.TypeId,
+                UserId = request.UserId,
                 ShoppingCenterId = request.ShoppingCenterId,
                 CategoryId = request.CategoryId,
                 FloorId = request.FloorId,
@@ -63,6 +63,7 @@ namespace Kalabean.Domain.Mappers
             var store = new Store
             {
                 Name = request.Name,
+                UserId = request.UserId,
                 //TypeId = request.TypeId,
                 ShoppingCenterId = request.ShoppingCenterId,
                 CategoryId = request.CategoryId,

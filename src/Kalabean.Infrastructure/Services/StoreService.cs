@@ -10,6 +10,11 @@ using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
 using Kalabean.Infrastructure.Files;
 using Microsoft.EntityFrameworkCore;
+using Kalabean.Infrastructure.AppSettingConfigs.Images;
+using Kalabean.Infrastructure.Services.Image;
+using Microsoft.Extensions.Options;
+using System.Drawing;
+using Kalabean.Domain.Requests.ResizeImage;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -18,15 +23,21 @@ namespace Kalabean.Infrastructure.Services
         private readonly IStoreRepository _storeRepository;
         private readonly IStoreMapper _storeMapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly List<ImageSize> _imageConfig;
+        private readonly IResizeImageService<long> _resizeImageService;
         private readonly KalabeanFileProvider _fileProvider;
         public StoreService(IStoreRepository storeRepository,
             IStoreMapper storeMapper,
             IUnitOfWork unitOfWork,
-            IFileAccessProvider fileProvider)
+            IFileAccessProvider fileProvider,
+            IOptions<ImageSize> imageConfig,
+            IResizeImageService<long> resizeImageService)
         {
             _storeMapper = storeMapper;
             _storeRepository = storeRepository;
             _unitOfWork = unitOfWork;
+            _resizeImageService = resizeImageService;
+            _imageConfig = imageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.Store).ToList();
             _fileProvider = new KalabeanFileProvider(fileProvider);
         }
 
@@ -45,11 +56,28 @@ namespace Kalabean.Infrastructure.Services
             var item = _storeMapper.Map(request);
             item.HasImage = request.Image != null;
             var result = _storeRepository.Add(item);
+            Tuple<bool, string> imgResult = null;
             if (await _unitOfWork.CommitAsync() > 0 &&
                 request.Image != null)
             {
                 using (var fileContent = request.Image.OpenReadStream())
-                    _fileProvider.SaveStoreImage(fileContent, result.Id);
+                    imgResult = _fileProvider.SaveStoreImage(fileContent, result.Id);
+                foreach (var ImageResize in _imageConfig)
+                {
+
+                    if (imgResult.Item1)
+                    {
+                        await _resizeImageService.Resize(new GetImageRequest<long>()
+                        {
+                            Id = result.Id,
+                            ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                            ImageUrl = imgResult.Item2,
+                            Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                        });
+                    }
+                }
+
+                
             }
             return _storeMapper.Map(await _storeRepository.GetById(result.Id));
         }
@@ -65,11 +93,26 @@ namespace Kalabean.Infrastructure.Services
             {
                 if (request.ImageEdited)
                 {
+                    Tuple<bool, string> ImgResult = null;
                     if (request.Image != null)
                     {
                         using (var fileContent = request.Image.OpenReadStream())
-                            _fileProvider.SaveStoreImage(fileContent, entity.Id);
+                            ImgResult = _fileProvider.SaveStoreImage(fileContent, entity.Id);
                         entity.HasImage = true;
+                        foreach (var ImageResize in _imageConfig)
+                        {
+
+                            if (ImgResult.Item1)
+                            {
+                                await _resizeImageService.Resize(new GetImageRequest<long>()
+                                {
+                                    Id = existingRecord.Id,
+                                    ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                                    ImageUrl = ImgResult.Item2,
+                                    Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                                });
+                            }
+                        }
                     }
                     else
                     {

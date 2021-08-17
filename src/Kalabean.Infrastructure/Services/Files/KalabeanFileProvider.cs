@@ -103,7 +103,7 @@ namespace Kalabean.Infrastructure.Files
             return true;
         }
 
-        public bool SaveStoreImage(Stream stream, int id)
+        public Tuple<bool, string> SaveStoreImage(Stream stream, int id)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Stores_Sub_Directory);
             if (!_fileProvider.DirectoryExists(path))
@@ -111,7 +111,7 @@ namespace Kalabean.Infrastructure.Files
             // TODO: What about other extensions like jpg and so on.
             string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
             saveStreamAsFile(filePath, stream);
-            return true;
+            return new Tuple<bool, string>(true, filePath);
         }
 
         public bool DeleteStoreImage(int id)
