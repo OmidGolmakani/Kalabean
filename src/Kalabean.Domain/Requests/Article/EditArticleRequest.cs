@@ -15,6 +15,9 @@ namespace Kalabean.Domain.Requests.Article
         public string KeyWords { get; set; }
         public string Summary { get; set; }
         public string Description { get; set; }
+        public string HtmlBody { get; set; }
+        public string PublishDateTime { get; set; }
+        public string ArchiveDateTime { get; set; }
         public IFormFile Image { get; set; }
         public bool ImageEdited { get; set; }
         public IFormFile File { get; set; }

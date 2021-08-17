@@ -20,6 +20,7 @@ namespace Kalabean.Domain.Mappers
 
             var Article = new Article
             {
+                HtmlBody = request.HtmlBody,
                 Description = request.Description,
                 Name = request.Name,
                 CreatedDate = DateTime.Now,
@@ -42,6 +43,7 @@ namespace Kalabean.Domain.Mappers
 
             var Article = new Article
             {
+                HtmlBody = request.HtmlBody,
                 Description = request.Description,
                 Name = request.Name,
                 Id = request.Id,
@@ -75,6 +77,7 @@ namespace Kalabean.Domain.Mappers
                 Description = Article.Description,
                 Name = Article.Name,
                 CreatedDate = Article.CreatedDate,
+                HtmlBody = Article.HtmlBody,
                 LastModified = Article.LastModified,
                 KeyWords = Article.KeyWords,
                 ShowInPortal = Article.ShowInPortal,

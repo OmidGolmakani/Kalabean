@@ -65,22 +65,21 @@ namespace Kalabean.Infrastructure.Services
                 request.Image != null)
             {
                 using (var fileContent = request.Image.OpenReadStream())
-                {
                     ImgResult = _fileProvider.SaveCityImage(fileContent, result.Id);
-                }
-            }
-            foreach (var ImageResize in _imageConfig)
-            {
 
-                if (ImgResult.Item1)
+                foreach (var ImageResize in _imageConfig)
                 {
-                    await _resizeImageService.Resize(new GetImageRequest<int>()
+
+                    if (ImgResult.Item1)
                     {
-                        Id = result.Id,
-                        ImageSize = new Size(ImageResize.Width, ImageResize.Height),
-                        ImageUrl = ImgResult.Item2,
-                        Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
-                    });
+                        await _resizeImageService.Resize(new GetImageRequest<int>()
+                        {
+                            Id = result.Id,
+                            ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                            ImageUrl = ImgResult.Item2,
+                            Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                        });
+                    }
                 }
             }
             return await this.GetCityAsync(new GetCityRequest { Id = result.Id });
@@ -101,12 +100,11 @@ namespace Kalabean.Infrastructure.Services
                     if (request.Image != null)
                     {
                         using (var fileContent = request.Image.OpenReadStream())
-                            _fileProvider.SaveCityImage(fileContent, entity.Id);
+                            ImgResult = _fileProvider.SaveCityImage(fileContent, entity.Id);
                         entity.HasImage = true;
 
                         foreach (var ImageResize in _imageConfig)
                         {
-
                             if (ImgResult.Item1)
                             {
                                 await _resizeImageService.Resize(new GetImageRequest<int>()

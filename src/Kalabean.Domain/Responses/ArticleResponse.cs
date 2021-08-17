@@ -14,6 +14,9 @@ namespace Kalabean.Domain.Responses
         public string KeyWords { get; set; }
         public string Summary { get; set; }
         public string Description { get; set; }
+        public string HtmlBody { get; set; }
+        public string PublishDateTime { get; set; }
+        public string ArchiveDateTime { get; set; }
         public string ImageUrl { get; set; }
         public string FileUrl { get; set; }
         public string FileExtention { get; set; }

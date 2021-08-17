@@ -14,6 +14,9 @@ namespace Kalabean.Domain.Entities
         public string KeyWords { get; set; }
         public string Summary { get; set; }
         public string Description { get; set; }
+        public string HtmlBody { get; set; }
+        public DateTime? PublishDateTime { get; set; }
+        public DateTime? ArchiveDateTime { get; set; }
         public bool HasImage { get; set; }
         public bool HasFile { get; set; }
         public string FileExtention { get; set; }
