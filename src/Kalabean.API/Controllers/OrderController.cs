@@ -23,7 +23,7 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(GetOrdersRequest request)
+        public async Task<IActionResult> Get([FromQuery]GetOrdersRequest request)
         {
             return Ok(await _OrderService.GetOrdersAsync(request));
         }

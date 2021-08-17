@@ -17,8 +17,9 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this.DbSet
                 .Where(p => p.Id == id && (includeDeleted || !p.IsDeleted))
-                .Include(p => p.Store)
+                .Include(pi => pi.Store)
                 .Include(p => p.OrderDetails)
+                .ThenInclude(p => p.Product)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
@@ -31,7 +32,8 @@ namespace Kalabean.Infrastructure.Repositories
                 (request.StoreId == null || p.StoreId == request.StoreId) &&
                 (request.ProductId == null || p.OrderDetails.Any(d => d.ProductId == request.ProductId)))
                 .Include(pi => pi.Store)
-                .Include(p => p.OrderDetails);
+                .Include(p => p.OrderDetails)
+                .ThenInclude(p => p.Product);
         }
 
         public async Task<long> Count(GetOrdersRequest request, bool includeDeleted = false)
