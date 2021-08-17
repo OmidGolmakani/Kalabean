@@ -11,5 +11,7 @@ namespace Kalabean.Domain.Requests.Product
         public string ProductName { get; set; }
         public int? StoreId { get; set; }
         public int? CategoryId { get; set; }
+        public bool? IsNew { get; set; }
+        public bool? Publish { get; set; }
     }
 }

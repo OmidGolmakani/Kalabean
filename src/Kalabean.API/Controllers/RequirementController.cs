@@ -19,9 +19,9 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] GetRequirementsRequest request)
         {
-            return Ok(await _RequirementService.GetRequirementsAsync());
+            return Ok(await _RequirementService.GetRequirementsAsync(request));
         }
 
         [HttpGet("{id}")]

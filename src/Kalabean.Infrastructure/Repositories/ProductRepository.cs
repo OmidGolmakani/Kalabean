@@ -29,7 +29,9 @@ namespace Kalabean.Infrastructure.Repositories
                 .List(p => (includeDeleted || !p.IsDeleted) &&
                            (string.IsNullOrEmpty(request.ProductName) || p.ProductName.Contains(request.ProductName) &&
                            (request.CategoryId == null || p.CategoryId == request.CategoryId) &&
-                           (request.StoreId == null || p.StoreId == request.StoreId))
+                           (request.StoreId == null || p.StoreId == request.StoreId) &&
+                           (request.Publish == null || p.Publish == request.Publish) &&
+                           (request.IsNew == null || p.IsNew == request.IsNew))
                 )
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(pi => pi.Category)
@@ -41,7 +43,9 @@ namespace Kalabean.Infrastructure.Repositories
             return this.List(p => (includeDeleted || !p.IsDeleted) &&
                            (string.IsNullOrEmpty(request.ProductName) || p.ProductName.Contains(request.ProductName) &&
                            (request.CategoryId == null || p.CategoryId == request.CategoryId) &&
-                           (request.StoreId == null || p.StoreId == request.StoreId))
+                           (request.StoreId == null || p.StoreId == request.StoreId) &&
+                           (request.Publish == null || p.Publish == request.Publish) &&
+                           (request.IsNew == null || p.IsNew == request.IsNew))
                 ).Count();
         }
     }
