@@ -1,5 +1,6 @@
 ﻿using Kalabean.Domain.Entities;
 using Kalabean.Domain.Repositories;
+using Kalabean.Domain.Requests.ShoppingCenter;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Infrastructure.Repositories
 {
-   public class ShoppingCenterRepository : Repository<ShoppingCenter>, IShoppingCenterRepository
+    public class ShoppingCenterRepository : Repository<ShoppingCenter>, IShoppingCenterRepository
     {
         //private readonly DbFactory _dbFactory;
         public ShoppingCenterRepository(DbFactory dbFactory) : base(dbFactory) { }
@@ -22,10 +23,16 @@ namespace Kalabean.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IQueryable<ShoppingCenter>> Get(bool includeDeleted = false)
+        public async Task<IQueryable<ShoppingCenter>> Get(GetShopingCentersRequest request, bool includeDeleted = false)
         {
             return this
-                .List(c => includeDeleted || !c.IsDeleted)
+                .List(c => (includeDeleted || !c.IsDeleted) &&
+                (string.IsNullOrEmpty(request.Name) || c.Name.Contains(request.Name)) &&
+                (request.CityId == null || c.CityId == request.CityId) &&
+                (request.TypeId == null || c.CityId == request.TypeId) &&
+                (request.IsEnabled==null || c.IsEnabled == request.IsEnabled)
+                )
+                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(c => c.Type)
                 .Include(c => c.City);
         }

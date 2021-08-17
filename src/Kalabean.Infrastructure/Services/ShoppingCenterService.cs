@@ -30,9 +30,9 @@ namespace Kalabean.Infrastructure.Services
             _fileProvider = new KalabeanFileProvider(fileProvider);
         }
 
-        public async Task<IEnumerable<ShoppingCenterResponse>> GetShoppingCentersAsync()
+        public async Task<IEnumerable<ShoppingCenterResponse>> GetShoppingCentersAsync(GetShopingCentersRequest request)
         {
-            var result = await _shoppingRepository.Get();
+            var result = await _shoppingRepository.Get(request);
             return result.Select(c => _shoppingMapper.Map(c));
         }
         public async Task<ShoppingCenterResponse> GetShoppingCenterAsync(GetShoppingCenterRequest request)

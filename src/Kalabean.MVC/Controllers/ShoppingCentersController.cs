@@ -24,9 +24,9 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(GetShopingCentersRequest request)
         {
-            return Ok(await _shoppingCenterService.GetShoppingCentersAsync());
+            return Ok(await _shoppingCenterService.GetShoppingCentersAsync(request));
         }
 
         [HttpGet("{id}")]
