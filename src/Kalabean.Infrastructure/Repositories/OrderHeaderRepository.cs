@@ -31,6 +31,7 @@ namespace Kalabean.Infrastructure.Repositories
                 p => (includeDeleted || !p.IsDeleted) &&
                 (request.StoreId == null || p.StoreId == request.StoreId) &&
                 (request.ProductId == null || p.OrderDetails.Any(d => d.ProductId == request.ProductId)))
+                .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(pi => pi.Store)
                 .Include(p => p.OrderDetails)
                 .ThenInclude(p => p.Product);
