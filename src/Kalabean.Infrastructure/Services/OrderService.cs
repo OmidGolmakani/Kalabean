@@ -13,68 +13,78 @@ namespace Kalabean.Infrastructure.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly IOrderHeaderRepository _OrderRepository;
-        private readonly IOrderDetailRepository _OrderDetailsRepository;
-        private readonly IOrderHeaderMapper _OrderMapper;
+        private readonly IOrderHeaderRepository _orderRepository;
+        private readonly IOrderDetailRepository _orderDetailsRepository;
+        private readonly IOrderHeaderMapper _orderMapper;
+        private readonly IOrderDetailMapper _detailMapper;
         private readonly IUnitOfWork _unitOfWork;
-        public OrderService(IOrderHeaderRepository OrderRepository,
-                            IOrderDetailRepository OrderDetailsRepository,
-                            IOrderHeaderMapper OrderMapper,
+        public OrderService(IOrderHeaderRepository orderRepository,
+                            IOrderDetailRepository orderDetailsRepository,
+                            IOrderHeaderMapper orderMapper,
+                            IOrderDetailMapper detailMapper,
                             IUnitOfWork unitOfWork)
         {
-            _OrderRepository = OrderRepository;
-            _OrderDetailsRepository = OrderDetailsRepository;
-            _OrderMapper = OrderMapper;
+            _orderRepository = orderRepository;
+            _orderDetailsRepository = orderDetailsRepository;
+            _orderMapper = orderMapper;
+            _detailMapper = detailMapper;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<OrderHeaderResponse>> GetOrdersAsync()
+        public async Task<IEnumerable<OrderHeaderResponse>> GetOrdersAsync(GetOrdersRequest request)
         {
-            var result = await _OrderRepository.Get();
-            return result.Select(c => _OrderMapper.Map(c));
+            var result = await _orderRepository.Get(request);
+            return result.Select(c => _orderMapper.Map(c));
         }
         public async Task<OrderHeaderResponse> GetOrderAsync(GetOrderHeaderRequest request)
         {
             if (request?.Id == null) throw new ArgumentNullException();
-            var Order = await _OrderRepository.GetById(request.Id);
-            return _OrderMapper.Map(Order);
+            var Order = await _orderRepository.GetById(request.Id);
+            return _orderMapper.Map(Order);
         }
         public async Task<OrderHeaderResponse> AddOrderAsync(AddOrderHeaderRequest request)
         {
-            var item = _OrderMapper.Map(request);
-            var result = _OrderRepository.Add(item);
+            var item = _orderMapper.Map(request);
+            if (request.OrderDetail != null)
+            {
+                item.OrderDetails = new List<Domain.Entities.OrderDetail>();
+                item.OrderDetails.Add(_detailMapper.Map(request.OrderDetail));
+            }
+            item.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            item.OrderStatus = (byte)Domain.OrderStatus.AwaitingApproval;
+            var result = _orderRepository.Add(item);
             await _unitOfWork.CommitAsync();
 
-            return _OrderMapper.Map(await _OrderRepository.GetById(result.Id));
+            return _orderMapper.Map(await _orderRepository.GetById(result.Id));
         }
         public async Task<OrderHeaderResponse> EditOrderAsync(EditOrderHeaderRequest request)
         {
-            var existingRecord = await _OrderRepository.GetById(request.Id);
+            var existingRecord = await _orderRepository.GetById(request.Id);
 
             if (existingRecord == null)
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
-            var entity = _OrderMapper.Map(request);
-            var result = _OrderRepository.Update(entity);
+            var entity = _orderMapper.Map(request);
+            var result = _orderRepository.Update(entity);
             await _unitOfWork.CommitAsync();
-            return _OrderMapper.Map(await _OrderRepository.GetById(result.Id));
+            return _orderMapper.Map(await _orderRepository.GetById(result.Id));
         }
 
         public async Task BatchDeleteOrdersAsync(long[] ids)
         {
             List<Kalabean.Domain.Entities.OrderHeader> orders =
-                _OrderRepository.List(c => ids.Contains(c.Id)).ToList();
+                _orderRepository.List(c => ids.Contains(c.Id)).ToList();
             foreach (Kalabean.Domain.Entities.OrderHeader Order in orders)
             {
                 List<Kalabean.Domain.Entities.OrderDetail> orderDetails =
-                _OrderDetailsRepository.List(c => ids.Contains(c.OrderId)).ToList();
+                _orderDetailsRepository.List(c => ids.Contains(c.OrderId)).ToList();
                 foreach (var OrderDetails in orderDetails)
                 {
                     Order.IsDeleted = true;
-                    _OrderDetailsRepository.UpdateBatch(orderDetails);
+                    _orderDetailsRepository.UpdateBatch(orderDetails);
                 }
                 Order.IsDeleted = true;
-                _OrderRepository.UpdateBatch(orders);
+                _orderRepository.UpdateBatch(orders);
             }
 
             await _unitOfWork.CommitAsync();

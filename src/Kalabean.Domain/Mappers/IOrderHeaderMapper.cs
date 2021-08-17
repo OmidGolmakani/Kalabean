@@ -14,5 +14,6 @@ namespace Kalabean.Domain.Mappers
         OrderHeader Map(AddOrderHeaderRequest request);
         OrderHeader Map(EditOrderHeaderRequest request);
         OrderHeaderResponse Map(OrderHeader request);
+        ThumbResponse<long> MapThumb(OrderHeader request);
     }
 }

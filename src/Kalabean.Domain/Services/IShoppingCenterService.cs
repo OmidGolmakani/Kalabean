@@ -7,7 +7,7 @@ namespace Kalabean.Domain.Services
 {
     public interface IShoppingCenterService
     {
-        Task<IEnumerable<ShoppingCenterResponse>> GetShoppingCentersAsync();
+        Task<ListPageingResponse<ShoppingCenterResponse>> GetShoppingCentersAsync(GetShopingCentersRequest request);
         Task<ShoppingCenterResponse> GetShoppingCenterAsync(GetShoppingCenterRequest request);
         Task<ShoppingCenterResponse> AddShoppingCenterAsync(AddShoppingCenterRequest request);
         Task<ShoppingCenterResponse> EditShoppingCenterAsync(EditShoppingCenterRequest request);

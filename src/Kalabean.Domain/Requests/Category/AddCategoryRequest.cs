@@ -11,6 +11,5 @@ namespace Kalabean.Domain.Requests.Category
         public string HtmlContent { get; set; }
         public byte? Order { get; set; }
         public int? ParentId { get; set; }
-        public Guid? AccessRuleId { get; set; }
     }
 }
