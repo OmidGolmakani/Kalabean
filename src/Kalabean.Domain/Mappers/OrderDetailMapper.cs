@@ -12,7 +12,7 @@ namespace Kalabean.Domain.Mappers
     public class OrderDetailMapper : IOrderDetailMapper
     {
         private readonly IProductMapper _product;
-        
+
         public OrderDetailMapper(IProductMapper product)
         {
             this._product = product;
@@ -36,10 +36,9 @@ namespace Kalabean.Domain.Mappers
             if (request == null) return null;
             return new OrderDetail()
             {
-                Id = request.Id,
+                Id = (request.Id ?? 0),
                 IsDeleted = false,
                 Num = request.Num,
-                OrderId = request.OrderId,
                 Price = request.Price,
                 ProductId = request.ProductId
             };

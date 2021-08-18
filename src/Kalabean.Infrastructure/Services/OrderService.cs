@@ -8,6 +8,12 @@ using System;
 using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
 using Kalabean.Domain.Requests.OrderHeader;
+using Kalabean.Infrastructure.Files;
+using Kalabean.Infrastructure.Services.Image;
+using Kalabean.Infrastructure.AppSettingConfigs.Images;
+using Microsoft.Extensions.Options;
+using Kalabean.Domain.Requests.ResizeImage;
+using System.Drawing;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -18,17 +24,27 @@ namespace Kalabean.Infrastructure.Services
         private readonly IOrderHeaderMapper _orderMapper;
         private readonly IOrderDetailMapper _detailMapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IResizeImageService<long> _resizeImageService;
+        private readonly KalabeanFileProvider _fileProvider;
+        private readonly List<ImageSize> _imageConfig;
+
         public OrderService(IOrderHeaderRepository orderRepository,
                             IOrderDetailRepository orderDetailsRepository,
                             IOrderHeaderMapper orderMapper,
                             IOrderDetailMapper detailMapper,
-                            IUnitOfWork unitOfWork)
+                            IUnitOfWork unitOfWork,
+                            IFileAccessProvider fileProvider,
+                            IResizeImageService<long> resizeImageService,
+                            IOptions<ImageSize> ImageConfig)
         {
             _orderRepository = orderRepository;
             _orderDetailsRepository = orderDetailsRepository;
             _orderMapper = orderMapper;
             _detailMapper = detailMapper;
             _unitOfWork = unitOfWork;
+            _fileProvider = new KalabeanFileProvider(fileProvider);
+            this._resizeImageService = resizeImageService;
+            _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.Order).ToList();
         }
 
         public async Task<IEnumerable<OrderHeaderResponse>> GetOrdersAsync(GetOrdersRequest request)
@@ -53,7 +69,28 @@ namespace Kalabean.Infrastructure.Services
             item.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
             item.OrderStatus = (byte)Domain.OrderStatus.AwaitingApproval;
             var result = _orderRepository.Add(item);
-            await _unitOfWork.CommitAsync();
+            Tuple<bool, string> ImgResult = null;
+            if (await _unitOfWork.CommitAsync() > 0 &&
+                request.Image != null)
+            {
+                using (var fileContent = request.Image.OpenReadStream())
+                    ImgResult = _fileProvider.SaveOrderImage(fileContent, result.Id);
+
+                foreach (var ImageResize in _imageConfig)
+                {
+
+                    if (ImgResult != null && ImgResult.Item1)
+                    {
+                        await _resizeImageService.Resize(new GetImageRequest<long>()
+                        {
+                            Id = result.Id,
+                            ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                            ImageUrl = ImgResult.Item2,
+                            Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                        });
+                    }
+                }
+            }
 
             return _orderMapper.Map(await _orderRepository.GetById(result.Id));
         }
@@ -65,6 +102,43 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _orderMapper.Map(request);
+            if (request.OrderDetail != null)
+            {
+                entity.OrderDetails = new List<Domain.Entities.OrderDetail>() { _detailMapper.Map(request.OrderDetail) };
+                entity.OrderDetails.FirstOrDefault().OrderId = entity.Id;
+            }
+            if (entity.HasImage || request.Image != null)
+            {
+                if (request.ImageEdited)
+                {
+                    Tuple<bool, string> ImgResult = null;
+                    if (request.Image != null)
+                    {
+                        using (var fileContent = request.Image.OpenReadStream())
+                            ImgResult = _fileProvider.SaveOrderImage(fileContent, entity.Id);
+                        entity.HasImage = true;
+
+                        foreach (var ImageResize in _imageConfig)
+                        {
+                            if (ImgResult.Item1)
+                            {
+                                await _resizeImageService.Resize(new GetImageRequest<long>()
+                                {
+                                    Id = existingRecord.Id,
+                                    ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                                    ImageUrl = ImgResult.Item2,
+                                    Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                                });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _fileProvider.DeleteOrderImage(entity.Id);
+                        entity.HasImage = false;
+                    }
+                }
+            }
             var result = _orderRepository.Update(entity);
             await _unitOfWork.CommitAsync();
             return _orderMapper.Map(await _orderRepository.GetById(result.Id));

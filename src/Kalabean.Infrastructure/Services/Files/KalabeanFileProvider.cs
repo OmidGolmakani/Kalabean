@@ -17,6 +17,7 @@ namespace Kalabean.Infrastructure.Files
         private const string Stores_Sub_Directory = "Stores";
         private const string Products_Sub_Directory = "Products";
         private const string Articles_Sub_Directory = "Articles";
+        private const string Orders_Sub_Directory = "Orders";
         private const string File_Base_Path = @"KL_ImagesRepo\Files";
 
 
@@ -180,6 +181,24 @@ namespace Kalabean.Infrastructure.Files
         {
             string path = _fileProvider.Combine(File_Base_Path, Articles_Sub_Directory);
             string filePath = _fileProvider.Combine(path, $"{id}{extention}");
+            if (File.Exists(filePath))
+                _fileProvider.DeleteFile(filePath);
+            return true;
+        }
+        public Tuple<bool, string> SaveOrderImage(Stream stream, long OrderId)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Orders_Sub_Directory);
+            if (!_fileProvider.DirectoryExists(path))
+                _fileProvider.CreateDirectory(path);
+            // TODO: What about other extensions like jpg and so on.
+            string filePath = _fileProvider.Combine(path, $"{OrderId}.jpeg");
+            saveStreamAsFile(filePath, stream);
+            return new Tuple<bool, string>(true, filePath);
+        }
+        public bool DeleteOrderImage(long OrderId)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Orders_Sub_Directory);
+            string filePath = _fileProvider.Combine(path, $"{OrderId}.jpeg");
             if (File.Exists(filePath))
                 _fileProvider.DeleteFile(filePath);
             return true;

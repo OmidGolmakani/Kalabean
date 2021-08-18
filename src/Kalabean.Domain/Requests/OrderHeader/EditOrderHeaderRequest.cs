@@ -15,5 +15,6 @@ namespace Kalabean.Domain.Requests.OrderHeader
         public string Description { get; set; }
         public IFormFile Image { get; set; }
         public bool ImageEdited { get; set; }
+        public OrderDetail.EditOrderDetailRequest OrderDetail { get; set; }
     }
 }
