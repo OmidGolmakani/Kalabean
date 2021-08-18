@@ -107,14 +107,12 @@ namespace Kalabean.Infrastructure.Services
             {
                 entity.OrderDetails = new List<Domain.Entities.OrderDetail>() { _detailMapper.Map(request.OrderDetail) };
                 entity.OrderDetails.FirstOrDefault().OrderId = entity.Id;
-                entity.OrderDetails.FirstOrDefault().Id = 
+                entity.OrderDetails.FirstOrDefault().Id =
                     _orderDetailsRepository.GetByOrderId(entity.Id).Result.Id;
             }
-            _fileProvider.DeleteOrderImage(entity.Id);
-            entity.HasImage = false;
-            if (entity.HasImage || request.Image != null)
+            if (request.ImageEdited)
             {
-                if (request.ImageEdited)
+                if (entity.HasImage || request.Image != null)
                 {
                     Tuple<bool, string> ImgResult = null;
                     if (request.Image != null)
@@ -137,6 +135,12 @@ namespace Kalabean.Infrastructure.Services
                             }
                         }
                     }
+                    
+                }
+                else
+                {
+                    _fileProvider.DeleteOrderImage(entity.Id);
+                    entity.HasImage = false;
                 }
             }
             var result = _orderRepository.Update(entity);
