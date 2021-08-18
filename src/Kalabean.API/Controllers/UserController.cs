@@ -40,6 +40,7 @@ namespace Kalabean.API.Controllers
             {
                 await _userService.AddUserToRole(new AddUserToRoleRequest() { Id = result.Id, Roles = new List<string>() { "User" } });
             }
+            if (request == null) request = new AddUserRequest();
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         [HttpPost("Signin")]

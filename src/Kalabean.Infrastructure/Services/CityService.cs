@@ -25,7 +25,6 @@ namespace Kalabean.Infrastructure.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IResizeImageService<int> _resizeImageService;
         private readonly KalabeanFileProvider _fileProvider;
-
         private readonly List<ImageSize> _imageConfig;
 
         public CityService(ICityRepository cityRepository,
