@@ -32,9 +32,7 @@ namespace Kalabean.Domain.Mappers
                 IsDeleted = false,
                 Price = request.Price,
                 ProductId = request.ProductId,
-                RequirementStatus = request.RequirementStatus,
                 TypePricing = request.TypePricing,
-                UserId = request.UserId,
                 CreatedDate = DateTime.Now,
                 HasImage = request.Image != null && request.Image.Length > 0,
             };
@@ -52,9 +50,7 @@ namespace Kalabean.Domain.Mappers
                 IsDeleted = false,
                 Price = request.Price,
                 ProductId = request.ProductId,
-                RequirementStatus = request.RequirementStatus,
                 TypePricing = request.TypePricing,
-                UserId = request.UserId,
                 HasImage = request.ImageEdited && request.Image != null && request.Image.Length > 0
             };
         }

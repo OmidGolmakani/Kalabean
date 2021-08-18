@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System;
 using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
+using Kalabean.Domain.Entities;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -25,10 +26,12 @@ namespace Kalabean.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<RequirementResponse>> GetRequirementsAsync()
+        public async Task<ListPageingResponse<RequirementResponse>> GetRequirementsAsync(GetRequirementsRequest request)
         {
-            var result = await _RequirementRepository.Get();
-            return result.Select(p => _RequirementMapper.Map(p));
+            var result = await _RequirementRepository.Get(request);
+            var list = result.Select(p => _RequirementMapper.Map(p));
+            var count = await _RequirementRepository.Count(request);
+            return new ListPageingResponse<RequirementResponse>() { Items = list, RecordCount = count };
         }
         public async Task<RequirementResponse> GetRequirementAsync(GetRequirementRequest request)
         {
@@ -39,6 +42,8 @@ namespace Kalabean.Infrastructure.Services
         public async Task<RequirementResponse> AddRequirementAsync(AddRequirementRequest request)
         {
             var item = _RequirementMapper.Map(request);
+            item.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            item.RequirementStatus = (byte)RequirementStatus.AwaitingApproval;
             var result = _RequirementRepository.Add(item);
             await _unitOfWork.CommitAsync();
 
@@ -52,6 +57,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _RequirementMapper.Map(request);
+            entity.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
             var result = _RequirementRepository.Update(entity);
             await _unitOfWork.CommitAsync();
             return _RequirementMapper.Map(await _RequirementRepository.GetById(result.Id));

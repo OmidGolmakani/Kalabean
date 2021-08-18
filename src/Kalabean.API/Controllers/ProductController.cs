@@ -19,9 +19,9 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] GetProductsRequest request)
         {
-            return Ok(await _productService.GetProductsAsync());
+            return Ok(await _productService.GetProductsAsync(request));
         }
 
         [HttpGet("{id}")]

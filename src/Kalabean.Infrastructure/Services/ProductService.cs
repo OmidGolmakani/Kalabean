@@ -36,10 +36,12 @@ namespace Kalabean.Infrastructure.Services
             _fileProvider = fileProvider;
         }
 
-        public async Task<IEnumerable<ProductResponse>> GetProductsAsync()
+        public async Task<ListPageingResponse<ProductResponse>> GetProductsAsync(GetProductsRequest request)
         {
-            var result = await _ProductRepository.Get();
-            return result.Select(p => _ProductMapper.Map(p));
+            var result = await _ProductRepository.Get(request);
+            var list = result.Select(p => _ProductMapper.Map(p));
+            var count = await _ProductRepository.Count(request);
+            return new ListPageingResponse<ProductResponse>() { Items = list, RecordCount = count };
         }
         public async Task<ProductResponse> GetProductAsync(GetProductRequest request)
         {
@@ -53,12 +55,12 @@ namespace Kalabean.Infrastructure.Services
             var result = _ProductRepository.Add(item);
 
             if (await _unitOfWork.CommitAsync() > 0 &&
-               request.Images!=null && request.Images.Count != 0)
+               request.Images != null && request.Images.Count != 0)
             {
                 foreach (var Image in request.Images)
                 {
                     //using (var fileContent = Image.OpenReadStream())
-                        //_fileProvider.SaveCityImage(fileContent, Image);
+                    //_fileProvider.SaveCityImage(fileContent, Image);
                 }
             }
 

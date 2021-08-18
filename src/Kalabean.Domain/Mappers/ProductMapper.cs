@@ -99,6 +99,7 @@ namespace Kalabean.Domain.Mappers
             var response = new ProductResponse()
             {
                 CategoryId = request.CategoryId,
+                Id= request.Id,
                 Creator = request.Creator,
                 DateArchive = Helper.PersionDate.GetShamsi(request.DateArchive),
                 DatePublish = Helper.PersionDate.GetShamsi(request.DatePublish),
