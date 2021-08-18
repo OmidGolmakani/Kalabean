@@ -8,7 +8,7 @@ namespace Kalabean.Domain.Services
 {
     public interface IProductService
     {
-        Task<ListPageingResponse<ProductResponse>> GetProductsAsync(GetProductsRequest request);
+        Task<ListPagingResponse<ProductResponse>> GetProductsAsync(GetProductsRequest request);
         Task<ProductResponse> GetProductAsync(GetProductRequest request);
         Task<ProductResponse> AddProductAsync(AddProductRequest request);
         Task<ProductResponse> EditProductAsync(EditProductRequest request);

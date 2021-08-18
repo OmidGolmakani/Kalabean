@@ -45,7 +45,7 @@ namespace Kalabean.Infrastructure.Services
             var result = await _ArticleRepository.Get(request);
             var list = result.Select(c => _ArticleMapper.Map(c));
             var count = await _ArticleRepository.Count(request);
-            return new ListPagingResponse<ArticleResponse>() { Items = list, RecordCount = count };
+            return new ListPagingResponse<ArticleResponse>() { Items = list, Total = count };
         }
         public async Task<ArticleResponse> GetArticleAsync(GetArticleRequest request)
         {

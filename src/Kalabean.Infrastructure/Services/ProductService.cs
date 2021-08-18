@@ -9,6 +9,11 @@ using System;
 using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
 using Kalabean.Infrastructure.Files;
+using Kalabean.Infrastructure.Services.Image;
+using Kalabean.Infrastructure.AppSettingConfigs.Images;
+using Microsoft.Extensions.Options;
+using Kalabean.Domain.Requests.ResizeImage;
+using System.Drawing;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -19,29 +24,37 @@ namespace Kalabean.Infrastructure.Services
         private readonly IProductMapper _ProductMapper;
         private readonly IProductImageMapper _ProductImageMapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IResizeImageService<long> _resizeImageService;
         private readonly KalabeanFileProvider _fileProvider;
+
+        private readonly List<ImageSize> _imageConfig;
 
         public ProductService(IProductRepository ProductRepository,
                               IProductImageRepository ProductImageRepository,
                               IProductMapper ProductMapper,
                               IProductImageMapper ProductImageMapper,
                               IUnitOfWork unitOfWork,
-                              KalabeanFileProvider fileProvider)
+                              KalabeanFileProvider fileProvider,
+                              IResizeImageService<long> imageService,
+                           IOptions<ImageSize> ImageConfig,
+                           IResizeImageService<long> resizeImageService)
         {
             _ProductRepository = ProductRepository;
             _ProductImageRepository = ProductImageRepository;
             _ProductMapper = ProductMapper;
             _ProductImageMapper = ProductImageMapper;
             _unitOfWork = unitOfWork;
+            _resizeImageService = resizeImageService;
+            _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.Product).ToList();
             _fileProvider = fileProvider;
         }
 
-        public async Task<ListPageingResponse<ProductResponse>> GetProductsAsync(GetProductsRequest request)
+        public async Task<ListPagingResponse<ProductResponse>> GetProductsAsync(GetProductsRequest request)
         {
             var result = await _ProductRepository.Get(request);
             var list = result.Select(p => _ProductMapper.Map(p));
             var count = await _ProductRepository.Count(request);
-            return new ListPageingResponse<ProductResponse>() { Items = list, RecordCount = count };
+            return new ListPagingResponse<ProductResponse>() { Items = list, Total = count };
         }
         public async Task<ProductResponse> GetProductAsync(GetProductRequest request)
         {
@@ -54,17 +67,31 @@ namespace Kalabean.Infrastructure.Services
             var item = _ProductMapper.Map(request);
             var result = _ProductRepository.Add(item);
 
+            Tuple<bool, string> ImgResult = null;
+
             if (await _unitOfWork.CommitAsync() > 0 &&
-               request.Images != null && request.Images.Count != 0)
+               request.Images != null && request.Images.Count() != 0)
             {
-                foreach (var Image in request.Images)
+                foreach (var img in request.Images)
                 {
-                    //using (var fileContent = Image.OpenReadStream())
-                    //_fileProvider.SaveCityImage(fileContent, Image);
+                    using (var fileContent = img.OpenReadStream())
+                        ImgResult = _fileProvider.SaveProductImage(fileContent, result.Id);
+
+                    foreach (var ImageResize in _imageConfig)
+                    {
+                        if (ImgResult.Item1)
+                        {
+                            await _resizeImageService.Resize(new GetImageRequest<long>()
+                            {
+                                Id = result.Id,
+                                ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                                ImageUrl = ImgResult.Item2,
+                                Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                            });
+                        }
+                    }
                 }
             }
-
-
             return _ProductMapper.Map(await _ProductRepository.GetById(result.Id));
         }
         public async Task<ProductResponse> EditProductAsync(EditProductRequest request)

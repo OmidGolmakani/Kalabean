@@ -30,7 +30,7 @@ namespace Kalabean.Infrastructure.Repositories
                            (string.IsNullOrEmpty(request.ProductName) || p.ProductName.Contains(request.ProductName) &&
                            (request.CategoryId == null || p.CategoryId == request.CategoryId) &&
                            (request.StoreId == null || p.StoreId == request.StoreId) &&
-                           (request.Publish == null || p.Publish == request.Publish) &&
+                           (request.Publish == null || p.IsEnabled == request.Publish) &&
                            (request.IsNew == null || p.IsNew == request.IsNew))
                 )
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
@@ -44,7 +44,7 @@ namespace Kalabean.Infrastructure.Repositories
                            (string.IsNullOrEmpty(request.ProductName) || p.ProductName.Contains(request.ProductName) &&
                            (request.CategoryId == null || p.CategoryId == request.CategoryId) &&
                            (request.StoreId == null || p.StoreId == request.StoreId) &&
-                           (request.Publish == null || p.Publish == request.Publish) &&
+                           (request.Publish == null || p.IsEnabled == request.Publish) &&
                            (request.IsNew == null || p.IsNew == request.IsNew))
                 ).Count();
         }

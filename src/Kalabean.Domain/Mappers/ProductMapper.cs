@@ -11,26 +11,28 @@ namespace Kalabean.Domain.Mappers
 {
     public class ProductMapper : IProductMapper
     {
-        private readonly ICategoryMapper _category;
-        private readonly IStoreMapper _store;
-        private readonly IProductImageMapper _productImage;
+        private readonly ICategoryMapper _categoryMapper;
+        private readonly IStoreMapper _storeMapper;
+        private readonly IProductImageMapper _productImageMapper;
 
-        public ProductMapper(ICategoryMapper category,
-                             IStoreMapper store)
+        public ProductMapper(ICategoryMapper categoryMapper,
+                             IStoreMapper storeMapper,
+                             IProductImageMapper productImageMapper)
         {
-            this._category = category;
-            this._store = store;
+            this._categoryMapper = categoryMapper;
+            this._storeMapper = storeMapper;
+            this._productImageMapper = productImageMapper;
         }
 
         public Product Map(AddProductRequest request)
         {
             if (request == null) return null;
-            var response = new Product()
+            Product product = new Product()
             {
                 CategoryId = request.CategoryId,
-                Creator = request.Creator,
-                DateArchive = (Helper.PersionDate.GetMiladi(request.DateArchive) ?? DateTime.Now),
-                DatePublish = (Helper.PersionDate.GetMiladi(request.DatePublish) ?? DateTime.Now),
+                Manufacturer = request.Manufacturer,
+                ArchivingDate = request.ArchivingDate,
+                PublishingDate = request.PublishingDate,
                 Discount = request.Discount,
                 IsDeleted = false,
                 Num = request.Num,
@@ -43,26 +45,29 @@ namespace Kalabean.Domain.Mappers
                 Description = request.Description,
                 Model = request.Model,
                 Properties = request.Properties,
-                Publish = request.Publish,
+                IsEnabled = request.IsEnabled,
                 Series = request.Series,
-                Id = 0
+                Barcode = request.Barcode,
+                CompanyName = request.CompanyName,
+                HtmlContent = request.HtmlContent,
+                Keywords = request.Keywords,
             };
+
             if (request.Images != null)
             {
+                product.ProductImages = new List<ProductImage>();
                 foreach (var pi in request.Images)
                 {
                     var _pi = new ProductImage()
                     {
-                        Product = response,
-                        Id = 0,
+                        Product = product,
                         IsDeleted = false,
-                        ProductId = 0,
                         Extention = System.IO.Path.GetExtension(pi.FileName)
                     };
-                    response.ProductImages.Add(_pi);
+                    product.ProductImages.Add(_pi);
                 }
             }
-            return response;
+            return product;
         }
 
         public Product Map(EditProductRequest request)
@@ -71,9 +76,9 @@ namespace Kalabean.Domain.Mappers
             var response = new Product()
             {
                 CategoryId = request.CategoryId,
-                Creator = request.Creator,
-                DateArchive = (Helper.PersionDate.GetMiladi(request.DateArchive) ?? DateTime.Now),
-                DatePublish = (Helper.PersionDate.GetMiladi(request.DatePublish) ?? DateTime.Now),
+                Manufacturer = request.Creator,
+                ArchivingDate = request.DateArchive,
+                PublishingDate = request.DatePublish,
                 Discount = request.Discount,
                 IsDeleted = false,
                 Num = request.Num,
@@ -86,7 +91,7 @@ namespace Kalabean.Domain.Mappers
                 Description = request.Description,
                 Model = request.Model,
                 Properties = request.Properties,
-                Publish = request.Publish,
+                IsEnabled = request.Publish,
                 Series = request.Series,
                 Id = request.Id,
             };
@@ -100,9 +105,9 @@ namespace Kalabean.Domain.Mappers
             {
                 CategoryId = request.CategoryId,
                 Id= request.Id,
-                Creator = request.Creator,
-                DateArchive = Helper.PersionDate.GetShamsi(request.DateArchive),
-                DatePublish = Helper.PersionDate.GetShamsi(request.DatePublish),
+                Creator = request.Manufacturer,
+                DateArchive = request.ArchivingDate,
+                DatePublish = request.PublishingDate,
                 Discount = request.Discount,
                 Num = request.Num,
                 Order = request.Order,
@@ -114,10 +119,10 @@ namespace Kalabean.Domain.Mappers
                 LinkProduct = request.LinkProduct,
                 Model = request.Model,
                 Properties = request.Properties,
-                Publish = request.Publish,
+                Publish = request.IsEnabled,
                 Series = request.Series,
-                CategoryThumb = _category.MapThumb(request.Category),
-                StoreThumb = _store.MapThumb(request.Store)
+                CategoryThumb = _categoryMapper.MapThumb(request.Category),
+                StoreThumb = _storeMapper.MapThumb(request.Store)
             };
             return response;
         }

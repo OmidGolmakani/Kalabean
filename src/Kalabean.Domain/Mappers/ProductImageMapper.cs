@@ -11,13 +11,6 @@ namespace Kalabean.Domain.Mappers
 {
     public class ProductImageMapper : IProductImageMapper
     {
-        //private readonly IProductMapper _product;
-
-        public ProductImageMapper()
-        {
-            //this._product = product;
-        }
-
         public ProductImage Map(AddProductImageRequest request)
         {
             if (request == null) return null;

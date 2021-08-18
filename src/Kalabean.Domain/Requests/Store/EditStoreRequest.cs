@@ -8,7 +8,6 @@ namespace Kalabean.Domain.Requests.Store
         public int Id { get; set; }
         public string Name { get; set; }
         public long UserId { get; set; }
-        public int TypeId { get; set; }
         public int ShoppingCenterId { get; set; }
         public int CategoryId { get; set; }
         public int? FloorId { get; set; }

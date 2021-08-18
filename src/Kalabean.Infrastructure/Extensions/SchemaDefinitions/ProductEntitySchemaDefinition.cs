@@ -17,15 +17,11 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             .HasKey(p => p.Id);
             builder.Property(P => P.IsDeleted).HasDefaultValue(false);
             builder.Property(p => p.CategoryId).IsRequired();
-            builder.Property(p => p.Creator).HasMaxLength(200);
-            builder.Property(p => p.DateArchive);
-            builder.Property(p => p.DatePublish);
+            builder.Property(p => p.Manufacturer).HasMaxLength(200);
             builder.Property(p => p.Description).HasMaxLength(500);
             builder.Property(p => p.Price).HasPrecision(18, 2).IsRequired();
             builder.Property(p => p.Num).HasDefaultValue(0);
             builder.Property(p => p.Discount).HasPrecision(18, 2);
-            builder.Property(p => p.IsNew);
-            builder.Property(p => p.Publish);
             builder.Property(p => p.Model).HasMaxLength(20);
             builder.Property(p => p.ProductName).HasMaxLength(200);
             builder.Property(p => p.Series).HasMaxLength(20);
