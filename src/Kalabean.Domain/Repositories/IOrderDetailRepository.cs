@@ -10,6 +10,7 @@ namespace Kalabean.Domain.Repositories
     public interface IOrderDetailRepository : IRepository<OrderDetail>
     {
         Task<OrderDetail> GetById (long id, bool includeDeleted=false);
+        Task<OrderDetail> GetByOrderId(long OrderId, bool includeDeleted = false);
 
     }
 }

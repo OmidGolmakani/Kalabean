@@ -36,7 +36,6 @@ namespace Kalabean.Domain.Mappers
             if (request == null) return null;
             return new OrderDetail()
             {
-                Id = (request.Id ?? 0),
                 IsDeleted = false,
                 Num = request.Num,
                 Price = request.Price,

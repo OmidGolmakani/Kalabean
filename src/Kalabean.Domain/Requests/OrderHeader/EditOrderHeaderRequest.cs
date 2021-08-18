@@ -9,7 +9,7 @@ namespace Kalabean.Domain.Requests.OrderHeader
 {
     public class EditOrderHeaderRequest
     {
-        public long Id { get; set; }
+        public long id { get; set; }
         public int StoreId { get; set; }
         public string PaymenyLink { get; set; }
         public string Description { get; set; }

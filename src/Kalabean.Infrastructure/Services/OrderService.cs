@@ -96,17 +96,22 @@ namespace Kalabean.Infrastructure.Services
         }
         public async Task<OrderHeaderResponse> EditOrderAsync(EditOrderHeaderRequest request)
         {
-            var existingRecord = await _orderRepository.GetById(request.Id);
+            var existingRecord = await _orderRepository.GetById(request.id);
 
             if (existingRecord == null)
-                throw new ArgumentException($"Entity with {request.Id} is not present");
+                throw new ArgumentException($"Entity with {request.id} is not present");
 
             var entity = _orderMapper.Map(request);
+            entity.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
             if (request.OrderDetail != null)
             {
                 entity.OrderDetails = new List<Domain.Entities.OrderDetail>() { _detailMapper.Map(request.OrderDetail) };
                 entity.OrderDetails.FirstOrDefault().OrderId = entity.Id;
+                entity.OrderDetails.FirstOrDefault().Id = 
+                    _orderDetailsRepository.GetByOrderId(entity.Id).Result.Id;
             }
+            _fileProvider.DeleteOrderImage(entity.Id);
+            entity.HasImage = false;
             if (entity.HasImage || request.Image != null)
             {
                 if (request.ImageEdited)
@@ -131,11 +136,6 @@ namespace Kalabean.Infrastructure.Services
                                 });
                             }
                         }
-                    }
-                    else
-                    {
-                        _fileProvider.DeleteOrderImage(entity.Id);
-                        entity.HasImage = false;
                     }
                 }
             }
