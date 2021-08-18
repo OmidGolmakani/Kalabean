@@ -123,7 +123,7 @@ namespace Kalabean.Infrastructure.Services
 
                         foreach (var ImageResize in _imageConfig)
                         {
-                            if (ImgResult.Item1)
+                            if (ImgResult!=null && ImgResult.Item1)
                             {
                                 await _resizeImageService.Resize(new GetImageRequest<long>()
                                 {

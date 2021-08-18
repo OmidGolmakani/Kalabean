@@ -64,7 +64,7 @@ namespace Kalabean.Infrastructure.Files
             return true;
         }
 
-        public bool SaveTypeImage(Stream stream, int typeId)
+        public Tuple<bool,string> SaveTypeImage(Stream stream, int typeId)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Types_Sub_Directory);
             if (!_fileProvider.DirectoryExists(path))
@@ -72,7 +72,7 @@ namespace Kalabean.Infrastructure.Files
             // TODO: What about other extensions like jpg and so on.
             string filePath = _fileProvider.Combine(path, $"{typeId}.jpeg");
             saveStreamAsFile(filePath, stream);
-            return true;
+            return new Tuple<bool, string>(true, filePath);
         }
 
         public bool DeleteTypeImage(int typeId)
@@ -84,7 +84,7 @@ namespace Kalabean.Infrastructure.Files
             return true;
         }
 
-        public bool SaveShoppingCenterImage(Stream stream, int id)
+        public Tuple<bool,string> SaveShoppingCenterImage(Stream stream, int id)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Shoppings_Sub_Directory);
             if (!_fileProvider.DirectoryExists(path))
@@ -92,7 +92,7 @@ namespace Kalabean.Infrastructure.Files
             // TODO: What about other extensions like jpg and so on.
             string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
             saveStreamAsFile(filePath, stream);
-            return true;
+            return new Tuple<bool, string>(true, filePath);
         }
 
         public bool DeleteShoppingCenterImage(int id)
