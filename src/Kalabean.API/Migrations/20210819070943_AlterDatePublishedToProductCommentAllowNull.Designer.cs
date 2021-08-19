@@ -4,14 +4,16 @@ using Kalabean.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kalabean.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210819070943_AlterDatePublishedToProductCommentAllowNull")]
+    partial class AlterDatePublishedToProductCommentAllowNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -444,7 +446,7 @@ namespace Kalabean.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("AdminId")
+                    b.Property<long>("AdminId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("CreatedBy")
@@ -1304,7 +1306,9 @@ namespace Kalabean.API.Migrations
                 {
                     b.HasOne("Kalabean.Domain.Entities.User", "AdminUser")
                         .WithMany("ProductCommentAdmins")
-                        .HasForeignKey("AdminId");
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Kalabean.Domain.Entities.Product", "Product")
                         .WithMany("ProductComments")

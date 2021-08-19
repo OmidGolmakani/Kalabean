@@ -33,6 +33,7 @@ namespace Kalabean.Domain.Entities
         public ICollection<ProductImage> ProductImages { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
         public ICollection<Requirement> Requirements { get; set; }
+        public ICollection<ProductComment> ProductComments { get; set; }
 
     }
 }

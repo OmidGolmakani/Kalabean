@@ -37,6 +37,7 @@ namespace Kalabean.Infrastructure
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<RequirementUserSeen> RequirementUserSeens { get; set; }
         public DbSet<Article> Articles { get; set; }
+        public DbSet<ProductComment> ProductComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,7 +57,7 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new RoleEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new RolePermissionEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new ArticleEntitySchemaDefinition());
-            modelBuilder.ApplyConfiguration(new RequirementEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new ProductCommentEntitySchemaDefinition());
 
             base.OnModelCreating(modelBuilder);
 
