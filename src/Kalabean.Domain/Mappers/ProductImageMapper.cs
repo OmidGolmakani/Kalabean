@@ -16,10 +16,8 @@ namespace Kalabean.Domain.Mappers
             if (request == null) return null;
             var response = new ProductImage()
             {
-                Id = 0,
                 IsDeleted = false,
-                ProductId = request.ProductId,
-                Extention = request.Extention
+                ProductId = request.ProductId
             };
             return response;
         }
@@ -30,22 +28,19 @@ namespace Kalabean.Domain.Mappers
             var response = new ProductImage()
             {
                 Id = request.Id,
-                IsDeleted = false,
                 ProductId = request.ProductId,
                 Extention = request.Extention
             };
             return response;
         }
 
-        public ProductImageResponse Map(ProductImage request)
+        public ProductImageResponse Map(ProductImage image)
         {
-            if (request == null) return null;
-            var response = new ProductImageResponse()
+            if (image == null) return null;
+            var response = new ProductImageResponse
             {
-                Id = request.Id,
-                Extention = request.Extention,
-                ProductId = request.ProductId
-                //ProductThumb = _product.MapThumb(request.Product)
+                Id = image.Id,
+                ImageUrl = $"/KL_ImagesRepo/Products/250_250/{image.Id}.jpeg"
             };
             return response;
         }

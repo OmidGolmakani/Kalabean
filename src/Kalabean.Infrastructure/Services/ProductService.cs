@@ -14,6 +14,8 @@ using Kalabean.Infrastructure.AppSettingConfigs.Images;
 using Microsoft.Extensions.Options;
 using Kalabean.Domain.Requests.ResizeImage;
 using System.Drawing;
+using Kalabean.Domain.Entities;
+using Kalabean.Domain.Requests.ProductImage;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -68,14 +70,17 @@ namespace Kalabean.Infrastructure.Services
             var result = _ProductRepository.Add(item);
 
             Tuple<bool, string> ImgResult = null;
-
-            if (await _unitOfWork.CommitAsync() > 0 &&
-               request.Images != null && request.Images.Count() != 0)
+            int commited = await _unitOfWork.CommitAsync();
+            if (commited > 0 &&
+               item.ProductImages != null && item.ProductImages.Count > 0 &&
+               request.Images.Count() == item.ProductImages.Count)
             {
-                foreach (var img in request.Images)
+                int totalIndex = item.ProductImages.Count;
+                var productImages = item.ProductImages;
+                foreach (var productImage in productImages)
                 {
-                    using (var fileContent = img.OpenReadStream())
-                        ImgResult = _fileProvider.SaveProductImage(fileContent, result.Id);
+                    using (var fileContent = request.Images.ElementAt(--totalIndex).OpenReadStream())
+                        ImgResult = _fileProvider.SaveProductImage(fileContent, productImage.Id);
 
                     foreach (var ImageResize in _imageConfig)
                     {
@@ -83,7 +88,7 @@ namespace Kalabean.Infrastructure.Services
                         {
                             await _resizeImageService.Resize(new GetImageRequest<long>()
                             {
-                                Id = result.Id,
+                                Id = productImage.Id,
                                 ImageSize = new Size(ImageResize.Width, ImageResize.Height),
                                 ImageUrl = ImgResult.Item2,
                                 Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
@@ -91,6 +96,13 @@ namespace Kalabean.Infrastructure.Services
                         }
                     }
                 }
+            }
+
+            if (commited > 0 &&
+                request.File != null)
+            {
+                using (var fileContent = request.File.OpenReadStream())
+                    _fileProvider.SaveProductFile(fileContent, result.Id, item.FileExtention);
             }
             return _ProductMapper.Map(await _ProductRepository.GetById(result.Id));
         }
@@ -100,10 +112,63 @@ namespace Kalabean.Infrastructure.Services
 
             if (existingRecord == null)
                 throw new ArgumentException($"Entity with {request.Id} is not present");
+            var item = _ProductMapper.Map(request);
+            List<ProductImage> addedImages = null;
+            if (request.Images != null && request.Images.Count() > 0)
+            {
+                addedImages = new List<ProductImage>();
+                foreach (var image in request.Images)
+                {
+                    addedImages.Add( _ProductImageRepository.Add(this._ProductImageMapper.
+                    Map(new AddProductImageRequest
+                    {
+                        ProductId = existingRecord.Id
+                    })));
+                }
+            }
+            if (request.Removed != null && request.Removed.Count() > 0)
+            {
+                foreach (int i in request.Removed)
+                {
+                    _ProductImageRepository.Delete(new ProductImage { Id = i });
+                    _fileProvider.DeleteProductImage(i);
+                }
+            }
+            item.HasFile = item.HasFile || (!request.FileEdited && existingRecord.HasFile);
+            var result = _ProductRepository.Update(item);
+            int commited = await _unitOfWork.CommitAsync();
 
-            var entity = _ProductMapper.Map(request);
-            var result = _ProductRepository.Update(entity);
-            await _unitOfWork.CommitAsync();
+            if (commited > 0 &&
+                request.File != null)
+            {
+                using (var fileContent = request.File.OpenReadStream())
+                    _fileProvider.SaveProductFile(fileContent, result.Id, result.FileExtention);
+            }
+            if (commited > 0 &&
+                addedImages != null)
+            {
+                int totalIndex = addedImages.Count;
+                foreach (var image in addedImages)
+                {
+                    Tuple<bool, string> ImgResult = null;
+                    using (var fileContent = request.Images.ElementAt(--totalIndex).OpenReadStream())
+                        ImgResult = _fileProvider.SaveProductImage(fileContent, image.Id);
+                    foreach (var ImageResize in _imageConfig)
+                    {
+                        if (ImgResult.Item1)
+                        {
+                            await _resizeImageService.Resize(new GetImageRequest<long>()
+                            {
+                                Id = image.Id,
+                                ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                                ImageUrl = ImgResult.Item2,
+                                Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                            });
+                        }
+                    }
+                }
+                    
+            }
             return _ProductMapper.Map(await _ProductRepository.GetById(result.Id));
         }
 

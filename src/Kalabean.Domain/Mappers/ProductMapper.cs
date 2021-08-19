@@ -50,8 +50,13 @@ namespace Kalabean.Domain.Mappers
                 Barcode = request.Barcode,
                 CompanyName = request.CompanyName,
                 HtmlContent = request.HtmlContent,
-                Keywords = request.Keywords,
+                Keywords = request.Keywords
             };
+
+            product.HasFile = request.File != null && request.File.Length > 0;
+            product.FileExtention = product.HasFile ?
+                System.IO.Path.GetExtension(request.File.FileName) :
+                null;
 
             if (request.Images != null)
             {
@@ -73,14 +78,14 @@ namespace Kalabean.Domain.Mappers
         public Product Map(EditProductRequest request)
         {
             if (request == null) return null;
-            var response = new Product()
+            Product product = new Product()
             {
+                Id = request.Id,
                 CategoryId = request.CategoryId,
-                Manufacturer = request.Creator,
-                ArchivingDate = request.DateArchive,
-                PublishingDate = request.DatePublish,
+                Manufacturer = request.Manufacturer,
+                ArchivingDate = request.ArchivingDate,
+                PublishingDate = request.PublishingDate,
                 Discount = request.Discount,
-                IsDeleted = false,
                 Num = request.Num,
                 Order = request.Order,
                 Price = request.Price,
@@ -91,50 +96,75 @@ namespace Kalabean.Domain.Mappers
                 Description = request.Description,
                 Model = request.Model,
                 Properties = request.Properties,
-                IsEnabled = request.Publish,
+                IsEnabled = request.IsEnabled,
                 Series = request.Series,
-                Id = request.Id,
+                Barcode = request.Barcode,
+                CompanyName = request.CompanyName,
+                HtmlContent = request.HtmlContent,
+                Keywords = request.Keywords
             };
-            return response;
+            if (request.FileEdited)
+            {
+                product.HasFile = request.File != null && request.File.Length > 0;
+                product.FileExtention = product.HasFile ?
+                    System.IO.Path.GetExtension(request.File.FileName) :
+                    null;
+            }
+
+            return product;
         }
 
-        public ProductResponse Map(Product request)
+        public ProductResponse Map(Product product)
         {
-            if (request == null) return null;
+            if (product == null) return null;
             var response = new ProductResponse()
             {
-                CategoryId = request.CategoryId,
-                Id= request.Id,
-                Creator = request.Manufacturer,
-                DateArchive = request.ArchivingDate,
-                DatePublish = request.PublishingDate,
-                Discount = request.Discount,
-                Num = request.Num,
-                Order = request.Order,
-                Price = request.Price,
-                ProductName = request.ProductName,
-                StoreId = request.StoreId,
-                Description = request.Description,
-                IsNew = request.IsNew,
-                LinkProduct = request.LinkProduct,
-                Model = request.Model,
-                Properties = request.Properties,
-                Publish = request.IsEnabled,
-                Series = request.Series,
-                CategoryThumb = _categoryMapper.MapThumb(request.Category),
-                StoreThumb = _storeMapper.MapThumb(request.Store)
+
+                Id = product.Id,
+                Manufacturer = product.Manufacturer,
+                ArchivingDate = product.ArchivingDate,
+                PublishingDate = product.PublishingDate,
+                Discount = product.Discount,
+                Num = product.Num,
+                Order = product.Order,
+                Price = product.Price,
+                ProductName = product.ProductName,
+                Description = product.Description,
+                IsNew = product.IsNew,
+                LinkProduct = product.LinkProduct,
+                Model = product.Model,
+                Properties = product.Properties,
+                IsEnabled = product.IsEnabled,
+                Series = product.Series,
+                CategoryThumb = _categoryMapper.MapThumb(product.Category),
+                StoreThumb = _storeMapper.MapThumb(product.Store),
+                Barcode = product.Barcode,
+                CompanyName = product.CompanyName,
+                HtmlContent = product.HtmlContent,
+                Keywords = product.Keywords
             };
+
+            if (product.ProductImages != null && product.ProductImages.Count > 0)
+            {
+                response.Images = new List<ProductImageResponse>();
+                foreach (var image in product.ProductImages)
+                {
+                    response.Images.Add(this._productImageMapper.Map(image));
+                };
+            }
+            if (product.HasFile)
+                response.FileUrl = $"/KL_ImagesRepo/Files/Products/{product.Id}{product.FileExtention}";
             return response;
         }
 
-        public ThumbResponse<long> MapThumb(Product request)
+    public ThumbResponse<long> MapThumb(Product request)
+    {
+        var response = new ThumbResponse<long>()
         {
-            var response = new ThumbResponse<long>()
-            {
-                Id = request.Id,
-                Name = request.ProductName
-            };
-            return response;
-        }
+            Id = request.Id,
+            Name = request.ProductName
+        };
+        return response;
     }
+}
 }

@@ -167,6 +167,17 @@ namespace Kalabean.Infrastructure.Files
                 _fileProvider.DeleteFile(filePath);
             return true;
         }
+        public bool SaveProductFile(Stream stream, long id, string extention)
+        {
+            string path = _fileProvider.Combine(File_Base_Path, Products_Sub_Directory);
+            if (!_fileProvider.DirectoryExists(path))
+                _fileProvider.CreateDirectory(path);
+
+            string filePath = _fileProvider.Combine(path, $"{id}{extention}");
+            saveStreamAsFile(filePath, stream);
+            return true;
+        }
+
         public bool SaveArticleFile(Stream stream, long id, string extention)
         {
             string path = _fileProvider.Combine(File_Base_Path, Articles_Sub_Directory);
@@ -180,6 +191,14 @@ namespace Kalabean.Infrastructure.Files
         public bool DeleteArticleFile(long id, string extention)
         {
             string path = _fileProvider.Combine(File_Base_Path, Articles_Sub_Directory);
+            string filePath = _fileProvider.Combine(path, $"{id}{extention}");
+            if (File.Exists(filePath))
+                _fileProvider.DeleteFile(filePath);
+            return true;
+        }
+        public bool DeleteProductFile(long id, string extention)
+        {
+            string path = _fileProvider.Combine(File_Base_Path, Products_Sub_Directory);
             string filePath = _fileProvider.Combine(path, $"{id}{extention}");
             if (File.Exists(filePath))
                 _fileProvider.DeleteFile(filePath);

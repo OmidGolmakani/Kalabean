@@ -30,6 +30,8 @@ namespace Kalabean.Domain.Entities
         public string Properties { get; set; }
         public string Description { get; set; }
         public string HtmlContent { get; set; }
+        public bool HasFile { get; set; }
+        public string FileExtention { get; set; }
         public bool IsNew { get; set; }
         public bool IsEnabled { get; set; }
         public Store Store { get; set; }

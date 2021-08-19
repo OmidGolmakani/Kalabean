@@ -19,6 +19,7 @@ namespace Kalabean.Infrastructure.Repositories
                 .Where(p => p.Id == id && (includeDeleted || !p.IsDeleted))
                 .Include(p => p.Category)
                 .Include(p => p.Store)
+                .Include(p => p.ProductImages)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
