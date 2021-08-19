@@ -23,8 +23,9 @@ namespace Kalabean.Infrastructure.Services
         private readonly IShoppingCenterTypeRepository _typeRepository;
         private readonly IShoppingCenterTypeMapper _typeMapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly KalabeanFileProvider _fileProvider;
         private readonly IResizeImageService<int> _resizeImageService;
+        private readonly KalabeanFileProvider _fileProvider;
+        
 
         private readonly List<ImageSize> _imageConfig;
 
@@ -33,13 +34,12 @@ namespace Kalabean.Infrastructure.Services
             IUnitOfWork unitOfWork,
             IResizeImageService<int> imageService,
             IOptions<ImageSize> ImageConfig,
-            IResizeImageService<int> ResizeImageService,
             IFileAccessProvider fileProvider)
         {
             _typeRepository = typeRepository;
             _typeMapper = typeMapper;
             _unitOfWork = unitOfWork;
-            _resizeImageService = ResizeImageService;
+            _resizeImageService = imageService;
             _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.ShoppingCenterTypes).ToList();
             _fileProvider = new KalabeanFileProvider(fileProvider);
         }
@@ -62,7 +62,7 @@ namespace Kalabean.Infrastructure.Services
             var result = _typeRepository.Add(item);
             Tuple<bool, string> ImgResult = null;
             if (await _unitOfWork.CommitAsync() > 0 &&
-                request.Image != null)
+                            request.Image != null)
             {
                 using (var fileContent = request.Image.OpenReadStream())
                     ImgResult = _fileProvider.SaveTypeImage(fileContent, result.Id);
@@ -91,12 +91,12 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _typeMapper.Map(request);
-
             entity.HasImage = entity.HasImage || (!request.ImageEdited && existingRecord.HasImage);
-            if (entity.HasImage || request.Image != null)
+            if (request.ImageEdited)
             {
-                if (request.ImageEdited)
+                if (entity.HasImage || request.Image != null)
                 {
+
                     Tuple<bool, string> ImgResult = null;
                     if (request.Image != null)
                     {

@@ -65,14 +65,15 @@ namespace Kalabean.Infrastructure.Services
             var result = _shoppingRepository.Add(item);
             Tuple<bool, string> ImgResult = null;
             if (await _unitOfWork.CommitAsync() > 0 &&
-                request.Image != null)
+                            request.Image != null)
             {
                 using (var fileContent = request.Image.OpenReadStream())
                     ImgResult = _fileProvider.SaveShoppingCenterImage(fileContent, result.Id);
+
                 foreach (var ImageResize in _imageConfig)
                 {
 
-                    if (ImgResult.Item1)
+                    if (ImgResult != null && ImgResult.Item1)
                     {
                         await _resizeImageService.Resize(new GetImageRequest<int>()
                         {
@@ -95,10 +96,11 @@ namespace Kalabean.Infrastructure.Services
 
             var entity = _shoppingMapper.Map(request);
             entity.HasImage = entity.HasImage || (!request.ImageEdited && existingRecord.HasImage);
-            if (entity.HasImage || request.Image != null)
+            if (request.ImageEdited)
             {
-                if (request.ImageEdited)
+                if (entity.HasImage || request.Image != null)
                 {
+
                     Tuple<bool, string> ImgResult = null;
                     if (request.Image != null)
                     {

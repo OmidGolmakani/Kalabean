@@ -56,28 +56,27 @@ namespace Kalabean.Infrastructure.Services
             var item = _storeMapper.Map(request);
             item.HasImage = request.Image != null;
             var result = _storeRepository.Add(item);
-            Tuple<bool, string> imgResult = null;
+            Tuple<bool, string> ImgResult = null;
             if (await _unitOfWork.CommitAsync() > 0 &&
                 request.Image != null)
             {
                 using (var fileContent = request.Image.OpenReadStream())
-                    imgResult = _fileProvider.SaveStoreImage(fileContent, result.Id);
+                    ImgResult = _fileProvider.SaveStoreImage(fileContent, result.Id);
+
                 foreach (var ImageResize in _imageConfig)
                 {
 
-                    if (imgResult.Item1)
+                    if (ImgResult != null && ImgResult.Item1)
                     {
                         await _resizeImageService.Resize(new GetImageRequest<long>()
                         {
                             Id = result.Id,
                             ImageSize = new Size(ImageResize.Width, ImageResize.Height),
-                            ImageUrl = imgResult.Item2,
+                            ImageUrl = ImgResult.Item2,
                             Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
                         });
                     }
                 }
-
-                
             }
             return _storeMapper.Map(await _storeRepository.GetById(result.Id));
         }

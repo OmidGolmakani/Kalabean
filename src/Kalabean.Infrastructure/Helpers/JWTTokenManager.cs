@@ -207,6 +207,11 @@ namespace Kalabean.Infrastructure.Helpers
         {
             try
             {
+                if(HttpContext.Request.Headers
+                        .Count(x => x.Key == "Authorization") == 0)
+                {
+                    return -1;
+                }
                 if (token == "")
                 {
                     token = HttpContext.Request.Headers

@@ -21,5 +21,15 @@ namespace Kalabean.Infrastructure.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
+
+        public Task<OrderDetail> GetByOrderId(long OrderId, bool includeDeleted = false)
+        {
+            return this.DbSet
+                .Where(p => p.OrderId == OrderId && (includeDeleted || !p.IsDeleted))
+                .Include(p => p.Product)
+                .Include(p => p.OrderHeader)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
     }
 }

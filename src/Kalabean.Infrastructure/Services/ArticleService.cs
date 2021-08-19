@@ -30,7 +30,7 @@ namespace Kalabean.Infrastructure.Services
                               IUnitOfWork unitOfWork,
                               KalabeanFileProvider fileProvider,
                               IOptions<ImageSize> imageConfig,
-                              IResizeImageService<long>  resizeImageService)
+                              IResizeImageService<long> resizeImageService)
         {
             _ArticleRepository = ArticleRepository;
             _ArticleMapper = ArticleMapper;
@@ -99,10 +99,11 @@ namespace Kalabean.Infrastructure.Services
             var entity = _ArticleMapper.Map(request);
             entity.AdminId = Helpers.JWTTokenManager.GetUserIdByToken();
             entity.HasImage = entity.HasImage || (!request.ImageEdited && existingRecord.HasImage);
-            if (entity.HasImage || request.Image != null)
+            if (request.ImageEdited)
             {
-                if (request.ImageEdited)
+                if (entity.HasImage || request.Image != null)
                 {
+
                     Tuple<bool, string> ImgResult = null;
                     if (request.Image != null)
                     {
@@ -125,11 +126,12 @@ namespace Kalabean.Infrastructure.Services
                             }
                         }
                     }
-                    else
-                    {
-                        _fileProvider.DeleteArticleImage(entity.Id);
-                        entity.HasImage = false;
-                    }
+
+                }
+                else
+                {
+                    _fileProvider.DeleteArticleImage(entity.Id);
+                    entity.HasImage = false;
                 }
             }
 

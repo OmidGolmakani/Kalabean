@@ -31,7 +31,7 @@ namespace Kalabean.Domain.Entities
         public ICollection<Store> Stores { get; set; }
         public ICollection<Article> Articles { get; set; }
         public RequirementUserSeen RequiremenUserSeen { get; set; }
-
-
+        public ICollection<ProductComment> ProductCommentUsers { get; set; }
+        public ICollection<ProductComment> ProductCommentAdmins { get; set; }
     }
 }

@@ -31,7 +31,6 @@ namespace Kalabean.Infrastructure.Services
                            ICityMapper cityMapper,
                            IUnitOfWork unitOfWork,
                            IFileAccessProvider fileProvider,
-                           IResizeImageService<long> imageService,
                            IOptions<ImageSize> ImageConfig,
                            IResizeImageService<int> ResizeImageService)
         {
@@ -69,7 +68,7 @@ namespace Kalabean.Infrastructure.Services
                 foreach (var ImageResize in _imageConfig)
                 {
 
-                    if (ImgResult.Item1)
+                    if (ImgResult != null && ImgResult.Item1)
                     {
                         await _resizeImageService.Resize(new GetImageRequest<int>()
                         {
@@ -92,10 +91,11 @@ namespace Kalabean.Infrastructure.Services
 
             var entity = _cityMapper.Map(request);
             entity.HasImage = entity.HasImage || (!request.ImageEdited && existingRecord.HasImage);
-            if (entity.HasImage || request.Image != null)
+            if (request.ImageEdited)
             {
-                if (request.ImageEdited)
+                if (entity.HasImage || request.Image != null)
                 {
+
                     Tuple<bool, string> ImgResult = null;
                     if (request.Image != null)
                     {
@@ -105,7 +105,7 @@ namespace Kalabean.Infrastructure.Services
 
                         foreach (var ImageResize in _imageConfig)
                         {
-                            if (ImgResult.Item1)
+                            if (ImgResult != null && ImgResult.Item1)
                             {
                                 await _resizeImageService.Resize(new GetImageRequest<int>()
                                 {
@@ -117,11 +117,12 @@ namespace Kalabean.Infrastructure.Services
                             }
                         }
                     }
-                    else
-                    {
-                        _fileProvider.DeleteCityImage(entity.Id);
-                        entity.HasImage = false;
-                    }
+
+                }
+                else
+                {
+                    _fileProvider.DeleteCityImage(entity.Id);
+                    entity.HasImage = false;
                 }
             }
             var result = _cityRepository.Update(entity);
