@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
-    [Route("api/productcomment")]
+    [Route("api/productcomments")]
     public class ProductCommentController : BaseController
     {
         IProductCommentService _productCommentService = null;
