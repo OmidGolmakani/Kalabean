@@ -10,7 +10,7 @@ namespace Kalabean.Domain.Services
 {
     public interface IProductCommentService
     {
-        Task<ListPageingResponse<ProductCommentResponse>> GetProductCommentsAsync(GetProductCommentsRequest request);
+        Task<ListPagingResponse<ProductCommentResponse>> GetProductCommentsAsync(GetProductCommentsRequest request);
         Task<ProductCommentResponse> GetProductCommentAsync(GetProductCommentRequest request);
         Task<ProductCommentResponse> AddProductCommentAsync(AddProductCommentRequest request);
         Task<ProductCommentResponse> EditProductCommentAsync(EditProductCommentRequest request);

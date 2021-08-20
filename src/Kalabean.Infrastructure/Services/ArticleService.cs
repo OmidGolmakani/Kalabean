@@ -40,12 +40,12 @@ namespace Kalabean.Infrastructure.Services
             this._fileProvider = fileProvider;
         }
 
-        public async Task<ListPageingResponse<ArticleResponse>> GetArticlesAsync(GetArticlesRequest request)
+        public async Task<ListPagingResponse<ArticleResponse>> GetArticlesAsync(GetArticlesRequest request)
         {
             var result = await _ArticleRepository.Get(request);
             var list = result.Select(c => _ArticleMapper.Map(c));
             var count = await _ArticleRepository.Count(request);
-            return new ListPageingResponse<ArticleResponse>() { Items = list, RecordCount = count };
+            return new ListPagingResponse<ArticleResponse>() { Items = list, Total = count };
         }
         public async Task<ArticleResponse> GetArticleAsync(GetArticleRequest request)
         {
@@ -98,6 +98,7 @@ namespace Kalabean.Infrastructure.Services
 
             var entity = _ArticleMapper.Map(request);
             entity.AdminId = Helpers.JWTTokenManager.GetUserIdByToken();
+            entity.HasImage = entity.HasImage || (!request.ImageEdited && existingRecord.HasImage);
             if (request.ImageEdited)
             {
                 if (entity.HasImage || request.Image != null)
@@ -134,6 +135,8 @@ namespace Kalabean.Infrastructure.Services
                 }
             }
 
+            entity.HasFile = entity.HasFile ||
+                (existingRecord.HasFile && !request.FileEdited);
             if (entity.HasFile || request.File != null)
             {
                 if (request.FileEdited)

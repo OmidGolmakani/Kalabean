@@ -25,9 +25,9 @@ namespace Kalabean.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<CategoryResponse>> GetCategoriesAsync()
+        public async Task<IEnumerable<CategoryResponse>> GetCategoriesAsync(GetCategoriesRequest request)
         {
-            var result = await _categoryRepository.Get();
+            var result = await _categoryRepository.Get(request.Name, request.ParentId);
             return result.Select(c => _categoryMapper.Map(c));
         }
         public async Task<CategoryResponse> GetCategoryAsync(GetCategoryRequest request)

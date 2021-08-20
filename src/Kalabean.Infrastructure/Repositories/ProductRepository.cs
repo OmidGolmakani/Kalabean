@@ -19,6 +19,7 @@ namespace Kalabean.Infrastructure.Repositories
                 .Where(p => p.Id == id && (includeDeleted || !p.IsDeleted))
                 .Include(p => p.Category)
                 .Include(p => p.Store)
+                .Include(p => p.ProductImages)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
@@ -30,7 +31,7 @@ namespace Kalabean.Infrastructure.Repositories
                            (string.IsNullOrEmpty(request.ProductName) || p.ProductName.Contains(request.ProductName) &&
                            (request.CategoryId == null || p.CategoryId == request.CategoryId) &&
                            (request.StoreId == null || p.StoreId == request.StoreId) &&
-                           (request.Publish == null || p.Publish == request.Publish) &&
+                           (request.Publish == null || p.IsEnabled == request.Publish) &&
                            (request.IsNew == null || p.IsNew == request.IsNew))
                 )
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
@@ -44,7 +45,7 @@ namespace Kalabean.Infrastructure.Repositories
                            (string.IsNullOrEmpty(request.ProductName) || p.ProductName.Contains(request.ProductName) &&
                            (request.CategoryId == null || p.CategoryId == request.CategoryId) &&
                            (request.StoreId == null || p.StoreId == request.StoreId) &&
-                           (request.Publish == null || p.Publish == request.Publish) &&
+                           (request.Publish == null || p.IsEnabled == request.Publish) &&
                            (request.IsNew == null || p.IsNew == request.IsNew))
                 ).Count();
         }

@@ -20,9 +20,9 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(GetCategoriesRequest request)
         {
-            return Ok(await _categoryService.GetCategoriesAsync());
+            return Ok(await _categoryService.GetCategoriesAsync(request));
         }
 
         [HttpGet("{id}")]

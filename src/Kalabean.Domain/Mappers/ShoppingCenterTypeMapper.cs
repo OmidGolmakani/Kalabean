@@ -59,6 +59,7 @@ namespace Kalabean.Domain.Mappers
                 Name = type.Name,
                 Order = type.Order,
                 Description = type.Description,
+                HtmlContent  =type.HtmlContent,
                 ImageUrl = null
             };
             if (type.HasImage)

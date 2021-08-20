@@ -55,16 +55,7 @@ namespace Kalabean.Infrastructure.Files
             return new Tuple<bool, string>(true, filePath);
         }
 
-        public bool DeleteCityImage(int cityId)
-        {
-            string path = _fileProvider.Combine(Image_Base_Path, Cities_Sub_Directory);
-            string filePath = _fileProvider.Combine(path, $"{cityId}.jpeg");
-            if (File.Exists(filePath))
-                _fileProvider.DeleteFile(filePath);
-            return true;
-        }
-
-        public Tuple<bool,string> SaveTypeImage(Stream stream, int typeId)
+        public Tuple<bool, string>  SaveTypeImage(Stream stream, int typeId)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Types_Sub_Directory);
             if (!_fileProvider.DirectoryExists(path))
@@ -73,6 +64,15 @@ namespace Kalabean.Infrastructure.Files
             string filePath = _fileProvider.Combine(path, $"{typeId}.jpeg");
             saveStreamAsFile(filePath, stream);
             return new Tuple<bool, string>(true, filePath);
+        }
+
+        public bool DeleteCityImage(int cityId)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Cities_Sub_Directory);
+            string filePath = _fileProvider.Combine(path, $"{cityId}.jpeg");
+            if (File.Exists(filePath))
+                _fileProvider.DeleteFile(filePath);
+            return true;
         }
 
         public bool DeleteTypeImage(int typeId)
@@ -84,7 +84,7 @@ namespace Kalabean.Infrastructure.Files
             return true;
         }
 
-        public Tuple<bool,string> SaveShoppingCenterImage(Stream stream, int id)
+        public Tuple<bool, string> SaveShoppingCenterImage(Stream stream, int id)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Shoppings_Sub_Directory);
             if (!_fileProvider.DirectoryExists(path))
@@ -149,7 +149,7 @@ namespace Kalabean.Infrastructure.Files
                 _fileProvider.DeleteFile(filePath);
             return true;
         }
-        public bool SaveProductImage(Stream stream, long id)
+        public Tuple<bool, string> SaveProductImage(Stream stream, long id)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Products_Sub_Directory);
             if (!_fileProvider.DirectoryExists(path))
@@ -157,7 +157,7 @@ namespace Kalabean.Infrastructure.Files
             // TODO: What about other extensions like jpg and so on.
             string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
             saveStreamAsFile(filePath, stream);
-            return true;
+            return new Tuple<bool, string>(true, filePath);
         }
         public bool DeleteProductImage(int id)
         {
@@ -167,6 +167,17 @@ namespace Kalabean.Infrastructure.Files
                 _fileProvider.DeleteFile(filePath);
             return true;
         }
+        public bool SaveProductFile(Stream stream, long id, string extention)
+        {
+            string path = _fileProvider.Combine(File_Base_Path, Products_Sub_Directory);
+            if (!_fileProvider.DirectoryExists(path))
+                _fileProvider.CreateDirectory(path);
+
+            string filePath = _fileProvider.Combine(path, $"{id}{extention}");
+            saveStreamAsFile(filePath, stream);
+            return true;
+        }
+
         public bool SaveArticleFile(Stream stream, long id, string extention)
         {
             string path = _fileProvider.Combine(File_Base_Path, Articles_Sub_Directory);
@@ -180,6 +191,14 @@ namespace Kalabean.Infrastructure.Files
         public bool DeleteArticleFile(long id, string extention)
         {
             string path = _fileProvider.Combine(File_Base_Path, Articles_Sub_Directory);
+            string filePath = _fileProvider.Combine(path, $"{id}{extention}");
+            if (File.Exists(filePath))
+                _fileProvider.DeleteFile(filePath);
+            return true;
+        }
+        public bool DeleteProductFile(long id, string extention)
+        {
+            string path = _fileProvider.Combine(File_Base_Path, Products_Sub_Directory);
             string filePath = _fileProvider.Combine(path, $"{id}{extention}");
             if (File.Exists(filePath))
                 _fileProvider.DeleteFile(filePath);

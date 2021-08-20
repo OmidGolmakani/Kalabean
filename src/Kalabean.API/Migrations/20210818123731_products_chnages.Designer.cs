@@ -4,14 +4,16 @@ using Kalabean.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kalabean.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210818123731_products_chnages")]
+    partial class products_chnages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -374,12 +376,6 @@ namespace Kalabean.API.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("FileExtention")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("HasFile")
-                        .HasColumnType("bit");
-
                     b.Property<string>("HtmlContent")
                         .HasColumnType("nvarchar(max)");
 
@@ -453,78 +449,6 @@ namespace Kalabean.API.Migrations
                     b.HasIndex("StoreId");
 
                     b.ToTable("Product");
-                });
-
-            modelBuilder.Entity("Kalabean.Domain.Entities.ProductComment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long?>("AdminId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DatePublished")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Family")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
-
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
-
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdminId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ProductComment");
                 });
 
             modelBuilder.Entity("Kalabean.Domain.Entities.ProductImage", b =>
@@ -1318,29 +1242,6 @@ namespace Kalabean.API.Migrations
                     b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("Kalabean.Domain.Entities.ProductComment", b =>
-                {
-                    b.HasOne("Kalabean.Domain.Entities.User", "AdminUser")
-                        .WithMany("ProductCommentAdmins")
-                        .HasForeignKey("AdminId");
-
-                    b.HasOne("Kalabean.Domain.Entities.Product", "Product")
-                        .WithMany("ProductComments")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Kalabean.Domain.Entities.User", "User")
-                        .WithMany("ProductCommentUsers")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("AdminUser");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Kalabean.Domain.Entities.ProductImage", b =>
                 {
                     b.HasOne("Kalabean.Domain.Entities.Product", "Product")
@@ -1553,8 +1454,6 @@ namespace Kalabean.API.Migrations
                 {
                     b.Navigation("OrderDetails");
 
-                    b.Navigation("ProductComments");
-
                     b.Navigation("ProductImages");
 
                     b.Navigation("Requirements");
@@ -1591,10 +1490,6 @@ namespace Kalabean.API.Migrations
                     b.Navigation("Articles");
 
                     b.Navigation("OrderHeaders");
-
-                    b.Navigation("ProductCommentAdmins");
-
-                    b.Navigation("ProductCommentUsers");
 
                     b.Navigation("RequirementAdmins");
 

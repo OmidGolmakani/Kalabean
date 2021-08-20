@@ -11,26 +11,28 @@ namespace Kalabean.Domain.Mappers
 {
     public class ProductMapper : IProductMapper
     {
-        private readonly ICategoryMapper _category;
-        private readonly IStoreMapper _store;
-        private readonly IProductImageMapper _productImage;
+        private readonly ICategoryMapper _categoryMapper;
+        private readonly IStoreMapper _storeMapper;
+        private readonly IProductImageMapper _productImageMapper;
 
-        public ProductMapper(ICategoryMapper category,
-                             IStoreMapper store)
+        public ProductMapper(ICategoryMapper categoryMapper,
+                             IStoreMapper storeMapper,
+                             IProductImageMapper productImageMapper)
         {
-            this._category = category;
-            this._store = store;
+            this._categoryMapper = categoryMapper;
+            this._storeMapper = storeMapper;
+            this._productImageMapper = productImageMapper;
         }
 
         public Product Map(AddProductRequest request)
         {
             if (request == null) return null;
-            var response = new Product()
+            Product product = new Product()
             {
                 CategoryId = request.CategoryId,
-                Creator = request.Creator,
-                DateArchive = (Helper.PersionDate.GetMiladi(request.DateArchive) ?? DateTime.Now),
-                DatePublish = (Helper.PersionDate.GetMiladi(request.DatePublish) ?? DateTime.Now),
+                Manufacturer = request.Manufacturer,
+                ArchivingDate = request.ArchivingDate,
+                PublishingDate = request.PublishingDate,
                 Discount = request.Discount,
                 IsDeleted = false,
                 Num = request.Num,
@@ -43,39 +45,47 @@ namespace Kalabean.Domain.Mappers
                 Description = request.Description,
                 Model = request.Model,
                 Properties = request.Properties,
-                Publish = request.Publish,
+                IsEnabled = request.IsEnabled,
                 Series = request.Series,
-                Id = 0
+                Barcode = request.Barcode,
+                CompanyName = request.CompanyName,
+                HtmlContent = request.HtmlContent,
+                Keywords = request.Keywords
             };
+
+            product.HasFile = request.File != null && request.File.Length > 0;
+            product.FileExtention = product.HasFile ?
+                System.IO.Path.GetExtension(request.File.FileName) :
+                null;
+
             if (request.Images != null)
             {
+                product.ProductImages = new List<ProductImage>();
                 foreach (var pi in request.Images)
                 {
                     var _pi = new ProductImage()
                     {
-                        Product = response,
-                        Id = 0,
+                        Product = product,
                         IsDeleted = false,
-                        ProductId = 0,
                         Extention = System.IO.Path.GetExtension(pi.FileName)
                     };
-                    response.ProductImages.Add(_pi);
+                    product.ProductImages.Add(_pi);
                 }
             }
-            return response;
+            return product;
         }
 
         public Product Map(EditProductRequest request)
         {
             if (request == null) return null;
-            var response = new Product()
+            Product product = new Product()
             {
+                Id = request.Id,
                 CategoryId = request.CategoryId,
-                Creator = request.Creator,
-                DateArchive = (Helper.PersionDate.GetMiladi(request.DateArchive) ?? DateTime.Now),
-                DatePublish = (Helper.PersionDate.GetMiladi(request.DatePublish) ?? DateTime.Now),
+                Manufacturer = request.Manufacturer,
+                ArchivingDate = request.ArchivingDate,
+                PublishingDate = request.PublishingDate,
                 Discount = request.Discount,
-                IsDeleted = false,
                 Num = request.Num,
                 Order = request.Order,
                 Price = request.Price,
@@ -86,50 +96,75 @@ namespace Kalabean.Domain.Mappers
                 Description = request.Description,
                 Model = request.Model,
                 Properties = request.Properties,
-                Publish = request.Publish,
+                IsEnabled = request.IsEnabled,
                 Series = request.Series,
-                Id = request.Id,
+                Barcode = request.Barcode,
+                CompanyName = request.CompanyName,
+                HtmlContent = request.HtmlContent,
+                Keywords = request.Keywords
             };
-            return response;
+            if (request.FileEdited)
+            {
+                product.HasFile = request.File != null && request.File.Length > 0;
+                product.FileExtention = product.HasFile ?
+                    System.IO.Path.GetExtension(request.File.FileName) :
+                    null;
+            }
+
+            return product;
         }
 
-        public ProductResponse Map(Product request)
+        public ProductResponse Map(Product product)
         {
-            if (request == null) return null;
+            if (product == null) return null;
             var response = new ProductResponse()
             {
-                CategoryId = request.CategoryId,
-                Id= request.Id,
-                Creator = request.Creator,
-                DateArchive = Helper.PersionDate.GetShamsi(request.DateArchive),
-                DatePublish = Helper.PersionDate.GetShamsi(request.DatePublish),
-                Discount = request.Discount,
-                Num = request.Num,
-                Order = request.Order,
-                Price = request.Price,
-                ProductName = request.ProductName,
-                StoreId = request.StoreId,
-                Description = request.Description,
-                IsNew = request.IsNew,
-                LinkProduct = request.LinkProduct,
-                Model = request.Model,
-                Properties = request.Properties,
-                Publish = request.Publish,
-                Series = request.Series,
-                CategoryThumb = _category.MapThumb(request.Category),
-                StoreThumb = _store.MapThumb(request.Store)
+
+                Id = product.Id,
+                Manufacturer = product.Manufacturer,
+                ArchivingDate = product.ArchivingDate,
+                PublishingDate = product.PublishingDate,
+                Discount = product.Discount,
+                Num = product.Num,
+                Order = product.Order,
+                Price = product.Price,
+                ProductName = product.ProductName,
+                Description = product.Description,
+                IsNew = product.IsNew,
+                LinkProduct = product.LinkProduct,
+                Model = product.Model,
+                Properties = product.Properties,
+                IsEnabled = product.IsEnabled,
+                Series = product.Series,
+                CategoryThumb = _categoryMapper.MapThumb(product.Category),
+                StoreThumb = _storeMapper.MapThumb(product.Store),
+                Barcode = product.Barcode,
+                CompanyName = product.CompanyName,
+                HtmlContent = product.HtmlContent,
+                Keywords = product.Keywords
             };
+
+            if (product.ProductImages != null && product.ProductImages.Count > 0)
+            {
+                response.Images = new List<ProductImageResponse>();
+                foreach (var image in product.ProductImages)
+                {
+                    response.Images.Add(this._productImageMapper.Map(image));
+                };
+            }
+            if (product.HasFile)
+                response.FileUrl = $"/KL_ImagesRepo/Files/Products/{product.Id}{product.FileExtention}";
             return response;
         }
 
-        public ThumbResponse<long> MapThumb(Product request)
+    public ThumbResponse<long> MapThumb(Product request)
+    {
+        var response = new ThumbResponse<long>()
         {
-            var response = new ThumbResponse<long>()
-            {
-                Id = request.Id,
-                Name = request.ProductName
-            };
-            return response;
-        }
+            Id = request.Id,
+            Name = request.ProductName
+        };
+        return response;
     }
+}
 }

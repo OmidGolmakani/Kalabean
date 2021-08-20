@@ -25,12 +25,12 @@ namespace Kalabean.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ListPageingResponse<ProductCommentResponse>> GetProductCommentsAsync(GetProductCommentsRequest request)
+        public async Task<ListPagingResponse<ProductCommentResponse>> GetProductCommentsAsync(GetProductCommentsRequest request)
         {
             var result = await _ProductCommentRepository.Get(request);
             var list = result.Select(c => _ProductCommentMapper.Map(c));
             var count = await _ProductCommentRepository.Count(request);
-            return new ListPageingResponse<ProductCommentResponse>() { Items = list, RecordCount = count };
+            return new ListPagingResponse<ProductCommentResponse>() { Items = list, Total = count };
         }
         public async Task<ProductCommentResponse> GetProductCommentAsync(GetProductCommentRequest request)
         {

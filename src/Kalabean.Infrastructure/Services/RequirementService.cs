@@ -26,12 +26,12 @@ namespace Kalabean.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ListPageingResponse<RequirementResponse>> GetRequirementsAsync(GetRequirementsRequest request)
+        public async Task<ListPagingResponse<RequirementResponse>> GetRequirementsAsync(GetRequirementsRequest request)
         {
             var result = await _RequirementRepository.Get(request);
             var list = result.Select(p => _RequirementMapper.Map(p));
             var count = await _RequirementRepository.Count(request);
-            return new ListPageingResponse<RequirementResponse>() { Items = list, RecordCount = count };
+            return new ListPagingResponse<RequirementResponse>() { Items = list, Total = count };
         }
         public async Task<RequirementResponse> GetRequirementAsync(GetRequirementRequest request)
         {

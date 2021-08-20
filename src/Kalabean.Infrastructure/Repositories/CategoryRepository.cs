@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Infrastructure.Repositories
 {
-   public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
         //private readonly DbFactory _dbFactory;
         public CategoryRepository(DbFactory dbFactory) : base(dbFactory) { }
@@ -22,10 +22,12 @@ namespace Kalabean.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IQueryable<Category>> Get(bool includeDeleted = false)
+        public async Task<IQueryable<Category>> Get(string name, int? parentId, bool includeDeleted = false)
         {
             return this
-                .List(c => includeDeleted || !c.IsDeleted)
+                .List(c => (includeDeleted || !c.IsDeleted) &&
+                (string.IsNullOrEmpty(name) || (!string.IsNullOrEmpty(c.Name) && c.Name.Contains(name))) &&
+                (!parentId.HasValue || (c.ParentId.HasValue && c.ParentId == parentId)))
                 .Include(c => c.Parent)
                 .Include(c => c.Children);
         }

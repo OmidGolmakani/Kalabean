@@ -52,7 +52,7 @@ namespace Kalabean.API.Controllers
         [Microsoft.AspNetCore.Cors.EnableCors("Kalabean")]
         public async Task<IActionResult> Put(long id,[FromForm]EditOrderHeaderRequest request)
         {
-            request.id = id;
+            request.Id = id;
             var result = await _OrderService.EditOrderAsync(request);
             return Ok(result);
         }

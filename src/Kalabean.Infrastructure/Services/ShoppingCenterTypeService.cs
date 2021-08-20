@@ -10,9 +10,9 @@ using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
 using Kalabean.Infrastructure.Files;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Kalabean.Infrastructure.AppSettingConfigs.Images;
 using Kalabean.Infrastructure.Services.Image;
+using Kalabean.Infrastructure.AppSettingConfigs.Images;
+using Microsoft.Extensions.Options;
 using Kalabean.Domain.Requests.ResizeImage;
 using System.Drawing;
 
@@ -25,18 +25,21 @@ namespace Kalabean.Infrastructure.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IResizeImageService<int> _resizeImageService;
         private readonly KalabeanFileProvider _fileProvider;
+        
+
         private readonly List<ImageSize> _imageConfig;
+
         public ShoppingCenterTypeService(IShoppingCenterTypeRepository typeRepository,
-                                         IShoppingCenterTypeMapper typeMapper,
-                                         IUnitOfWork unitOfWork,
-                                         IFileAccessProvider fileProvider,
-                                         IOptions<ImageSize> ImageConfig,
-                                         IResizeImageService<int> ResizeImageService)
+            IShoppingCenterTypeMapper typeMapper,
+            IUnitOfWork unitOfWork,
+            IResizeImageService<int> imageService,
+            IOptions<ImageSize> ImageConfig,
+            IFileAccessProvider fileProvider)
         {
             _typeRepository = typeRepository;
             _typeMapper = typeMapper;
             _unitOfWork = unitOfWork;
-            _resizeImageService = ResizeImageService;
+            _resizeImageService = imageService;
             _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.ShoppingCenterTypes).ToList();
             _fileProvider = new KalabeanFileProvider(fileProvider);
         }
@@ -63,11 +66,10 @@ namespace Kalabean.Infrastructure.Services
             {
                 using (var fileContent = request.Image.OpenReadStream())
                     ImgResult = _fileProvider.SaveTypeImage(fileContent, result.Id);
-
                 foreach (var ImageResize in _imageConfig)
                 {
 
-                    if (ImgResult != null && ImgResult.Item1)
+                    if (ImgResult.Item1)
                     {
                         await _resizeImageService.Resize(new GetImageRequest<int>()
                         {
@@ -89,6 +91,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _typeMapper.Map(request);
+            entity.HasImage = entity.HasImage || (!request.ImageEdited && existingRecord.HasImage);
             if (request.ImageEdited)
             {
                 if (entity.HasImage || request.Image != null)
@@ -103,7 +106,7 @@ namespace Kalabean.Infrastructure.Services
 
                         foreach (var ImageResize in _imageConfig)
                         {
-                            if (ImgResult!=null && ImgResult.Item1)
+                            if (ImgResult.Item1)
                             {
                                 await _resizeImageService.Resize(new GetImageRequest<int>()
                                 {
@@ -115,14 +118,14 @@ namespace Kalabean.Infrastructure.Services
                             }
                         }
                     }
-
-                }
-                else
-                {
-                    _fileProvider.DeleteCityImage(entity.Id);
-                    entity.HasImage = false;
+                    else
+                    {
+                        _fileProvider.DeleteTypeImage(entity.Id);
+                        entity.HasImage = false;
+                    }
                 }
             }
+
             var result = _typeRepository.Update(entity);
             await _unitOfWork.CommitAsync();
             return _typeMapper.Map(await _typeRepository.GetById(result.Id));

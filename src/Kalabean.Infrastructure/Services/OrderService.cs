@@ -96,10 +96,10 @@ namespace Kalabean.Infrastructure.Services
         }
         public async Task<OrderHeaderResponse> EditOrderAsync(EditOrderHeaderRequest request)
         {
-            var existingRecord = await _orderRepository.GetById(request.id);
+            var existingRecord = await _orderRepository.GetById(request.Id);
 
             if (existingRecord == null)
-                throw new ArgumentException($"Entity with {request.id} is not present");
+                throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _orderMapper.Map(request);
             entity.UserId = Helpers.JWTTokenManager.GetUserIdByToken();

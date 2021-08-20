@@ -9,8 +9,6 @@ namespace Kalabean.Domain.Responses
     public class ProductImageResponse
     {
         public long Id { get; set; }
-        public long ProductId { get; set; }
-        public string Extention { get; set; }
-        public ThumbResponse<long> ProductThumb { get; set; }
+        public string  ImageUrl { get; set; }
     }
 }

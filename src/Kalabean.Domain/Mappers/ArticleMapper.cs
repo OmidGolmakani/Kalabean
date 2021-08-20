@@ -21,6 +21,8 @@ namespace Kalabean.Domain.Mappers
             var Article = new Article
             {
                 HtmlBody = request.HtmlBody,
+                ArchiveDateTime = request.ArchiveDateTime,
+                PublishDateTime = request.PublishDateTime,
                 Description = request.Description,
                 Name = request.Name,
                 CreatedDate = DateTime.Now,
@@ -43,6 +45,8 @@ namespace Kalabean.Domain.Mappers
 
             var Article = new Article
             {
+                ArchiveDateTime = request.ArchiveDateTime,
+                PublishDateTime = request.PublishDateTime,
                 HtmlBody = request.HtmlBody,
                 Description = request.Description,
                 Name = request.Name,
@@ -78,6 +82,8 @@ namespace Kalabean.Domain.Mappers
                 Name = Article.Name,
                 CreatedDate = Article.CreatedDate,
                 HtmlBody = Article.HtmlBody,
+                PublishDateTime = Article.PublishDateTime,
+                ArchiveDateTime = Article.ArchiveDateTime,
                 LastModified = Article.LastModified,
                 KeyWords = Article.KeyWords,
                 ShowInPortal = Article.ShowInPortal,

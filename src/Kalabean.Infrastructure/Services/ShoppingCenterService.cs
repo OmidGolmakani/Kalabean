@@ -10,8 +10,8 @@ using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
 using Kalabean.Infrastructure.Files;
 using Microsoft.EntityFrameworkCore;
-using Kalabean.Infrastructure.Services.Image;
 using Kalabean.Infrastructure.AppSettingConfigs.Images;
+using Kalabean.Infrastructure.Services.Image;
 using Microsoft.Extensions.Options;
 using Kalabean.Domain.Requests.ResizeImage;
 using System.Drawing;
@@ -25,14 +25,15 @@ namespace Kalabean.Infrastructure.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IResizeImageService<int> _resizeImageService;
         private readonly KalabeanFileProvider _fileProvider;
+
         private readonly List<ImageSize> _imageConfig;
         public ShoppingCenterService(IShoppingCenterRepository shoppingRepository,
-                                     IShoppingCenterMapper shoppingMapper,
-                                     IUnitOfWork unitOfWork,
-                                     IFileAccessProvider fileProvider,
-                                     IResizeImageService<long> imageService,
-                                     IOptions<ImageSize> ImageConfig,
-                                     IResizeImageService<int> ResizeImageService)
+            IShoppingCenterMapper shoppingMapper,
+            IUnitOfWork unitOfWork,
+            IResizeImageService<int> imageService,
+            IOptions<ImageSize> ImageConfig,
+            IResizeImageService<int> ResizeImageService,
+            IFileAccessProvider fileProvider)
         {
             _shoppingMapper = shoppingMapper;
             _shoppingRepository = shoppingRepository;
@@ -42,14 +43,14 @@ namespace Kalabean.Infrastructure.Services
             _fileProvider = new KalabeanFileProvider(fileProvider);
         }
 
-        public async Task<ListPageingResponse<ShoppingCenterResponse>> GetShoppingCentersAsync(GetShopingCentersRequest request)
+        public async Task<ListPagingResponse<ShoppingCenterResponse>> GetShoppingCentersAsync(GetShopingCentersRequest request)
         {
             var result = await _shoppingRepository.Get(request);
             var list = result.Select(c => _shoppingMapper.Map(c));
-            return new ListPageingResponse<ShoppingCenterResponse>()
+            return new ListPagingResponse<ShoppingCenterResponse>()
             {
                 Items = list,
-                RecordCount = await _shoppingRepository.Count(request)
+                Total = await _shoppingRepository.Count(request)
             };
         }
         public async Task<ShoppingCenterResponse> GetShoppingCenterAsync(GetShoppingCenterRequest request)
@@ -94,6 +95,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _shoppingMapper.Map(request);
+            entity.HasImage = entity.HasImage || (!request.ImageEdited && existingRecord.HasImage);
             if (request.ImageEdited)
             {
                 if (entity.HasImage || request.Image != null)
@@ -108,7 +110,7 @@ namespace Kalabean.Infrastructure.Services
 
                         foreach (var ImageResize in _imageConfig)
                         {
-                            if (ImgResult!=null && ImgResult.Item1)
+                            if (ImgResult.Item1)
                             {
                                 await _resizeImageService.Resize(new GetImageRequest<int>()
                                 {
@@ -120,12 +122,11 @@ namespace Kalabean.Infrastructure.Services
                             }
                         }
                     }
-
-                }
-                else
-                {
-                    _fileProvider.DeleteCityImage(entity.Id);
-                    entity.HasImage = false;
+                    else
+                    {
+                        _fileProvider.DeleteShoppingCenterImage(entity.Id);
+                        entity.HasImage = false;
+                    }
                 }
             }
             var result = _shoppingRepository.Update(entity);
