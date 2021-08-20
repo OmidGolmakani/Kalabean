@@ -8,11 +8,14 @@ namespace Kalabean.Domain.Services
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserResponse>> GetUsersAsync();
+        Task<ListPageingResponse<UserResponse>> GetUsersAsync(GetUsersRequest request);
+        Task<long> Count(GetUsersRequest request);
         Task<UserResponse> GetUserAsync(GetUserRequest request);
         Task<UserResponse> AddUserAsync(AddUserRequest request);
+        Task<UserResponse> EditUserAsync(EditUserRequest request);
         Task<SigninResponse> SignIn(LoginRequest request);
         Task<List<IdentityResult>> AddUserToRole(AddUserToRoleRequest request);
+        Task BatchDeleteUsersAsync(long[] Ids);
         Task SignOut();
     }
 }

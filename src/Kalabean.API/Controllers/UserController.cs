@@ -21,9 +21,9 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery]GetUsersRequest request)
         {
-            return Ok(await _userService.GetUsersAsync());
+            return Ok(await _userService.GetUsersAsync(request));
         }
 
         [HttpGet("{id}")]
@@ -63,6 +63,20 @@ namespace Kalabean.API.Controllers
         public async Task<IActionResult> AddUserToRole(AddUserToRoleRequest request)
         {
             return Ok(await _userService.AddUserToRole(request));
+        }
+        [HttpPost("BatchDelete")]
+        public async Task<IActionResult> BatchDelete(long[] Ids)
+        {
+            await _userService.BatchDeleteUsersAsync(Ids);
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromForm] EditUserRequest request)
+        {
+            request.Id = id;
+            var result = await _userService.EditUserAsync(request);
+            return Ok(result);
         }
     }
 }
