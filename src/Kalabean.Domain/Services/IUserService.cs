@@ -8,7 +8,7 @@ namespace Kalabean.Domain.Services
 {
     public interface IUserService
     {
-        Task<ListPageingResponse<UserResponse>> GetUsersAsync(GetUsersRequest request);
+        Task<ListPagingResponse<UserResponse>> GetUsersAsync(GetUsersRequest request);
         Task<long> Count(GetUsersRequest request);
         Task<UserResponse> GetUserAsync(GetUserRequest request);
         Task<UserResponse> AddUserAsync(AddUserRequest request);

@@ -38,6 +38,7 @@ namespace Kalabean.Infrastructure
         public DbSet<RequirementUserSeen> RequirementUserSeens { get; set; }
         public DbSet<Article> Articles { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
+        public DbSet<Advertise> Advertises { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -58,6 +59,7 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new RolePermissionEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new ArticleEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new ProductCommentEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new AdvertiseEntitySchemaDefinition());
 
             base.OnModelCreating(modelBuilder);
 
