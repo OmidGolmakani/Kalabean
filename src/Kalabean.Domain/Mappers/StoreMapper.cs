@@ -133,6 +133,7 @@ namespace Kalabean.Domain.Mappers
 
         public ThumbResponse<int> MapThumb(Store request)
         {
+            if (request == null) return null;
             var response = new ThumbResponse<int>()
             {
                 Id = request.Id,

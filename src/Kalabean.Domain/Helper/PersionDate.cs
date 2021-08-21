@@ -41,6 +41,34 @@ namespace Kalabean.Domain.Helper
                 throw new Exception("GetShamsi", ex);
             }
         }
+        public static string GetShamsi(DateTimeOffset MildadiDate, bool withTime = false)
+        {
+            try
+            {
+                DateTime TmpDate;
+                bool IsValid = DateTime.TryParse(MildadiDate.ToString("yyyy/MM/dd"), out TmpDate);
+                if (IsValid == false)
+                {
+                    return null;
+                }
+                PersianCalendar pc = new PersianCalendar();
+                int year = pc.GetYear(MildadiDate.DateTime);
+                int month = pc.GetMonth(MildadiDate.DateTime);
+                int day = pc.GetDayOfMonth(MildadiDate.DateTime);
+                if (withTime)
+                {
+                    return string.Format("{0} {1}", FormatShamsiDate(year, month.ToString(), day.ToString()), MildadiDate.ToString("HH:mm:ss"));
+                }
+                else
+                {
+                    return FormatShamsiDate(year, month.ToString(), day.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("GetShamsi", ex);
+            }
+        }
         /// <summary>
         /// تاریخ امروز
         /// </summary>

@@ -36,6 +36,22 @@ namespace Kalabean.Domain.Mappers
 
             return User;
         }
+        public User Map(EditUserRequest request)
+        {
+            if (request == null) return null;
+
+            var User = new User
+            {
+                Email = request.Email,
+                Family = request.Family,
+                Id = request.Id,
+                Name = request.Name,
+                PhoneNumber = request.PhoneNumber,
+                UserName = request.UserName
+            };
+
+            return User;
+        }
 
         public UserResponse Map(User user)
         {
@@ -48,6 +64,9 @@ namespace Kalabean.Domain.Mappers
                 Id = user.Id,
                 Name = user.Name,
                 UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                LockoutEnabled = user.LockoutEnabled,
+                LockoutEnd = user.LockoutEnd != null ? Helper.PersionDate.GetShamsi((user.LockoutEnd ?? System.DateTimeOffset.Now)) : null,
                 Orders = user.OrderHeaders != null ? user.OrderHeaders.Select(x => _order.Map(x)).ToList() : null,
                 StoresThumb = user.Stores != null ? user.Stores.Select(x => _store.MapThumb(x)).ToList() : null,
                 Requirements = user.RequirementUsers != null ? user.RequirementUsers.Select(x => _requirement.Map(x)).ToList() : null
