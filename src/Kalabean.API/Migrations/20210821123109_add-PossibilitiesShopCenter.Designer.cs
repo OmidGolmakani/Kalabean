@@ -4,14 +4,16 @@ using Kalabean.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kalabean.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210821123109_add-PossibilitiesShopCenter")]
+    partial class addPossibilitiesShopCenter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,6 +37,14 @@ namespace Kalabean.API.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Text")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -45,10 +55,13 @@ namespace Kalabean.API.Migrations
                         .HasColumnType("nvarchar(120)");
 
                     b.Property<string>("UrlLink")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Advertise");
                 });
@@ -1301,6 +1314,16 @@ namespace Kalabean.API.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Kalabean.Domain.Entities.Advertise", b =>
+                {
+                    b.HasOne("Kalabean.Domain.Entities.Advertise", "Parent")
+                        .WithMany("Child")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("Kalabean.Domain.Entities.Article", b =>
                 {
                     b.HasOne("Kalabean.Domain.Entities.User", "AdminUser")
@@ -1592,6 +1615,11 @@ namespace Kalabean.API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Kalabean.Domain.Entities.Advertise", b =>
+                {
+                    b.Navigation("Child");
                 });
 
             modelBuilder.Entity("Kalabean.Domain.Entities.Category", b =>

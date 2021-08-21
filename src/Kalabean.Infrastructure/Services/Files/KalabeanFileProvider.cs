@@ -14,6 +14,7 @@ namespace Kalabean.Infrastructure.Files
         private const string Cities_Sub_Directory = "Cities";
         private const string Types_Sub_Directory = "Sh_C_Types";
         private const string Shoppings_Sub_Directory = "Sh_C";
+        private const string Possibilities_Shoppings_Sub_Directory = "Possibilities_Shoppings";
         private const string Stores_Sub_Directory = "Stores";
         private const string Products_Sub_Directory = "Products";
         private const string Articles_Sub_Directory = "Articles";
@@ -95,10 +96,27 @@ namespace Kalabean.Infrastructure.Files
             saveStreamAsFile(filePath, stream);
             return new Tuple<bool, string>(true, filePath);
         }
-
+        public Tuple<bool, string> SavePossibilitiesShopImage(Stream stream, int id)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Possibilities_Shoppings_Sub_Directory);
+            if (!_fileProvider.DirectoryExists(path))
+                _fileProvider.CreateDirectory(path);
+            // TODO: What about other extensions like jpg and so on.
+            string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
+            saveStreamAsFile(filePath, stream);
+            return new Tuple<bool, string>(true, filePath);
+        }
         public bool DeleteShoppingCenterImage(int id)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Shoppings_Sub_Directory);
+            string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
+            if (File.Exists(filePath))
+                _fileProvider.DeleteFile(filePath);
+            return true;
+        }
+        public bool DeletePossibilitiesShoppingCenterImage(int id)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Possibilities_Shoppings_Sub_Directory);
             string filePath = _fileProvider.Combine(path, $"{id}.jpeg");
             if (File.Exists(filePath))
                 _fileProvider.DeleteFile(filePath);
