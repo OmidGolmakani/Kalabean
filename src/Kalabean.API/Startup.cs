@@ -72,7 +72,8 @@ namespace Kalabean.API
                 .AddScoped<IArticleRepository, ArticleRepository>()
                 .AddScoped<IAdvertiseRepository,AdvertiseRepository>()
                 .AddScoped<IProductCommentRepository, ProductCommentRepository>()
-                .AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+                .AddScoped<IRolePermissionRepository, RolePermissionRepository>()
+            .AddScoped<IPossibilitiesShopCenterRepository, PossibilitiesShopCenterRepository>();
             services.
                 AddFileProvider().
                 AddMappers().
