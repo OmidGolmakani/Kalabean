@@ -64,7 +64,7 @@ namespace Kalabean.Domain.Mappers
                 UrlLink = Advertise.UrlLink
             };
             if (Advertise.HasImage)
-                response.ImageUrl = $"/KL_ImagesRepo/Advertiseing/250_250/{Advertise.Id}.jpeg";
+                response.ImageUrl = $"/KL_ImagesRepo/Advertising/250_250/{Advertise.Id}.jpeg";
             return response;
         }
 

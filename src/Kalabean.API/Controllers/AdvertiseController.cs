@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
-    [Route("api/ads")]
+    [Route("api/tbg")]
     public class AdvertiseController : BaseController
     {
         IAdvertiseService _AdvertiseService = null;

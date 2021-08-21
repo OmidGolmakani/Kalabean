@@ -9,9 +9,7 @@ namespace Kalabean.Domain.Requests.Advertise
 {
     public class AddAdvertiseRequest
     {
-        public int? ParentId { get; set; }
         public byte AdPositionId { get; set; }
-        public string Name { get; set; }
         public string UrlLink { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }

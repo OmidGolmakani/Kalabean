@@ -54,6 +54,7 @@ namespace Kalabean.MVC
                 .AddScoped<IRequirementRepository, RequirementRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IArticleRepository, ArticleRepository>()
+                .AddScoped<IAdvertiseRepository, AdvertiseRepository>()
                 .AddScoped<IProductCommentRepository, ProductCommentRepository>()
                 .AddScoped<IRolePermissionRepository, RolePermissionRepository>();
             services.

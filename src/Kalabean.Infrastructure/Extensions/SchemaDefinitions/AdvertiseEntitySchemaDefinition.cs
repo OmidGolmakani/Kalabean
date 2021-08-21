@@ -12,10 +12,10 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.ToTable("Advertise")
                 .HasKey(c => c.Id);
             builder.Property(p => p.Text).HasMaxLength(500);
-            builder.Property(p => p.Title).HasMaxLength(120);
+            builder.Property(p => p.Title).HasMaxLength(120).IsRequired();
             builder.Property(p => p.HasImage);
             builder.Property(p => p.AdPositionId).IsRequired();
-            builder.Property(p => p.UrlLink).HasMaxLength(200).IsRequired();
+            builder.Property(p => p.UrlLink).HasMaxLength(200);
 
         }
     }
