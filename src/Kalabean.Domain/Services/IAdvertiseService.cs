@@ -8,6 +8,7 @@ namespace Kalabean.Domain.Services
     public interface IAdvertiseService
     {
         Task<ListPagingResponse<AdvertiseResponse>> GetAdvertisingAsync(GetAdvertisingRequest request);
+        Task<List<AdvertisePositionResponse>> GetAdvertisePositionAsync();
         Task<AdvertiseResponse> GetAdvertiseAsync(GetAdvertiseRequest request);
         Task<AdvertiseResponse> AddAdvertiseAsync(AddAdvertiseRequest request);
         Task<AdvertiseResponse> EditAdvertiseAsync(EditAdvertiseRequest request);

@@ -8,7 +8,7 @@ namespace Kalabean.Domain.Entities
 {
     public enum AdPositions : byte
     {
-        HomePage = 1,
-        Login = 2
+        TopHomePage = 1,
+        BottomHomePage = 2
     }
 }

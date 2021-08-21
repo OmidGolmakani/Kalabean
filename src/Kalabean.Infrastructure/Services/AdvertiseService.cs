@@ -53,6 +53,19 @@ namespace Kalabean.Infrastructure.Services
             var Advertise = await _AdvertiseRepository.GetById(request.Id);
             return _AdvertiseMapper.Map(Advertise);
         }
+        public async Task<List<AdvertisePositionResponse>> GetAdvertisePositionAsync()
+        {
+            List<AdvertisePositionResponse> list = new List<AdvertisePositionResponse>();
+            foreach (Domain.Entities.AdPositions item in Enum.GetValues(typeof(Domain.Entities.AdPositions)).Cast<Domain.Entities.AdPositions>()) 
+            {
+                list.Add(new AdvertisePositionResponse()
+                {
+                    Id = (byte)item,
+                    Name = item.ToString()
+                });
+            }
+            return list;
+        }
         public async Task<AdvertiseResponse> AddAdvertiseAsync(AddAdvertiseRequest request)
         {
             var item = _AdvertiseMapper.Map(request);
@@ -128,8 +141,8 @@ namespace Kalabean.Infrastructure.Services
                 }
             }
 
-            
-            
+
+
             var result = _AdvertiseRepository.Update(entity);
             await _unitOfWork.CommitAsync();
 

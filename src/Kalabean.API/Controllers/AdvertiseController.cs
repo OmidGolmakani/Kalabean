@@ -23,6 +23,11 @@ namespace Kalabean.API.Controllers
         {
             return Ok(await _AdvertiseService.GetAdvertisingAsync(request));
         }
+        [HttpGet("Positions")]
+        public async Task<IActionResult> GetPositions()
+        {
+            return Ok(await _AdvertiseService.GetAdvertisePositionAsync());
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
