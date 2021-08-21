@@ -23,11 +23,9 @@ namespace Kalabean.Domain.Mappers
             {
                 AdPositionId = request.AdPositionId,
                 Id = 0,
-                Name = request.Name,
                 Text = request.Text,
                 Title = request.Title,
-                UrlLink = request.UrlLink,
-                ParentId = request.ParentId
+                UrlLink = request.UrlLink
             };
 
             Advertise.HasImage = request.Image != null && request.Image.Length > 0;
@@ -42,11 +40,9 @@ namespace Kalabean.Domain.Mappers
             {
                 AdPositionId = request.AdPositionId,
                 Id = request.Id,
-                Name = request.Name,
                 Text = request.Text,
                 Title = request.Title,
-                UrlLink = request.UrlLink,
-                ParentId = request.ParentId
+                UrlLink = request.UrlLink
             };
 
             if (request.ImageEdited)
@@ -63,13 +59,9 @@ namespace Kalabean.Domain.Mappers
             {
                 AdPositionId = Advertise.AdPositionId,
                 Id = Advertise.Id,
-                Name = Advertise.Name,
                 Text = Advertise.Text,
                 Title = Advertise.Title,
-                UrlLink = Advertise.UrlLink,
-                ParentId = Advertise.ParentId,
-                ParentThumb = MapThumb(Advertise.Parent),
-                ChildThumb = Advertise.Child != null ? Advertise.Child.Select(x => MapThumb(x)).ToList() : null
+                UrlLink = Advertise.UrlLink
             };
             if (Advertise.HasImage)
                 response.ImageUrl = $"/KL_ImagesRepo/Advertiseing/250_250/{Advertise.Id}.jpeg";
@@ -82,7 +74,7 @@ namespace Kalabean.Domain.Mappers
             return new ThumbResponse<int>()
             {
                 Id = request.Id,
-                Name = request.Name
+                Name = request.Title
             };
         }
 

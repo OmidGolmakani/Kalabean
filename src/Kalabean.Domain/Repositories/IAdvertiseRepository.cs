@@ -9,6 +9,6 @@ namespace Kalabean.Domain.Repositories
     {
         Task<Advertise> GetById(long id, bool includeDeleted = false);
         Task<IQueryable<Advertise>> Get(GetAdvertisingRequest request, bool includeDeleted = false);
-        Task<long> Count(GetAdvertisingRequest request, bool includeDeleted = false);
+        Task<int> Count(GetAdvertisingRequest request, bool includeDeleted = false);
     }
 }

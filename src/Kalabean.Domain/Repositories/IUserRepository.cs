@@ -9,6 +9,6 @@ namespace Kalabean.Domain.Repositories
     {
         Task<User> GetById(long id, bool includeDeleted = false);
         Task<IQueryable<User>> Get(GetUsersRequest request, bool includeDeleted = false);
-        Task<long> Count(GetUsersRequest request, bool includeDeleted = false);
+        Task<int> Count(GetUsersRequest request, bool includeDeleted = false);
     }
 }

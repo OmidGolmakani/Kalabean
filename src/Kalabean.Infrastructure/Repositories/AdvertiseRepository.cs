@@ -18,34 +18,27 @@ namespace Kalabean.Infrastructure.Repositories
             _dbFactory = dbFactory;
         }
 
-        public async Task<long> Count(GetAdvertisingRequest request, bool includeDeleted = false)
+        public async Task<int> Count(GetAdvertisingRequest request, bool includeDeleted = false)
         {
             var Count = this
                  .List(p => (includeDeleted || !p.IsDeleted) &&
-                 (string.IsNullOrEmpty(request.Name) || (!string.IsNullOrEmpty(p.Name)
-                 && p.Name.Contains(request.Name))) &&
                  (string.IsNullOrEmpty(request.Text) || (!string.IsNullOrEmpty(p.Text)
-                 && p.Name.Contains(request.Text))) &&
+                 && p.Text.Contains(request.Text))) &&
                  (string.IsNullOrEmpty(request.Title) || (!string.IsNullOrEmpty(p.Title)
-                 && p.Name.Contains(request.Title))))
+                 && p.Title.Contains(request.Title))))
                  .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
             return Count;
         }
 
         public async Task<IQueryable<Advertise>> Get(GetAdvertisingRequest request, bool includeDeleted = false)
         {
-            var q = this
+            return this
                  .List(p => (includeDeleted || !p.IsDeleted) &&
-                 (string.IsNullOrEmpty(request.Name) || (!string.IsNullOrEmpty(p.Name)
-                 && p.Name.Contains(request.Name))) &&
                  (string.IsNullOrEmpty(request.Text) || (!string.IsNullOrEmpty(p.Text)
-                 && p.Name.Contains(request.Text))) &&
+                 && p.Text.Contains(request.Text))) &&
                  (string.IsNullOrEmpty(request.Title) || (!string.IsNullOrEmpty(p.Title)
-                 && p.Name.Contains(request.Title))))
-                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
-                 .Include(p=> p.Parent)
-                 .Include(p => p.Child);
-            return q;
+                 && p.Title.Contains(request.Title))))
+                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize);
         }
 
         public Task<Advertise> GetById(long id, bool includeDeleted = false)

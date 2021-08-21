@@ -41,7 +41,7 @@ namespace Kalabean.Infrastructure.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
-        public async Task<long> Count(GetUsersRequest request, bool includeDeleted = false)
+        public async Task<int> Count(GetUsersRequest request, bool includeDeleted = false)
         {
             return this.List(u => 
                                    string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(u.Name) || u.Name.Contains(request.Name) &&
