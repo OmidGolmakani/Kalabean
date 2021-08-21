@@ -28,25 +28,24 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this
                 .List(p => (includeDeleted || !p.IsDeleted) &&
-                           (string.IsNullOrEmpty(request.ProductName) || p.ProductName.Contains(request.ProductName) &&
+                           (string.IsNullOrEmpty(request.ProductName) || p.ProductName.Contains(request.ProductName)) &&
                            (request.CategoryId == null || p.CategoryId == request.CategoryId) &&
-                           (request.StoreId == null || p.StoreId == request.StoreId) &&
-                           (request.Publish == null || p.IsEnabled == request.Publish) &&
-                           (request.IsNew == null || p.IsNew == request.IsNew))
+                           (!request.StoreId.HasValue || p.StoreId == request.StoreId) &&
+                           (!request.IsEnabled.HasValue || p.IsEnabled == request.IsEnabled)
                 )
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(pi => pi.Category)
-                .Include(pi => pi.Store);
+                .Include(pi => pi.Store)
+                .Include(pi => pi.ProductImages);
         }
 
-        public async Task<long> Count(GetProductsRequest request, bool includeDeleted = false)
+        public async Task<int> Count(GetProductsRequest request, bool includeDeleted = false)
         {
             return this.List(p => (includeDeleted || !p.IsDeleted) &&
-                           (string.IsNullOrEmpty(request.ProductName) || p.ProductName.Contains(request.ProductName) &&
+                           (string.IsNullOrEmpty(request.ProductName) || p.ProductName.Contains(request.ProductName)) &&
                            (request.CategoryId == null || p.CategoryId == request.CategoryId) &&
-                           (request.StoreId == null || p.StoreId == request.StoreId) &&
-                           (request.Publish == null || p.IsEnabled == request.Publish) &&
-                           (request.IsNew == null || p.IsNew == request.IsNew))
+                           (!request.StoreId.HasValue || p.StoreId == request.StoreId) &&
+                           (!request.IsEnabled.HasValue || p.IsEnabled == request.IsEnabled)
                 ).Count();
         }
     }

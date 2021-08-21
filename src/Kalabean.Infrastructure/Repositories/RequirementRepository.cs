@@ -34,7 +34,7 @@ namespace Kalabean.Infrastructure.Repositories
                 .Include(pi => pi.Product)
                 .Include(pi => pi.Category);
         }
-        public async Task<long> Count(GetRequirementsRequest request, bool includeDeleted = false)
+        public async Task<int> Count(GetRequirementsRequest request, bool includeDeleted = false)
         {
             return this
                 .List(r => (includeDeleted || !r.IsDeleted) &&

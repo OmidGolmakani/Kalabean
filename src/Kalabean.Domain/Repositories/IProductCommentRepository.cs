@@ -12,6 +12,6 @@ namespace Kalabean.Domain.Repositories
     {
         Task<ProductComment> GetById(long id, bool includeDeleted = false);
         Task<IQueryable<ProductComment>> Get(GetProductCommentsRequest request,bool includeDeleted = false);
-        Task<long> Count(GetProductCommentsRequest request, bool includeDeleted = false);
+        Task<int> Count(GetProductCommentsRequest request, bool includeDeleted = false);
     }
 }

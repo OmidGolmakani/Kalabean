@@ -8,7 +8,8 @@ namespace Kalabean.Domain.Responses
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ShoppingCenterTypeResponse Type { get; set; }
+        public long UserId { get; set; }
+        public int? TypeId { get; set; }
         public ThumbResponse<int> ShoppingCenter { get; set; }
         public ThumbResponse<int> Category { get; set; }
         public ThumbResponse<int> Floor { get; set; }

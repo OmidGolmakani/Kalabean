@@ -18,7 +18,7 @@ namespace Kalabean.Infrastructure.Repositories
             _dbFactory = dbFactory;
         }
 
-        public async Task<long> Count(GetArticlesRequest request, bool includeDeleted = false)
+        public async Task<int> Count(GetArticlesRequest request, bool includeDeleted = false)
         {
             var Count = this
                  .List(p => (includeDeleted || !p.IsDeleted) &&

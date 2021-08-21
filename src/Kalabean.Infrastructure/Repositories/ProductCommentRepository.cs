@@ -13,7 +13,7 @@ namespace Kalabean.Infrastructure.Repositories
     public class ProductCommentRepository : Repository<ProductComment>, IProductCommentRepository
     {
         public ProductCommentRepository(DbFactory dbFactory) : base(dbFactory) { }
-        public async Task<long> Count(GetProductCommentsRequest request, bool includeDeleted = false)
+        public async Task<int> Count(GetProductCommentsRequest request, bool includeDeleted = false)
         {
             return this.List(p => (includeDeleted || !p.IsDeleted) &&
                            (request.ProductId == null || p.ProductId == request.ProductId) &&

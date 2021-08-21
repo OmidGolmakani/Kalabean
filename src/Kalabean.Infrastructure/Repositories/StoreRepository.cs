@@ -1,5 +1,6 @@
 ﻿using Kalabean.Domain.Entities;
 using Kalabean.Domain.Repositories;
+using Kalabean.Domain.Requests.Store;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -16,23 +17,35 @@ namespace Kalabean.Infrastructure.Repositories
             _dbFactory = dbFactory;
         }
 
-        public async Task<IQueryable<Store>> Get(bool includeDeleted = false)
+        public async Task<IQueryable<Store>> Get(GetStoresRequest request, bool includeDeleted = false)
         {
-            return this.List(c => (includeDeleted || !c.IsDeleted))
-                //.Include(c => c.Type)
-                .Include(c => c.ShoppingCenter)
+            return this.List(c => (includeDeleted || !c.IsDeleted) &&
+            (string.IsNullOrEmpty(request.Name) || c.Name.Contains(request.Name)) &&
+            (!request.CategoryId.HasValue || request.CategoryId == c.CategoryId) &&
+            (!request.IsEnabled.HasValue || request.IsEnabled == c.IsEnabled))
+                .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(c => c.Floor)
-                .Include(c => c.Category);
+                .Include(c => c.Category)
+                .Include(c => c.ShoppingCenter)
+                .ThenInclude(c => c.Type);
+        }
+
+        public async Task<int> Count(GetStoresRequest request, bool includeDeleted = false)
+        {
+            return this.List(c => (includeDeleted || !c.IsDeleted) &&
+            (string.IsNullOrEmpty(request.Name) || c.Name.Contains(request.Name)) &&
+            (!request.CategoryId.HasValue || request.CategoryId == c.CategoryId) &&
+            (!request.IsEnabled.HasValue || request.IsEnabled == c.IsEnabled)).Count();
         }
 
         public Task<Store> GetById(int id, bool includeDeleted = false)
         {
             return this.DbSet
                 .Where(c => c.Id == id && (includeDeleted || !c.IsDeleted))
-                //.Include(c => c.Type)
-                .Include(c => c.ShoppingCenter)
                 .Include(c => c.Floor)
                 .Include(c => c.Category)
+                .Include(c => c.ShoppingCenter)
+                .ThenInclude(c => c.Type)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }

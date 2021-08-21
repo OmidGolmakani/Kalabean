@@ -44,11 +44,24 @@ namespace Kalabean.MVC
                 AddScoped<ICityRepository, CityRepository>()
                 .AddScoped<ICategoryRepository, CategoryRepository>()
                 .AddScoped<IShoppingCenterTypeRepository, ShoppingCenterTypeRepository>()
-                .AddScoped<IShoppingCenterRepository, ShoppingCenterRepository>();
+                .AddScoped<IShoppingCenterRepository, ShoppingCenterRepository>()
+                .AddScoped<IFloorRepository, FloorRepository>()
+                .AddScoped<IStoreRepository, StoreRepository>()
+                .AddScoped<IProductRepository, ProductRepository>()
+                .AddScoped<IProductImageRepository, ProductImageRepository>()
+                .AddScoped<IOrderHeaderRepository, OrderHeaderRepository>()
+                .AddScoped<IOrderDetailRepository, OrderDetailRepository>()
+                .AddScoped<IRequirementRepository, RequirementRepository>()
+                .AddScoped<IUserRepository, UserRepository>()
+                .AddScoped<IArticleRepository, ArticleRepository>()
+                .AddScoped<IProductCommentRepository, ProductCommentRepository>()
+                .AddScoped<IRolePermissionRepository, RolePermissionRepository>();
             services.
                 AddFileProvider().
                 AddMappers().
-                AddServices();
+                AddServices().
+                AddMyIdentity().
+                GetConfigs(Configuration);
 
             services.AddControllersWithViews();
             services.AddSwaggerGen(c =>

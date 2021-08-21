@@ -37,7 +37,7 @@ namespace Kalabean.Infrastructure.Repositories
                 .Include(c => c.City);
         }
 
-        public async Task<long> Count(GetShopingCentersRequest request, bool includeDeleted = false)
+        public async Task<int> Count(GetShopingCentersRequest request, bool includeDeleted = false)
         {
             return this
                 .List(c => (includeDeleted || !c.IsDeleted) &&

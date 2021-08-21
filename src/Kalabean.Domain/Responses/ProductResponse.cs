@@ -17,8 +17,8 @@ namespace Kalabean.Domain.Responses
         public byte? Order { get; set; }
         public string Manufacturer { get; set; }
         public string CompanyName { get; set; }
-        public DateTime? PublishingDate { get; set; }
-        public DateTime? ArchivingDate { get; set; }
+        public string PublishingDate { get; set; }
+        public string ArchivingDate { get; set; }
         public string Model { get; set; }
         public string Series { get; set; }
         public string LinkProduct { get; set; }

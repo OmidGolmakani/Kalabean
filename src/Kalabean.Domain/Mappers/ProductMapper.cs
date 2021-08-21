@@ -122,8 +122,8 @@ namespace Kalabean.Domain.Mappers
 
                 Id = product.Id,
                 Manufacturer = product.Manufacturer,
-                ArchivingDate = product.ArchivingDate,
-                PublishingDate = product.PublishingDate,
+                ArchivingDate = product.ArchivingDate?.ToString("yyyy/MM/dd"),
+                PublishingDate = product.ArchivingDate?.ToString("yyyy/MM/dd"),
                 Discount = product.Discount,
                 Num = product.Num,
                 Order = product.Order,

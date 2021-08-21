@@ -41,10 +41,16 @@ namespace Kalabean.Infrastructure.Services
             _fileProvider = new KalabeanFileProvider(fileProvider);
         }
 
-        public async Task<IEnumerable<StoreResponse>> GetStoresAsync()
+        public async Task<ListPagingResponse<StoreResponse>> GetStoresAsync(GetStoresRequest request)
         {
-            var result = await _storeRepository.Get();
-            return result.Select(c => _storeMapper.Map(c));
+            var result = await _storeRepository.Get(request);
+            var list = result.Select(c => _storeMapper.Map(c));
+
+            return new ListPagingResponse<StoreResponse>()
+            {
+                Items = list,
+                Total = await _storeRepository.Count(request)
+            };
         }
         public async Task<StoreResponse> GetStoreAsync(GetStoreRequest request)
         {
@@ -88,6 +94,8 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _storeMapper.Map(request);
+            var result = _storeRepository.Update(entity);
+            await _unitOfWork.CommitAsync();
             if (entity.HasImage || request.Image != null)
             {
                 if (request.ImageEdited)
@@ -120,8 +128,7 @@ namespace Kalabean.Infrastructure.Services
                     }
                 }
             }
-            var result = _storeRepository.Update(entity);
-            await _unitOfWork.CommitAsync();
+            
             return _storeMapper.Map(await _storeRepository.GetById(result.Id));
         }
 

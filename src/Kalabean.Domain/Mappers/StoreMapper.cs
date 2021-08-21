@@ -11,6 +11,7 @@ namespace Kalabean.Domain.Mappers
         private readonly ICategoryMapper _categoryMapper;
         private readonly IShoppingCenterMapper _shoppingCenterMapper;
         private readonly IShoppingCenterTypeMapper _typeMapper;
+        
 
         public StoreMapper(IFloorMapper floorMapper,
             ICategoryMapper categoryMapper,
@@ -62,6 +63,7 @@ namespace Kalabean.Domain.Mappers
 
             var store = new Store
             {
+                Id = request.Id,
                 Name = request.Name,
                 UserId = request.UserId,
                 //TypeId = request.TypeId,
@@ -101,9 +103,10 @@ namespace Kalabean.Domain.Mappers
             {
                 Id = store.Id,
                 Name = store.Name,
-                //Type = _typeMapper.Map(store.Type),
+                TypeId = store.ShoppingCenter?.Type?.Id,
                 ShoppingCenter = _shoppingCenterMapper.MapThumb(store.ShoppingCenter),
                 Category = _categoryMapper.MapThumb(store.Category),
+                UserId = store.UserId,
                 Floor = _floorMapper.MapThumb(store.Floor),
                 Address = store.Address,
                 Description = store.Description,
