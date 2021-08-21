@@ -44,7 +44,7 @@ namespace Kalabean.MVC
                 AddScoped<ICityRepository, CityRepository>()
                 .AddScoped<ICategoryRepository, CategoryRepository>()
                 .AddScoped<IShoppingCenterTypeRepository, ShoppingCenterTypeRepository>()
-                .AddScoped<IShoppingCenterRepository, ShoppingCenterRepository>();
+            .AddScoped<IShoppingCenterRepository, ShoppingCenterRepository>();
             services.
                 AddFileProvider().
                 AddMappers().

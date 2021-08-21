@@ -17,6 +17,7 @@ namespace Kalabean.Infrastructure.Files
         private const string Stores_Sub_Directory = "Stores";
         private const string Products_Sub_Directory = "Products";
         private const string Articles_Sub_Directory = "Articles";
+        private const string Advertising_Sub_Directory = "Advertising";
         private const string Orders_Sub_Directory = "Orders";
         private const string File_Base_Path = @"KL_ImagesRepo\Files";
 
@@ -38,23 +39,16 @@ namespace Kalabean.Infrastructure.Files
             saveStreamAsFile(filePath, stream);
             return new Tuple<bool, string>(true, filePath);
         }
-        public Tuple<bool, string> SaveCityImageResize(Stream stream, string ResizeFolder, Size ImageSize, int cityId)
+        public Tuple<bool, string> SaveAdvertiseImage(Stream stream, int AdsId)
         {
-            string path = _fileProvider.Combine(Image_Base_Path, Cities_Sub_Directory, ResizeFolder);
+            string path = _fileProvider.Combine(Image_Base_Path, Advertising_Sub_Directory);
             if (!_fileProvider.DirectoryExists(path))
                 _fileProvider.CreateDirectory(path);
             // TODO: What about other extensions like jpg and so on.
-            string filePath = _fileProvider.Combine(path, $"{cityId}.jpeg");
+            string filePath = _fileProvider.Combine(path, $"{AdsId}.jpeg");
             saveStreamAsFile(filePath, stream);
-            //_imageService.Resize(new GetImageRequest<long>()
-            //{
-            //    ImageUrl = filePath,
-            //    Id = cityId,
-            //    ImageSize = ImageSize
-            //});
             return new Tuple<bool, string>(true, filePath);
         }
-
         public Tuple<bool, string>  SaveTypeImage(Stream stream, int typeId)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Types_Sub_Directory);
@@ -65,11 +59,18 @@ namespace Kalabean.Infrastructure.Files
             saveStreamAsFile(filePath, stream);
             return new Tuple<bool, string>(true, filePath);
         }
-
         public bool DeleteCityImage(int cityId)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Cities_Sub_Directory);
             string filePath = _fileProvider.Combine(path, $"{cityId}.jpeg");
+            if (File.Exists(filePath))
+                _fileProvider.DeleteFile(filePath);
+            return true;
+        }
+        public bool DeleteAdvertiseImage(int AdsId)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Advertising_Sub_Directory);
+            string filePath = _fileProvider.Combine(path, $"{AdsId}.jpeg");
             if (File.Exists(filePath))
                 _fileProvider.DeleteFile(filePath);
             return true;

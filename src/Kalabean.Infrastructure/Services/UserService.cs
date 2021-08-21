@@ -37,12 +37,12 @@ namespace Kalabean.Infrastructure.Services
             this._signInManager = signInManager;
         }
 
-        public async Task<ListPageingResponse<UserResponse>> GetUsersAsync(GetUsersRequest request)
+        public async Task<ListPagingResponse<UserResponse>> GetUsersAsync(GetUsersRequest request)
         {
             var result = await _userRepository.Get(request);
             var list = result.Select(u => _userMapper.Map(u));
             var count = await _userRepository.Count(request);
-            return new ListPageingResponse<UserResponse>() { Items = list, RecordCount = count };
+            return new ListPagingResponse<UserResponse>() { Items = list, Total = count };
         }
         public async Task<UserResponse> GetUserAsync(GetUserRequest request)
         {

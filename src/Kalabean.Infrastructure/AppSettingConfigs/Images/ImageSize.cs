@@ -23,6 +23,7 @@ namespace Kalabean.Infrastructure.AppSettingConfigs.Images
         ShoppingCenterTypes = 5,
         Requirement = 6,
         Order = 7,
-        Store = 8
+        Store = 8,
+        Advertise = 9
     }
 }
