@@ -14,6 +14,8 @@ using Kalabean.Infrastructure.AppSettingConfigs.Images;
 using Microsoft.Extensions.Options;
 using Kalabean.Domain.Requests.ResizeImage;
 using System.Drawing;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -52,6 +54,19 @@ namespace Kalabean.Infrastructure.Services
             if (request?.Id == null) throw new ArgumentNullException();
             var Advertise = await _AdvertiseRepository.GetById(request.Id);
             return _AdvertiseMapper.Map(Advertise);
+        }
+        public async Task<List<AdvertisePositionResponse>> GetAdvertisePositionAsync()
+        {
+            List<AdvertisePositionResponse> list = new List<AdvertisePositionResponse>();
+            foreach (Domain.Entities.AdPositions item in Enum.GetValues(typeof(Domain.Entities.AdPositions)).Cast<Domain.Entities.AdPositions>()) 
+            {
+                list.Add(new AdvertisePositionResponse()
+                {
+                    Id = (byte)item,
+                    Name = GetDisplayName(item)
+                });
+            }
+            return list;
         }
         public async Task<AdvertiseResponse> AddAdvertiseAsync(AddAdvertiseRequest request)
         {
@@ -128,8 +143,8 @@ namespace Kalabean.Infrastructure.Services
                 }
             }
 
-            
-            
+
+
             var result = _AdvertiseRepository.Update(entity);
             await _unitOfWork.CommitAsync();
 
@@ -152,6 +167,20 @@ namespace Kalabean.Infrastructure.Services
             if (request == null) throw new ArgumentNullException();
             var Advertise = await _AdvertiseRepository.Count(request);
             return Advertise;
+        }
+        private string GetDisplayName(Enum enumValue)
+        {
+            string displayName;
+            displayName = enumValue.GetType()
+                .GetMember(enumValue.ToString())
+                .FirstOrDefault()
+                .GetCustomAttribute<DisplayAttribute>()?
+                .GetName();
+            if (String.IsNullOrEmpty(displayName))
+            {
+                displayName = enumValue.ToString();
+            }
+            return displayName;
         }
     }
 }
