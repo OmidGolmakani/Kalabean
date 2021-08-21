@@ -14,6 +14,8 @@ using Kalabean.Infrastructure.AppSettingConfigs.Images;
 using Microsoft.Extensions.Options;
 using Kalabean.Domain.Requests.ResizeImage;
 using System.Drawing;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -61,7 +63,7 @@ namespace Kalabean.Infrastructure.Services
                 list.Add(new AdvertisePositionResponse()
                 {
                     Id = (byte)item,
-                    Name = item.ToString()
+                    Name = GetDisplayName(item)
                 });
             }
             return list;
@@ -165,6 +167,20 @@ namespace Kalabean.Infrastructure.Services
             if (request == null) throw new ArgumentNullException();
             var Advertise = await _AdvertiseRepository.Count(request);
             return Advertise;
+        }
+        private string GetDisplayName(Enum enumValue)
+        {
+            string displayName;
+            displayName = enumValue.GetType()
+                .GetMember(enumValue.ToString())
+                .FirstOrDefault()
+                .GetCustomAttribute<DisplayAttribute>()?
+                .GetName();
+            if (String.IsNullOrEmpty(displayName))
+            {
+                displayName = enumValue.ToString();
+            }
+            return displayName;
         }
     }
 }

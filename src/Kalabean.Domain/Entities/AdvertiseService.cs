@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,9 @@ namespace Kalabean.Domain.Entities
 {
     public enum AdPositions : byte
     {
+        [Display(Name ="بالای صفحه اصلی")]
         TopHomePage = 1,
+        [Display(Name = "پایین صفحه اصلی")]
         BottomHomePage = 2
     }
 }
