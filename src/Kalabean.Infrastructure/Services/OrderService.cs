@@ -14,6 +14,7 @@ using Kalabean.Infrastructure.AppSettingConfigs.Images;
 using Microsoft.Extensions.Options;
 using Kalabean.Domain.Requests.ResizeImage;
 using System.Drawing;
+using Microsoft.AspNetCore.Identity;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -25,6 +26,7 @@ namespace Kalabean.Infrastructure.Services
         private readonly IOrderDetailMapper _detailMapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IResizeImageService<long> _resizeImageService;
+        private readonly UserManager<Domain.Entities.User> _userManager;
         private readonly KalabeanFileProvider _fileProvider;
         private readonly List<ImageSize> _imageConfig;
 
@@ -35,7 +37,8 @@ namespace Kalabean.Infrastructure.Services
                             IUnitOfWork unitOfWork,
                             IFileAccessProvider fileProvider,
                             IResizeImageService<long> resizeImageService,
-                            IOptions<ImageSize> ImageConfig)
+                            IOptions<ImageSize> ImageConfig,
+                            UserManager<Domain.Entities.User> userManager)
         {
             _orderRepository = orderRepository;
             _orderDetailsRepository = orderDetailsRepository;
@@ -44,11 +47,20 @@ namespace Kalabean.Infrastructure.Services
             _unitOfWork = unitOfWork;
             _fileProvider = new KalabeanFileProvider(fileProvider);
             this._resizeImageService = resizeImageService;
+            this._userManager = userManager;
             _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.Order).ToList();
         }
 
         public async Task<IEnumerable<OrderHeaderResponse>> GetOrdersAsync(GetOrdersRequest request)
         {
+            var UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == UserId);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            if (userRoles.FirstOrDefault(u => u == "Administrator") == null)
+            {
+                request.UserId = UserId;
+            }
+
             var result = await _orderRepository.Get(request);
             return result.Select(c => _orderMapper.Map(c));
         }
@@ -68,6 +80,8 @@ namespace Kalabean.Infrastructure.Services
             }
             item.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
             item.OrderStatus = (byte)Domain.OrderStatus.AwaitingApproval;
+            item.Published = false;
+            item.OrderNum = await GetOrderNumAsync();
             var result = _orderRepository.Add(item);
             Tuple<bool, string> ImgResult = null;
             if (await _unitOfWork.CommitAsync() > 0 &&
@@ -123,7 +137,7 @@ namespace Kalabean.Infrastructure.Services
 
                         foreach (var ImageResize in _imageConfig)
                         {
-                            if (ImgResult!=null && ImgResult.Item1)
+                            if (ImgResult != null && ImgResult.Item1)
                             {
                                 await _resizeImageService.Resize(new GetImageRequest<long>()
                                 {
@@ -135,7 +149,7 @@ namespace Kalabean.Infrastructure.Services
                             }
                         }
                     }
-                    
+
                 }
                 else
                 {
@@ -166,6 +180,17 @@ namespace Kalabean.Infrastructure.Services
             }
 
             await _unitOfWork.CommitAsync();
+        }
+
+        public async Task PublishOrderAsync(long Id)
+        {
+            await _orderRepository.Publish(Id);
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<long> GetOrderNumAsync()
+        {
+            return await _orderRepository.GetOrderNum();
         }
     }
 }

@@ -13,5 +13,7 @@ namespace Kalabean.Domain.Repositories
         Task<OrderHeader> GetById(long id, bool includeDeleted = false);
         Task<IQueryable<OrderHeader>> Get(GetOrdersRequest request, bool includeDeleted = false);
         Task<long> Count(GetOrdersRequest request, bool includeDeleted = false);
+        Task Publish(long Id);
+        Task<long> GetOrderNum();
     }
 }

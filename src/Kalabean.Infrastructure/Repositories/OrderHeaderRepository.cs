@@ -30,7 +30,12 @@ namespace Kalabean.Infrastructure.Repositories
                 .List(
                 p => (includeDeleted || !p.IsDeleted) &&
                 (request.StoreId == null || p.StoreId == request.StoreId) &&
-                (request.ProductId == null || p.OrderDetails.Any(d => d.ProductId == request.ProductId)))
+                (request.OrderNum == null || p.OrderNum == request.OrderNum) &&
+                (request.OrderFrom == null || request.OrderTo == null || 
+                (p.CreatedDate >= request.OrderFrom && p.CreatedDate <= request.OrderTo)) &&
+                (request.PaymentFrom == null || request.PaymentTo == null ||
+                (p.PaymenyDate >= request.PaymentFrom && p.PaymenyDate <= request.PaymentTo)) &&
+                (request.UserId == null || p.UserId == request.UserId))
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(pi => pi.Store)
                 .Include(p => p.OrderDetails)
@@ -41,8 +46,20 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this.List(
                 p => (includeDeleted || !p.IsDeleted) &&
-                (request.StoreId == null || p.StoreId == request.StoreId) &&
-                (request.ProductId == null || p.OrderDetails.Any(d => d.ProductId == request.ProductId))).Count();
+                (request.StoreId == null || p.StoreId == request.StoreId)).Count();
+        }
+
+        public async Task Publish(long Id)
+        {
+            var currentRecord = DbSet.FirstOrDefault(p => p.Id == Id);
+            currentRecord.Published = true;
+            this.DbSet.Update(currentRecord);
+        }
+        public async Task<long> GetOrderNum()
+        {
+            var Max = DbSet.Max(p => p.OrderNum);
+            Max = Max == 0 ? 1 : Max + 1;
+            return Max;
         }
     }
 }
