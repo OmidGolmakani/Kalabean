@@ -58,7 +58,7 @@ namespace Kalabean.Infrastructure.Services
             var userRoles = await _userManager.GetRolesAsync(user);
             if (userRoles.FirstOrDefault(u => u == "Administrator") == null)
             {
-                request.UserId = UserId;
+                request.FromUserId = UserId;
             }
 
             var result = await _orderRepository.Get(request);
@@ -72,13 +72,29 @@ namespace Kalabean.Infrastructure.Services
         }
         public async Task<OrderHeaderResponse> AddOrderAsync(AddOrderHeaderRequest request)
         {
+            if (request.ToUserId <= 0)
+            {
+                throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorResponse()
+                {
+                    Message = "نام کاربری دریافت کننده فاکتور اجباری می باشد",
+                    StatusCode = 400
+                }));
+            }
+            if (_userManager.Users.FirstOrDefault(x => x.Id == request.ToUserId) == null)
+            {
+                throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorResponse()
+                {
+                    Message = $"کاربر با کد {request.ToUserId} یافت نشد",
+                    StatusCode = 404
+                }));
+            }
             var item = _orderMapper.Map(request);
             if (request.OrderDetail != null)
             {
                 item.OrderDetails = new List<Domain.Entities.OrderDetail>();
                 item.OrderDetails.Add(_detailMapper.Map(request.OrderDetail));
             }
-            item.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            item.FromUserId = Helpers.JWTTokenManager.GetUserIdByToken();
             item.OrderStatus = (byte)Domain.OrderStatus.AwaitingApproval;
             item.Published = false;
             item.OrderNum = await GetOrderNumAsync();
@@ -110,13 +126,30 @@ namespace Kalabean.Infrastructure.Services
         }
         public async Task<OrderHeaderResponse> EditOrderAsync(EditOrderHeaderRequest request)
         {
+            if (request.ToUserId <= 0)
+            {
+                throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorResponse()
+                {
+                    Message = "نام کاربری دریافت کننده فاکتور اجباری می باشد",
+                    StatusCode = 400
+                }));
+            }
+            if (_userManager.Users.FirstOrDefault(x => x.Id == request.ToUserId) == null)
+            {
+                throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorResponse()
+                {
+                    Message = $"کاربر با کد {request.ToUserId} یافت نشد",
+                    StatusCode = 404
+                }));
+            }
+
             var existingRecord = await _orderRepository.GetById(request.Id);
 
             if (existingRecord == null)
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _orderMapper.Map(request);
-            entity.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            entity.FromUserId = Helpers.JWTTokenManager.GetUserIdByToken();
             if (request.OrderDetail != null)
             {
                 entity.OrderDetails = new List<Domain.Entities.OrderDetail>() { _detailMapper.Map(request.OrderDetail) };

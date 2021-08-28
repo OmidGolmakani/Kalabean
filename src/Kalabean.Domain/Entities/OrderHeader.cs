@@ -13,7 +13,8 @@ namespace Kalabean.Domain.Entities
         public int StoreId { get; set; }
         public long OrderNum { get; set; }
         public DateTime? PaymenyDate { get; set; }
-        public long UserId { get; set; }
+        public long FromUserId { get; set; }
+        public long ToUserId { get; set; }
         public int OrderPrice { get; set; }
         public string PaymenyLink { get; set; }
         public string Description { get; set; }
@@ -22,6 +23,7 @@ namespace Kalabean.Domain.Entities
         public bool Published { get; set; }
         public Store Store { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
-        public User OrderUser { get; set; }
+        public User FromOrderUser { get; set; }
+        public User ToOrderUser { get; set; }
     }
 }

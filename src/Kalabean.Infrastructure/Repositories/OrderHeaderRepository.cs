@@ -35,7 +35,8 @@ namespace Kalabean.Infrastructure.Repositories
                 (p.CreatedDate >= request.OrderFrom && p.CreatedDate <= request.OrderTo)) &&
                 (request.PaymentFrom == null || request.PaymentTo == null ||
                 (p.PaymenyDate >= request.PaymentFrom && p.PaymenyDate <= request.PaymentTo)) &&
-                (request.UserId == null || p.UserId == request.UserId))
+                (request.FromUserId == null || request.Type == "issued" || p.FromUserId == request.FromUserId) &&
+                (request.ToUserId == null || request.Type== "received" || p.ToUserId == request.ToUserId))
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(pi => pi.Store)
                 .Include(p => p.OrderDetails)

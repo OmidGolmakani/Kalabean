@@ -27,7 +27,8 @@ namespace Kalabean.Infrastructure.Repositories
                 .Include(u => u.RequirementUsers)
                 .Include(u => u.Stores)
                 .Include(u => u.RequirementAdmins)
-                .Include(u => u.OrderHeaders);
+                .Include(u => u.FromOrderHeaders)
+                .Include(u => u.ToOrderHeaders);
         }
 
         public Task<User> GetById(long id, bool includeDeleted = false)
@@ -37,7 +38,8 @@ namespace Kalabean.Infrastructure.Repositories
                 .Include(u => u.RequirementUsers)
                 .Include(u => u.Stores)
                 .Include(u => u.RequirementAdmins)
-                .Include(u => u.OrderHeaders)
+                .Include(u => u.FromOrderHeaders)
+                .Include(u => u.ToOrderHeaders)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
