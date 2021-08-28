@@ -23,13 +23,13 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery]GetOrdersRequest request)
+        public async Task<IActionResult> Get([FromQuery] GetOrdersRequest request)
         {
             return Ok(await _OrderService.GetOrdersAsync(request));
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(long id)
         {
             return Ok(await _OrderService.GetOrderAsync(new GetOrderHeaderRequest { Id = id }));
         }
@@ -50,11 +50,18 @@ namespace Kalabean.API.Controllers
 
         [HttpPut("{id}")]
         [Microsoft.AspNetCore.Cors.EnableCors("Kalabean")]
-        public async Task<IActionResult> Put(long id,[FromForm]EditOrderHeaderRequest request)
+        public async Task<IActionResult> Put(long id, [FromForm] EditOrderHeaderRequest request)
         {
             request.Id = id;
             var result = await _OrderService.EditOrderAsync(request);
             return Ok(result);
+        }
+        [HttpPut("Publishe{id}")]
+        [Microsoft.AspNetCore.Cors.EnableCors("Kalabean")]
+        public async Task<IActionResult> Publish(long id)
+        {
+            await _OrderService.PublishOrderAsync(id);
+            return Ok(_OrderService.GetOrderAsync(new GetOrderHeaderRequest() { Id = id }));
         }
     }
 }

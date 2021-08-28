@@ -64,8 +64,11 @@ namespace Kalabean.Domain.Mappers
                 PaymenyLink = request.PaymenyLink,
                 StoreId = request.StoreId,
                 UserId = request.UserId,
+                Published = request.Published,
                 StoreThumb = _store.MapThumb(request.Store),
-                OrderDetails = request.OrderDetails == null || request.OrderDetails.Count == 0  ? null : request.OrderDetails.Select(d => _orderDetail.Map(d)).ToList(),
+                OrderNum = request.OrderNum,
+                PaymentOrder =request.PaymenyDate,
+                OrderDetails = request.OrderDetails == null || request.OrderDetails.Count == 0 ? null : request.OrderDetails.Select(d => _orderDetail.Map(d)).ToList(),
                 ImageUrl = request.HasImage ? $"/KL_ImagesRepo/Orders/250_250/{request.Id}.jpeg" : ""
             };
         }

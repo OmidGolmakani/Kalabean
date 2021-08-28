@@ -4,14 +4,16 @@ using Kalabean.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kalabean.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210827180755_AddOrderNum")]
+    partial class AddOrderNum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -357,9 +359,6 @@ namespace Kalabean.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint")
                         .HasDefaultValue((byte)1);
-
-                    b.Property<DateTime?>("PaymenyDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("PaymenyLink")
                         .HasMaxLength(200)
