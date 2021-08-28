@@ -43,7 +43,7 @@ namespace Kalabean.Infrastructure.Repositories
                 .ThenInclude(p => p.Product);
         }
 
-        public async Task<long> Count(GetOrdersRequest request, bool includeDeleted = false)
+        public async Task<int> Count(GetOrdersRequest request, bool includeDeleted = false)
         {
             return this.List(
                  p => (includeDeleted || !p.IsDeleted) &&

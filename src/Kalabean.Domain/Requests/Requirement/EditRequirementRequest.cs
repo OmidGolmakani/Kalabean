@@ -10,7 +10,7 @@ namespace Kalabean.Domain.Requests.Requirement
     public class EditRequirementRequest
     {
         public long Id { get; set; }
-        public int ProductId { get; set; }
+        public string ProductName { get; set; }
         public int CategoryId { get; set; }
         public byte TypePricing { get; set; }
         public decimal Price { get; set; }
