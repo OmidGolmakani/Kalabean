@@ -7,7 +7,7 @@ namespace Kalabean.Domain.Services
 {
     public interface IOrderService
     {
-        Task<IEnumerable<OrderHeaderResponse>> GetOrdersAsync(GetOrdersRequest request);
+        Task<ListPagingResponse<OrderHeaderResponse>> GetOrdersAsync(GetOrdersRequest request);
         Task<OrderHeaderResponse> GetOrderAsync(GetOrderHeaderRequest request);
         Task<OrderHeaderResponse> AddOrderAsync(AddOrderHeaderRequest request);
         Task<OrderHeaderResponse> EditOrderAsync(EditOrderHeaderRequest request);

@@ -51,7 +51,7 @@ namespace Kalabean.Infrastructure.Services
             _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.Order).ToList();
         }
 
-        public async Task<IEnumerable<OrderHeaderResponse>> GetOrdersAsync(GetOrdersRequest request)
+        public async Task<ListPagingResponse<OrderHeaderResponse>> GetOrdersAsync(GetOrdersRequest request)
         {
             var UserId = Helpers.JWTTokenManager.GetUserIdByToken();
             var user = _userManager.Users.FirstOrDefault(u => u.Id == UserId);
@@ -62,7 +62,9 @@ namespace Kalabean.Infrastructure.Services
             }
 
             var result = await _orderRepository.Get(request);
-            return result.Select(c => _orderMapper.Map(c));
+            var list = result.Select(c => _orderMapper.Map(c));
+            var count = await _orderRepository.Count(request);
+            return new ListPagingResponse<OrderHeaderResponse>() { Items = list, Total = count };
         }
         public async Task<OrderHeaderResponse> GetOrderAsync(GetOrderHeaderRequest request)
         {
