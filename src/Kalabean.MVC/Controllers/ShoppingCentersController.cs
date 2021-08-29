@@ -21,11 +21,14 @@ namespace Kalabean.API.Controllers
             _shoppingCenterService = shoppingCenterService;
         }
 
-        public async Task<IActionResult> GetShoppingCenters()
+        public async Task<IActionResult> ShoppingCenters()
         {
             return View();
         }
-
+        public async Task<IActionResult> Stores()
+        {
+            return View();
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

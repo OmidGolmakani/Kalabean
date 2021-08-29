@@ -95,8 +95,18 @@ namespace Kalabean.MVC
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("ShoppingCenters", "shopping-centers",
-                    new { controller = "ShoppingCenters", action = "GetShoppingCenters" });
+                endpoints.MapControllerRoute("Home", "",
+                    new { controller = "Home", action = "Index" });
+
+                endpoints.MapControllerRoute("ShoppingCenters", "shopping-centers/{typeName}-{typeId}",
+                    new { controller = "ShoppingCenters", action = "ShoppingCenters" });
+
+                endpoints.MapControllerRoute("StoresByShoppingCenter", "shopping-centers/{typeName}-{typeId}/{name}-{id}",
+                    new { controller = "ShoppingCenters", action = "Stores" });
+
+                endpoints.MapControllerRoute("Store", "store/{name}-{id}",
+                    new { controller = "Stores", action = "StoreProfile" });
+
                 endpoints.MapControllers();
             });
         }
