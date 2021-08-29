@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Infrastructure.Repositories
 {
-    public class ReqirementUserSeenRepository : Repository<RequirementUserSeen>, IRequirementUserSeenRepository
+    public class RequirementUserSeenRepository : Repository<RequirementUserSeen>, IRequirementUserSeenRepository
     {
         private readonly UserManager<User> _userManager;
 
         //private readonly DbFactory _dbFactory;
-        public ReqirementUserSeenRepository(DbFactory dbFactory,
-                                            UserManager<User> userManager) : base(dbFactory)
+        public RequirementUserSeenRepository(DbFactory dbFactory,
+                                             UserManager<User> userManager) : base(dbFactory)
         {
             this._userManager = userManager;
         }

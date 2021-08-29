@@ -19,7 +19,6 @@ namespace Kalabean.Domain.Entities
         public string Description { get; set; }
         public bool HasImage { get; set; }
         public long? AdminId { get; set; }
-        public DateTime? AdminDate { get; set; }
         public int Exprie { get; set; }
         public DateTime? DateChangeStatus { get; set; }
         public Category Category { get; set; }

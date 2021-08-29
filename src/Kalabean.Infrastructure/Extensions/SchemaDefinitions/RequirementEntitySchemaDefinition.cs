@@ -13,7 +13,6 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
                 .HasKey(c => c.Id);
             builder.Property(p => p.IsDeleted).HasDefaultValue(false);
             builder.Property(p => p.HasImage).HasDefaultValue(false);
-            builder.Property(p => p.AdminDate);
             builder.Property(p => p.AdminId);
             builder.Property(p => p.CategoryId).IsRequired();
             builder.Property(p => p.ProductName).IsRequired();
@@ -21,7 +20,7 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(p => p.Price).HasPrecision(18, 2).IsRequired();
             builder.Property(p => p.TypePricing).IsRequired().HasDefaultValue(1);
             builder.Property(p => p.UserId).IsRequired();
-            builder.Property(p => p.DateChangeStatus).IsRequired();
+            builder.Property(p => p.DateChangeStatus);
             builder.Property(p => p.Exprie).IsRequired();
             builder.Property(c => c.LastModified);
             builder.Property(c => c.LastModifiedBy).HasMaxLength(120);

@@ -51,6 +51,7 @@ namespace Kalabean.MVC
                 .AddScoped<IProductImageRepository, ProductImageRepository>()
                 .AddScoped<IOrderHeaderRepository, OrderHeaderRepository>()
                 .AddScoped<IOrderDetailRepository, OrderDetailRepository>()
+                .AddScoped<IRequirementUserSeenRepository, RequirementUserSeenRepository>()
                 .AddScoped<IRequirementRepository, RequirementRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<IArticleRepository, ArticleRepository>()

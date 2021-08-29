@@ -29,9 +29,14 @@ namespace Kalabean.API.Controllers
         {
             return Ok(await _RequirementService.GetRequirementAsync(new GetRequirementRequest { Id = id }));
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(long UserId)
+        {
+            return Ok(await _RequirementService.GetRequirementAsync(new GetRequirementRequest { Id = UserId }));
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Post(AddRequirementRequest request)
+        public async Task<IActionResult> Post([FromForm] AddRequirementRequest request)
         {
             var result = await _RequirementService.AddRequirementAsync(request);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
@@ -45,11 +50,17 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, EditRequirementRequest request)
+        public async Task<IActionResult> Put(int id, [FromForm] EditRequirementRequest request)
         {
             request.Id = id;
             var result = await _RequirementService.EditRequirementAsync(request);
             return Ok(result);
+        }
+        [HttpPost("Publish{id}")]
+        public async Task<IActionResult> ChangeStatus(int id, RequirementStatus status)
+        {
+            await _RequirementService.ChangeStatus(id, status);
+            return Ok();
         }
     }
 }

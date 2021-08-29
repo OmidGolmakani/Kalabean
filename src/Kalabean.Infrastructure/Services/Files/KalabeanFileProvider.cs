@@ -20,6 +20,7 @@ namespace Kalabean.Infrastructure.Files
         private const string Articles_Sub_Directory = "Articles";
         private const string Advertising_Sub_Directory = "Advertising";
         private const string Orders_Sub_Directory = "Orders";
+        private const string Requirements_Sub_Directory = "Requirements";
         private const string File_Base_Path = @"KL_ImagesRepo\Files";
 
 
@@ -233,9 +234,27 @@ namespace Kalabean.Infrastructure.Files
             saveStreamAsFile(filePath, stream);
             return new Tuple<bool, string>(true, filePath);
         }
+        public Tuple<bool, string> SaveRequirementImage(Stream stream, long ReuirementId)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Requirements_Sub_Directory);
+            if (!_fileProvider.DirectoryExists(path))
+                _fileProvider.CreateDirectory(path);
+            // TODO: What about other extensions like jpg and so on.
+            string filePath = _fileProvider.Combine(path, $"{ReuirementId}.jpeg");
+            saveStreamAsFile(filePath, stream);
+            return new Tuple<bool, string>(true, filePath);
+        }
         public bool DeleteOrderImage(long OrderId)
         {
             string path = _fileProvider.Combine(Image_Base_Path, Orders_Sub_Directory);
+            string filePath = _fileProvider.Combine(path, $"{OrderId}.jpeg");
+            if (File.Exists(filePath))
+                _fileProvider.DeleteFile(filePath);
+            return true;
+        }
+        public bool DeleteReqirementImage(long OrderId)
+        {
+            string path = _fileProvider.Combine(Image_Base_Path, Requirements_Sub_Directory);
             string filePath = _fileProvider.Combine(path, $"{OrderId}.jpeg");
             if (File.Exists(filePath))
                 _fileProvider.DeleteFile(filePath);

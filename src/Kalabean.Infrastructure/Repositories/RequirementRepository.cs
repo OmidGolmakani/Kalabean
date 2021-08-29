@@ -41,5 +41,16 @@ namespace Kalabean.Infrastructure.Repositories
                             (string.IsNullOrEmpty(request.ProductName) ||
                              r.ProductName.Contains(request.ProductName))).Count();
         }
+
+        public async Task ChangeStatus(long Id, RequirementStatus status)
+        {
+            var currentRecord = this.DbSet.Find(Id);
+            if (currentRecord == null) return;
+            currentRecord.RequirementStatus = (byte)status;
+            currentRecord.DateChangeStatus = System.DateTime.Now;
+            currentRecord.AdminId = Helpers.JWTTokenManager.GetUserIdByToken();
+            DbSet.Update(currentRecord);
+        }
+
     }
 }

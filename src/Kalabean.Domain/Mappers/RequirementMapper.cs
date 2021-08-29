@@ -32,7 +32,7 @@ namespace Kalabean.Domain.Mappers
                 IsDeleted = false,
                 Price = request.Price,
                 ProductName = request.ProductName,
-                TypePricing = request.TypePricing,
+                TypePricing = (byte)request.TypePricing,
                 CreatedDate = DateTime.Now,
                 HasImage = request.Image != null && request.Image.Length > 0,
             };
@@ -50,7 +50,7 @@ namespace Kalabean.Domain.Mappers
                 IsDeleted = false,
                 Price = request.Price,
                 ProductName = request.ProductName,
-                TypePricing = request.TypePricing,
+                TypePricing = (byte)request.TypePricing,
                 HasImage = request.ImageEdited && request.Image != null && request.Image.Length > 0
             };
         }
