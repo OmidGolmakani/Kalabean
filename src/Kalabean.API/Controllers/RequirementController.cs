@@ -29,11 +29,6 @@ namespace Kalabean.API.Controllers
         {
             return Ok(await _RequirementService.GetRequirementAsync(new GetRequirementRequest { Id = id }));
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(long UserId)
-        {
-            return Ok(await _RequirementService.GetRequirementAsync(new GetRequirementRequest { Id = UserId }));
-        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] AddRequirementRequest request)

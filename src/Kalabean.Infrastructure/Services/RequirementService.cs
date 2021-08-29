@@ -60,6 +60,7 @@ namespace Kalabean.Infrastructure.Services
                 UserId = Helpers.JWTTokenManager.GetUserIdByToken(),
                 RequirementId = request.Id
             });
+            await _unitOfWork.CommitAsync();
             return _RequirementMapper.Map(Requirement);
         }
         public async Task<RequirementResponse> AddRequirementAsync(AddRequirementRequest request)
