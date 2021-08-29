@@ -40,7 +40,8 @@ namespace Kalabean.Infrastructure
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<Advertise> Advertises { get; set; }
         public DbSet<PossibilitiesShopCenter> PossibilitiesShopCenters { get; set; }
-
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<ConversationDetail> ConversationDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CategoryEntitySchemaDefinition());
@@ -62,6 +63,8 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new ProductCommentEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new AdvertiseEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new PossibilitiesShopCenterEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new ConversationEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new ConversationDetailEntitySchemaDefinition());
 
             base.OnModelCreating(modelBuilder);
 
