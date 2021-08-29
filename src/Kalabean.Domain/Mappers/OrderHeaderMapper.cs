@@ -32,6 +32,7 @@ namespace Kalabean.Domain.Mappers
                 IsDeleted = false,
                 PaymenyLink = request.PaymenyLink,
                 StoreId = request.StoreId,
+                ToUserId = request.ToUserId,
                 OrderPrice = request.OrderDetail != null ?
                              request.OrderDetail.Price *
                              request.OrderDetail.Num : 0,
@@ -46,9 +47,11 @@ namespace Kalabean.Domain.Mappers
             {
                 Description = request.Description,
                 Id = request.Id,
+                ToUserId = request.ToUserId,
                 IsDeleted = false,
                 PaymenyLink = request.PaymenyLink,
                 StoreId = request.StoreId,
+                LastModified = DateTime.Now,
                 HasImage = request.ImageEdited && request.Image != null && request.Image.Length > 0
             };
         }
@@ -63,11 +66,12 @@ namespace Kalabean.Domain.Mappers
                 OrderStatus = request.OrderStatus,
                 PaymenyLink = request.PaymenyLink,
                 StoreId = request.StoreId,
-                UserId = request.UserId,
+                FromUserId = request.FromUserId,
+                ToUserId = request.ToUserId,
                 Published = request.Published,
                 StoreThumb = _store.MapThumb(request.Store),
                 OrderNum = request.OrderNum,
-                PaymentOrder =request.PaymenyDate,
+                PaymentOrder = request.PaymenyDate,
                 OrderDetails = request.OrderDetails == null || request.OrderDetails.Count == 0 ? null : request.OrderDetails.Select(d => _orderDetail.Map(d)).ToList(),
                 ImageUrl = request.HasImage ? $"/KL_ImagesRepo/Orders/250_250/{request.Id}.jpeg" : ""
             };

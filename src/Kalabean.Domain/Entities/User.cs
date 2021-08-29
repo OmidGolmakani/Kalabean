@@ -27,7 +27,8 @@ namespace Kalabean.Domain.Entities
         public override string ConcurrencyStamp { get => base.ConcurrencyStamp; set => base.ConcurrencyStamp = value; }
         public ICollection<Requirement> RequirementUsers { get; set; }
         public ICollection<Requirement> RequirementAdmins { get; set; }
-        public ICollection<OrderHeader> OrderHeaders { get; set; }
+        public ICollection<OrderHeader> FromOrderHeaders { get; set; }
+        public ICollection<OrderHeader> ToOrderHeaders { get; set; }
         public ICollection<Store> Stores { get; set; }
         public ICollection<Article> Articles { get; set; }
         public RequirementUserSeen RequiremenUserSeen { get; set; }

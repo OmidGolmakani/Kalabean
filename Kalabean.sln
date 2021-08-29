@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kalabean.API", "src\Kalabea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kalabean.Infrastructure", "src\Kalabean.Infrastructure\Kalabean.Infrastructure.csproj", "{5D880574-3B6B-4643-99EE-520DBF21F0DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kalabean.MVC", "src\Kalabean.MVC\Kalabean.MVC.csproj", "{6631AAFA-6167-442F-A128-01723BBF324B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kalabean.MVC", "src\Kalabean.MVC\Kalabean.MVC.csproj", "{6631AAFA-6167-442F-A128-01723BBF324B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

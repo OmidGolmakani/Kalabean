@@ -10,7 +10,7 @@ namespace Kalabean.Domain.Entities
     public class Requirement : AuditDeleteEntity
     {
         public long Id { get; set; }
-        public long ProductId { get; set; }
+        public string ProductName { get; set; }
         public int CategoryId { get; set; }
         public long UserId { get; set; }
         public byte RequirementStatus { get; set; }
@@ -19,8 +19,8 @@ namespace Kalabean.Domain.Entities
         public string Description { get; set; }
         public bool HasImage { get; set; }
         public long? AdminId { get; set; }
-        public DateTime? AdminDate { get; set; }
-        public Product Product { get; set; }
+        public int Exprie { get; set; }
+        public DateTime? DateChangeStatus { get; set; }
         public Category Category { get; set; }
         public User RequirementUser { get; set; }
         public User AdminUser { get; set; }

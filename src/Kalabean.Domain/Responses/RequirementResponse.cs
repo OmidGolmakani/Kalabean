@@ -9,7 +9,7 @@ namespace Kalabean.Domain.Responses
     public class RequirementResponse
     {
         public long Id { get; set; }
-        public long ProductId { get; set; }
+        public string ProductName { get; set; }
         public int CategoryId { get; set; }
         public long UserId { get; set; }
         public byte RequirementStatus { get; set; }
@@ -19,7 +19,6 @@ namespace Kalabean.Domain.Responses
         public string ImageUrl { get; set; }
         public long? AdminId { get; set; }
         public DateTime? AdminDate { get; set; }
-        public ThumbResponse<long> ProductThumb { get; set; }
         public ThumbResponse<int> CategoryThumb { get; set; }
     }
 }

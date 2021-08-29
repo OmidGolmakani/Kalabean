@@ -35,18 +35,26 @@ namespace Kalabean.Infrastructure.Repositories
                 (p.CreatedDate >= request.OrderFrom && p.CreatedDate <= request.OrderTo)) &&
                 (request.PaymentFrom == null || request.PaymentTo == null ||
                 (p.PaymenyDate >= request.PaymentFrom && p.PaymenyDate <= request.PaymentTo)) &&
-                (request.UserId == null || p.UserId == request.UserId))
+                (request.Type == "issued" || request.FromUserId == null || p.FromUserId == request.FromUserId) &&
+                (request.Type == "received" || request.ToUserId == null || p.ToUserId == request.ToUserId))
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(pi => pi.Store)
                 .Include(p => p.OrderDetails)
                 .ThenInclude(p => p.Product);
         }
 
-        public async Task<long> Count(GetOrdersRequest request, bool includeDeleted = false)
+        public async Task<int> Count(GetOrdersRequest request, bool includeDeleted = false)
         {
             return this.List(
-                p => (includeDeleted || !p.IsDeleted) &&
-                (request.StoreId == null || p.StoreId == request.StoreId)).Count();
+                 p => (includeDeleted || !p.IsDeleted) &&
+                (request.StoreId == null || p.StoreId == request.StoreId) &&
+                (request.OrderNum == null || p.OrderNum == request.OrderNum) &&
+                (request.OrderFrom == null || request.OrderTo == null ||
+                (p.CreatedDate >= request.OrderFrom && p.CreatedDate <= request.OrderTo)) &&
+                (request.PaymentFrom == null || request.PaymentTo == null ||
+                (p.PaymenyDate >= request.PaymentFrom && p.PaymenyDate <= request.PaymentTo)) &&
+                (request.Type == "issued" || request.FromUserId == null || p.FromUserId == request.FromUserId) &&
+                (request.Type == "received" || request.ToUserId == null || p.ToUserId == request.ToUserId)).Count();
         }
 
         public async Task Publish(long Id)

@@ -17,7 +17,8 @@ namespace Kalabean.Domain.Responses
         public bool LockoutEnabled { get; set; }
         public string LockoutEnd { get; set; }
         public ICollection<ThumbResponse<int>> StoresThumb { get; set; }
-        public ICollection<OrderHeaderResponse> Orders { get; set; }
+        public ICollection<OrderHeaderResponse> FromOrders { get; set; }
+        public ICollection<OrderHeaderResponse> ToOrders { get; set; }
         public ICollection<RequirementResponse> Requirements { get; set; }
     }
 }

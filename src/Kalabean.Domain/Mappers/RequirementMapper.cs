@@ -31,8 +31,8 @@ namespace Kalabean.Domain.Mappers
                 Id = 0,
                 IsDeleted = false,
                 Price = request.Price,
-                ProductId = request.ProductId,
-                TypePricing = request.TypePricing,
+                ProductName = request.ProductName,
+                TypePricing = (byte)request.TypePricing,
                 CreatedDate = DateTime.Now,
                 HasImage = request.Image != null && request.Image.Length > 0,
             };
@@ -49,8 +49,8 @@ namespace Kalabean.Domain.Mappers
                 Id = request.Id,
                 IsDeleted = false,
                 Price = request.Price,
-                ProductId = request.ProductId,
-                TypePricing = request.TypePricing,
+                ProductName = request.ProductName,
+                TypePricing = (byte)request.TypePricing,
                 HasImage = request.ImageEdited && request.Image != null && request.Image.Length > 0
             };
         }
@@ -65,12 +65,11 @@ namespace Kalabean.Domain.Mappers
                 Description = request.Description,
                 Id = request.Id,
                 Price = request.Price,
-                ProductId = request.ProductId,
+                ProductName = request.ProductName,
                 RequirementStatus = request.RequirementStatus,
                 TypePricing = request.TypePricing,
                 UserId = request.UserId,
                 CategoryThumb = _category.MapThumb(request.Category),
-                ProductThumb = _product.MapThumb(request.Product),
                 ImageUrl = request.HasImage ? $"/KL_ImagesRepo/Requirement/250_250/{request.Id}.jpeg" : ""
             };
         }

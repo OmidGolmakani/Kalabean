@@ -51,18 +51,20 @@ namespace Kalabean.Infrastructure.Services
             _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.Order).ToList();
         }
 
-        public async Task<IEnumerable<OrderHeaderResponse>> GetOrdersAsync(GetOrdersRequest request)
+        public async Task<ListPagingResponse<OrderHeaderResponse>> GetOrdersAsync(GetOrdersRequest request)
         {
             var UserId = Helpers.JWTTokenManager.GetUserIdByToken();
             var user = _userManager.Users.FirstOrDefault(u => u.Id == UserId);
             var userRoles = await _userManager.GetRolesAsync(user);
             if (userRoles.FirstOrDefault(u => u == "Administrator") == null)
             {
-                request.UserId = UserId;
+                request.FromUserId = UserId;
             }
 
             var result = await _orderRepository.Get(request);
-            return result.Select(c => _orderMapper.Map(c));
+            var list = result.Select(c => _orderMapper.Map(c));
+            var count = await _orderRepository.Count(request);
+            return new ListPagingResponse<OrderHeaderResponse>() { Items = list, Total = count };
         }
         public async Task<OrderHeaderResponse> GetOrderAsync(GetOrderHeaderRequest request)
         {
@@ -72,13 +74,29 @@ namespace Kalabean.Infrastructure.Services
         }
         public async Task<OrderHeaderResponse> AddOrderAsync(AddOrderHeaderRequest request)
         {
+            if (request.ToUserId <= 0)
+            {
+                throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorResponse()
+                {
+                    Message = "نام کاربری دریافت کننده فاکتور اجباری می باشد",
+                    StatusCode = 400
+                }));
+            }
+            if (_userManager.Users.FirstOrDefault(x => x.Id == request.ToUserId) == null)
+            {
+                throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorResponse()
+                {
+                    Message = $"کاربر با کد {request.ToUserId} یافت نشد",
+                    StatusCode = 404
+                }));
+            }
             var item = _orderMapper.Map(request);
             if (request.OrderDetail != null)
             {
                 item.OrderDetails = new List<Domain.Entities.OrderDetail>();
                 item.OrderDetails.Add(_detailMapper.Map(request.OrderDetail));
             }
-            item.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            item.FromUserId = Helpers.JWTTokenManager.GetUserIdByToken();
             item.OrderStatus = (byte)Domain.OrderStatus.AwaitingApproval;
             item.Published = false;
             item.OrderNum = await GetOrderNumAsync();
@@ -110,13 +128,30 @@ namespace Kalabean.Infrastructure.Services
         }
         public async Task<OrderHeaderResponse> EditOrderAsync(EditOrderHeaderRequest request)
         {
+            if (request.ToUserId <= 0)
+            {
+                throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorResponse()
+                {
+                    Message = "نام کاربری دریافت کننده فاکتور اجباری می باشد",
+                    StatusCode = 400
+                }));
+            }
+            if (_userManager.Users.FirstOrDefault(x => x.Id == request.ToUserId) == null)
+            {
+                throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorResponse()
+                {
+                    Message = $"کاربر با کد {request.ToUserId} یافت نشد",
+                    StatusCode = 404
+                }));
+            }
+
             var existingRecord = await _orderRepository.GetById(request.Id);
 
             if (existingRecord == null)
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _orderMapper.Map(request);
-            entity.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            entity.FromUserId = Helpers.JWTTokenManager.GetUserIdByToken();
             if (request.OrderDetail != null)
             {
                 entity.OrderDetails = new List<Domain.Entities.OrderDetail>() { _detailMapper.Map(request.OrderDetail) };

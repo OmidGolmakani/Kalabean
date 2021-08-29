@@ -12,9 +12,21 @@ namespace Kalabean.Domain.Entities
         Accepted = 2,
         Rejected = 3
     }
-    public enum TypePriceing
+    public enum RequirementTypePriceing : byte
     {
         Desired = 1,
         Agreed = 2
+    }
+    public enum RequirementType : byte
+    {
+        All = 0,
+        Received = 1,
+        Sent = 2
+    }
+    public enum SeeRequirementType : byte
+    {
+        All = 0,
+        Read = 1,
+        Unread = 2
     }
 }

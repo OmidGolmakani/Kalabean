@@ -9,9 +9,9 @@ namespace Kalabean.Domain.Requests.Requirement
 {
     public class AddRequirementRequest
     {
-        public int ProductId { get; set; }
+        public string ProductName { get; set; }
         public int CategoryId { get; set; }
-        public byte TypePricing { get; set; }
+        public Entities.RequirementTypePriceing TypePricing { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
         public IFormFile Image { get; set; }

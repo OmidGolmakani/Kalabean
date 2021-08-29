@@ -10,7 +10,8 @@ namespace Kalabean.Domain.Responses
     {
         public long Id { get; set; }
         public int StoreId { get; set; }
-        public long UserId { get; set; }
+        public long FromUserId { get; set; }
+        public long ToUserId { get; set; }
         public long OrderNum { get; set; }
         public DateTime? PaymentOrder { get; set; }
         public int OrderPrice { get; set; }

@@ -15,7 +15,7 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
 
             builder.Property(p => p.IsDeleted).HasDefaultValue(false);
             builder.Property(p => p.StoreId).IsRequired();
-            builder.Property(p => p.UserId).IsRequired();
+            builder.Property(p => p.FromUserId).IsRequired();
             builder.Property(p => p.OrderPrice).IsRequired();
             builder.Property(p => p.OrderPrice).IsRequired();
             builder.Property(p => p.PaymenyLink).HasMaxLength(200);
@@ -30,8 +30,10 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(c => c.CreatedBy).HasMaxLength(120);
             builder.HasOne(p => p.Store).WithMany(p => p.Orders).OnDelete(DeleteBehavior.NoAction)
                 .HasForeignKey(p => p.StoreId);
-            builder.HasOne(p => p.OrderUser).WithMany(p => p.OrderHeaders).OnDelete(DeleteBehavior.NoAction)
-                .HasForeignKey(p => p.UserId);
+            builder.HasOne(p => p.FromOrderUser).WithMany(p => p.FromOrderHeaders).OnDelete(DeleteBehavior.NoAction)
+                .HasForeignKey(p => p.FromUserId);
+            builder.HasOne(p => p.ToOrderUser).WithMany(p => p.ToOrderHeaders).OnDelete(DeleteBehavior.NoAction)
+                .HasForeignKey(p => p.ToUserId);
         }
     }
 }

@@ -17,7 +17,6 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this.DbSet
                 .Where(r => r.Id == id && (includeDeleted || !r.IsDeleted))
-                .Include(pi => pi.Product)
                 .Include(pi => pi.Category)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
@@ -30,8 +29,7 @@ namespace Kalabean.Infrastructure.Repositories
                             (request.CategoryId == null || r.CategoryId == request.CategoryId) &&
                             (request.UserId == null || r.UserId == request.UserId) &&
                             (string.IsNullOrEmpty(request.ProductName) ||
-                             r.Product.ProductName.Contains(request.ProductName)))
-                .Include(pi => pi.Product)
+                             r.ProductName.Contains(request.ProductName)))
                 .Include(pi => pi.Category);
         }
         public async Task<int> Count(GetRequirementsRequest request, bool includeDeleted = false)
@@ -41,7 +39,18 @@ namespace Kalabean.Infrastructure.Repositories
                             (request.CategoryId == null || r.CategoryId == request.CategoryId) &&
                             (request.UserId == null || r.UserId == request.UserId) &&
                             (string.IsNullOrEmpty(request.ProductName) ||
-                             r.Product.ProductName.Contains(request.ProductName))).Count();
+                             r.ProductName.Contains(request.ProductName))).Count();
         }
+
+        public async Task ChangeStatus(long Id, RequirementStatus status)
+        {
+            var currentRecord = this.DbSet.Find(Id);
+            if (currentRecord == null) return;
+            currentRecord.RequirementStatus = (byte)status;
+            currentRecord.DateChangeStatus = System.DateTime.Now;
+            currentRecord.AdminId = Helpers.JWTTokenManager.GetUserIdByToken();
+            DbSet.Update(currentRecord);
+        }
+
     }
 }

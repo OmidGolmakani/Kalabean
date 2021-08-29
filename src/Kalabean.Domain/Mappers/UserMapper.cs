@@ -67,7 +67,8 @@ namespace Kalabean.Domain.Mappers
                 PhoneNumber = user.PhoneNumber,
                 LockoutEnabled = user.LockoutEnabled,
                 LockoutEnd = user.LockoutEnd != null ? Helper.PersionDate.GetShamsi((user.LockoutEnd ?? System.DateTimeOffset.Now)) : null,
-                Orders = user.OrderHeaders != null ? user.OrderHeaders.Select(x => _order.Map(x)).ToList() : null,
+                FromOrders = user.FromOrderHeaders != null ? user.FromOrderHeaders.Select(x => _order.Map(x)).ToList() : null,
+                ToOrders = user.ToOrderHeaders != null ? user.ToOrderHeaders.Select(x => _order.Map(x)).ToList() : null,
                 StoresThumb = user.Stores != null ? user.Stores.Select(x => _store.MapThumb(x)).ToList() : null,
                 Requirements = user.RequirementUsers != null ? user.RequirementUsers.Select(x => _requirement.Map(x)).ToList() : null
             };
