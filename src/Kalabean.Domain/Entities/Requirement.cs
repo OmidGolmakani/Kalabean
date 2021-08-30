@@ -25,6 +25,7 @@ namespace Kalabean.Domain.Entities
         public User RequirementUser { get; set; }
         public User AdminUser { get; set; }
         public RequirementUserSeen RequirementUserSeen { get; set; }
+        public ICollection<Conversation> Conversations { get; set; }
 
     }
 }

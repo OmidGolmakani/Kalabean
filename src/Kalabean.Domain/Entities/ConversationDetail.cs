@@ -11,8 +11,10 @@ namespace Kalabean.Domain.Entities
     {
         public long Id { get; set; }
         public int ConversationId { get; set; }
+        public long SenderUserId { get; set; }
         public string Message { get; set; }
         public DateTime DateSeen { get; set; }
         public Conversation Conversation { get; set; }
+        public User SenderUser { get; set; }
     }
 }

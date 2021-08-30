@@ -24,6 +24,8 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
                 OnDelete(DeleteBehavior.NoAction).HasForeignKey(p => p.SenderUserId);
             builder.HasOne(p => p.RecipientUser).WithMany(p => p.RecipientConversations).
                 OnDelete(DeleteBehavior.NoAction).HasForeignKey(p => p.RecipientUserId);
+            builder.HasOne(p => p.Requirement).WithMany(p => p.Conversations).
+                OnDelete(DeleteBehavior.NoAction).HasForeignKey(p => p.RequirementId);
         }
     }
 }
