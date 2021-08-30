@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Kalabean.MVC.ViewComponents
 {
-    public class AdView: ViewComponent
+    public class AdViewViewComponent: ViewComponent
     {
-        public AdView() { }
+        public AdViewViewComponent() { }
         public async Task<IViewComponentResult> InvokeAsync(bool isDone)
         {
             return View(isDone);
