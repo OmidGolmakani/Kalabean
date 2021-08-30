@@ -8,6 +8,7 @@ namespace Kalabean.Domain.Entities
 {
     public enum RequirementStatus : byte
     {
+        All = 0,
         AwaitingApproval = 1,
         Accepted = 2,
         Rejected = 3
@@ -27,6 +28,6 @@ namespace Kalabean.Domain.Entities
     {
         All = 0,
         Read = 1,
-        Unread = 2
+        UnRead = 2
     }
 }

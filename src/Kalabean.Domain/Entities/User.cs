@@ -34,5 +34,7 @@ namespace Kalabean.Domain.Entities
         public RequirementUserSeen RequiremenUserSeen { get; set; }
         public ICollection<ProductComment> ProductCommentUsers { get; set; }
         public ICollection<ProductComment> ProductCommentAdmins { get; set; }
+        public ICollection<Conversation> SenderConversations { get; set; }
+        public ICollection<Conversation> RecipientConversations { get; set; }
     }
 }
