@@ -65,6 +65,8 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new PossibilitiesShopCenterEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new ConversationEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new ConversationDetailEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new TicketEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new TicketDetailEntitySchemaDefinition());
 
             base.OnModelCreating(modelBuilder);
 
