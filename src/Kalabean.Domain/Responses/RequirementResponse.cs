@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Responses
 {
-    public class RequirementResponse
+    public class RequirementResponse : Base.AuditResponse
     {
         public long Id { get; set; }
         public string ProductName { get; set; }
@@ -18,7 +18,8 @@ namespace Kalabean.Domain.Responses
         public string Description { get; set; }
         public string ImageUrl { get; set; }
         public long? AdminId { get; set; }
-        public DateTime? AdminDate { get; set; }
+        public int Exprie { get; set; }
+        public DateTime? DateChangeStatus { get; set; }
         public ThumbResponse<int> CategoryThumb { get; set; }
     }
 }
