@@ -30,12 +30,10 @@ namespace Kalabean.Infrastructure.Repositories
                            (string.IsNullOrEmpty(request.ProductName) || r.ProductName.Contains(request.ProductName)) &&
                            (request.Status == RequirementStatus.All || r.RequirementStatus == (byte)request.Status) &&
                            (request.From == null || request.To == null || r.CreatedDate >= request.From && r.CreatedDate <= request.To) &&
-                            ((request.ReqirementType == RequirementType.All || request.UserId == null || r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId)) ||
-                           (request.ReqirementType == RequirementType.Sent || request.UserId == null || r.UserId == request.UserId) ||
-                           (request.ReqirementType == RequirementType.Received || request.UserId == null || r.Category.Stores.Any(s => s.UserId == request.UserId))) &&
-                           ((request.SeeReqirementType == SeeRequirementType.All) ||
-                           (request.SeeReqirementType == SeeRequirementType.Read || r.RequirementUserSeen.UserId == request.UserId) ||
-                           (request.SeeReqirementType == SeeRequirementType.UnRead || r.RequirementUserSeen.UserId != request.UserId))
+                           (request.UserId != null && (request.ReqirementType == RequirementType.All && (r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId))) ||
+                                                      (request.ReqirementType == RequirementType.Sent && r.UserId == request.UserId) ||
+                                                      (request.ReqirementType == RequirementType.Received && r.Category.Stores.Any(s => s.UserId == request.UserId)) &&
+                                                      (request.SeeReqirementType == SeeRequirementType.Read && r.RequirementUserSeen.UserId == request.UserId))
                           )
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(pi => pi.Category)
@@ -50,12 +48,10 @@ namespace Kalabean.Infrastructure.Repositories
                            (string.IsNullOrEmpty(request.ProductName) || r.ProductName.Contains(request.ProductName)) &&
                            (request.Status == RequirementStatus.All || r.RequirementStatus == (byte)request.Status) &&
                            (request.From == null || request.To == null || r.CreatedDate >= request.From && r.CreatedDate <= request.To) &&
-                            ((request.ReqirementType == RequirementType.All || request.UserId == null || r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId)) ||
-                           (request.ReqirementType == RequirementType.Sent || request.UserId == null || r.UserId == request.UserId) ||
-                           (request.ReqirementType == RequirementType.Received || request.UserId == null || r.Category.Stores.Any(s => s.UserId == request.UserId))) &&
-                           ((request.SeeReqirementType == SeeRequirementType.All) ||
-                           (request.SeeReqirementType == SeeRequirementType.Read || r.RequirementUserSeen.UserId == request.UserId) ||
-                           (request.SeeReqirementType == SeeRequirementType.UnRead || r.RequirementUserSeen.UserId != request.UserId))
+                           (request.UserId != null && (request.ReqirementType == RequirementType.All && (r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId))) ||
+                                                      (request.ReqirementType == RequirementType.Sent && r.UserId == request.UserId) ||
+                                                      (request.ReqirementType == RequirementType.Received && r.Category.Stores.Any(s => s.UserId == request.UserId)) &&
+                                                      (request.SeeReqirementType == SeeRequirementType.Read && r.RequirementUserSeen.UserId==request.UserId))
                           )
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
         }
