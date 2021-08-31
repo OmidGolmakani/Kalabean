@@ -51,7 +51,9 @@ namespace Kalabean.Infrastructure.Repositories
                            (request.UserId != null && (request.ReqirementType == RequirementType.All && (r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId))) ||
                                                       (request.ReqirementType == RequirementType.Sent && r.UserId == request.UserId) ||
                                                       (request.ReqirementType == RequirementType.Received && r.Category.Stores.Any(s => s.UserId == request.UserId)) &&
-                                                      (request.SeeReqirementType == SeeRequirementType.Read && r.RequirementUserSeen.UserId==request.UserId))
+                                                      (request.SeeReqirementType == SeeRequirementType.All && (r.RequirementUserSeen.UserId == request.UserId) || r.RequirementUserSeen == null) ||
+                                                      (request.SeeReqirementType == SeeRequirementType.Read && r.RequirementUserSeen.UserId == request.UserId) ||
+                                                      (request.SeeReqirementType == SeeRequirementType.UnRead && r.RequirementUserSeen == null))
                           )
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
         }
