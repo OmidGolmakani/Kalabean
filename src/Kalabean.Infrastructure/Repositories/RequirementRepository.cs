@@ -48,14 +48,16 @@ namespace Kalabean.Infrastructure.Repositories
                 .List(r => (includeDeleted || !r.IsDeleted) &&
                            (request.CategoryId == null || r.CategoryId == request.CategoryId) &&
                            (string.IsNullOrEmpty(request.ProductName) || r.ProductName.Contains(request.ProductName)) &&
-                           ((request.ReqirementType == RequirementType.All || request.UserId == null || r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId)) ||
+                           (request.Status == RequirementStatus.All || r.RequirementStatus == (byte)request.Status) &&
+                           (request.From == null || request.To == null || r.CreatedDate >= request.From && r.CreatedDate <= request.To) &&
+                            ((request.ReqirementType == RequirementType.All || request.UserId == null || r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId)) ||
                            (request.ReqirementType == RequirementType.Sent || request.UserId == null || r.UserId == request.UserId) ||
                            (request.ReqirementType == RequirementType.Received || request.UserId == null || r.Category.Stores.Any(s => s.UserId == request.UserId))) &&
-                           (r.RequirementStatus == (byte)request.Status) &&
-                           (request.From == null || request.To == null || r.CreatedDate >= request.From && r.CreatedDate <= request.To) ||
                            ((request.SeeReqirementType == SeeRequirementType.All) ||
                            (request.SeeReqirementType == SeeRequirementType.Read || r.RequirementUserSeen.UserId == request.UserId) ||
-                           (request.SeeReqirementType == SeeRequirementType.UnRead || r.RequirementUserSeen.UserId != request.UserId))).Count();
+                           (request.SeeReqirementType == SeeRequirementType.UnRead || r.RequirementUserSeen.UserId != request.UserId))
+                          )
+                .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
         }
 
         public async Task ChangeStatus(long Id, RequirementStatus status)
