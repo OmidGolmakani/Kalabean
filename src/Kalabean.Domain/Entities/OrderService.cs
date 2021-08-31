@@ -12,4 +12,10 @@ namespace Kalabean.Domain
         Accepted = 2,
         Rejected = 3
     }
+    public enum OrderType : byte
+    {
+        All = 0,
+        Issued = 1,
+        Received = 2
+    }
 }

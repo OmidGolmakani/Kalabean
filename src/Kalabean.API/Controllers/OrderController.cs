@@ -56,12 +56,12 @@ namespace Kalabean.API.Controllers
             var result = await _OrderService.EditOrderAsync(request);
             return Ok(result);
         }
-        [HttpPut("Publishe{id}")]
+        [HttpPost("Publishe{id}")]
         [Microsoft.AspNetCore.Cors.EnableCors("Kalabean")]
         public async Task<IActionResult> Publish(long id)
         {
             await _OrderService.PublishOrderAsync(id);
-            return Ok(_OrderService.GetOrderAsync(new GetOrderHeaderRequest() { Id = id }));
+            return Ok("");
         }
     }
 }
