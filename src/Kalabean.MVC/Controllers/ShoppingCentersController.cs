@@ -13,9 +13,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.API.Controllers
 {
-    [Route("api/shoppingcenters")]
-    [ApiController]
-    public class ShoppingCentersController : ControllerBase
+    public class ShoppingCentersController : Controller
     {
         private readonly IShoppingCenterService _shoppingCenterService;
         public ShoppingCentersController(IShoppingCenterService shoppingCenterService)
@@ -23,12 +21,14 @@ namespace Kalabean.API.Controllers
             _shoppingCenterService = shoppingCenterService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get(GetShopingCentersRequest request)
+        public async Task<IActionResult> ShoppingCenters()
         {
-            return Ok(await _shoppingCenterService.GetShoppingCentersAsync(request));
+            return View();
         }
-
+        public async Task<IActionResult> Stores()
+        {
+            return View();
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

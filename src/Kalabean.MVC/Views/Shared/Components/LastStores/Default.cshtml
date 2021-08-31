@@ -1,0 +1,45 @@
+﻿@model List<StoreViewModel> 
+
+<div class="box-cat-prod px-3">
+    <div class="row">
+        <div class="py-4 px-5 w-100 position-relative">
+            @if (Model != null && Model.Count > 0)
+            {
+                <div class="d-inline-block w-100">
+                    <span class="d-inline-block section-title mt-1 mb-2">آخرین مشاغل اضافه شده</span>
+                    <div class="d-inline-block btn-show-all btn-show-all-light">
+                        <a id="#">
+                            مشاهده همه
+                            <img src="/images/ArrowIcon.png">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="w-100 mt-3">
+                    <div class='swiper-container' id='swiper04'>
+                        <div class="swiper-wrapper">
+                            @foreach (StoreViewModel store in Model)
+                            {
+                                <div class="swiper-slide" data-wow-delay="0.2s">
+                                    <div class="item-cat-prod">
+                                        <figure>
+                                            <a href="#">
+                                                <img src="@store.ImageListPath" class="rounded-top img-fluid w-100" />
+                                            </a>
+                                        </figure>
+                                        <div class="p-3">
+                                            <h3><a href="#">@store.Name</a></h3>
+                                            <div class="mt-2">@store.Category.Name</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class='swiper-button-next' id='swiper-button-next04'></div>
+                    <div class='swiper-button-prev' id='swiper-button-prev04'></div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

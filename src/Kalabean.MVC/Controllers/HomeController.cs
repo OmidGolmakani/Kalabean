@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace Kalabean.MVC.Controllers
 {
-    [Route("Home")]
-    [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,7 +18,6 @@ namespace Kalabean.MVC.Controllers
             _logger = logger;
         }
 
-        [Route("Index")]
         public IActionResult Index()
         {
             return View();
@@ -31,7 +28,6 @@ namespace Kalabean.MVC.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

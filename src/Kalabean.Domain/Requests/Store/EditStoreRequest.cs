@@ -26,6 +26,7 @@ namespace Kalabean.Domain.Requests.Store
         public string TelegramUrl { get; set; }
         public string WebsiteUrl { get; set; }
         public bool IsEnabled { get; set; }
+        public bool IsFeatured { get; set; }
         public bool ImageEdited { get; set; }
         public IFormFile Image { get; set; }
         public double? Lat { get; set; }

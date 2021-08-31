@@ -31,5 +31,6 @@ namespace Kalabean.Domain.Responses
         public double? Lat { get; set; }
         public double? Lng { get; set; }
         public bool IsEnabled { get; set; }
+        public bool IsFeatured { get; set; }
     }
 }

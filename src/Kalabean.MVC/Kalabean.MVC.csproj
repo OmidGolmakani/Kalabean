@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Kalabean.Infrastructure\Kalabean.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Ads\" />
+  </ItemGroup>
+
 </Project>

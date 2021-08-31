@@ -65,9 +65,11 @@ namespace Kalabean.Infrastructure.Repositories
         }
         public async Task<long> GetOrderNum()
         {
-            var Max = DbSet.Max(p => p.OrderNum);
-            Max = Max == 0 ? 1 : Max + 1;
-            return Max;
+            long max = 0;
+            if(DbSet.Count() > 0)
+                max = DbSet.Max(p => p.OrderNum);
+
+            return max + 1;
         }
     }
 }

@@ -1,0 +1,40 @@
+﻿@model List<ProductViewModel>
+<div class="box-cat-prod px-3">
+    <div class="row">
+        <div class="py-4 px-5 w-100 position-relative">
+
+            <div class="d-inline-block w-100">
+                <span class="d-inline-block section-title mt-1 mb-2">آخرین محصولات افزوده شده</span>
+                <div class="d-inline-block btn-show-all btn-show-all-light">
+                    <a id="#" href="#">
+                        مشاهده همه
+                        <img src="/images/ArrowIcon.png">
+                    </a>
+                </div>
+            </div>
+
+            <div class="w-100 mt-3">
+                <div class='swiper-container ' id='swiper05'>
+                    <div class="swiper-wrapper">
+                        @foreach (ProductViewModel product in Model)
+                        {
+                            <div class="swiper-slide" data-wow-delay="0.2s">
+                                <div class="item-cat-prod">
+                                    <figure>
+                                        <a href="#"><img src="@product.ImageListPath" class="p-2 img-fluid w-100" /></a>
+                                    </figure>
+                                    <div class="p-3">
+                                        <h3><a href="#">@product.Name</a></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class='swiper-button-next' id='swiper-button-next05'></div>
+                <div class='swiper-button-prev' id='swiper-button-prev05'></div>
+            </div>
+
+        </div>
+    </div>
+</div>

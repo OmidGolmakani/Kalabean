@@ -14,7 +14,7 @@ namespace Kalabean.Infrastructure.Files
         private const string Cities_Sub_Directory = "Cities";
         private const string Types_Sub_Directory = "Sh_C_Types";
         private const string Shoppings_Sub_Directory = "Sh_C";
-        private const string Possibilities_Shoppings_Sub_Directory = "Possibilities_Shoppings";
+        private const string Possibilities_Shoppings_Sub_Directory = "PossibilitiesShopCenters";
         private const string Stores_Sub_Directory = "Stores";
         private const string Products_Sub_Directory = "Products";
         private const string Articles_Sub_Directory = "Articles";

@@ -1,10 +1,13 @@
 using Kalabean.Domain.Base;
 using Kalabean.Domain.Repositories;
 using Kalabean.Infrastructure;
+using Kalabean.Infrastructure.AppSettingConfigs;
 using Kalabean.Infrastructure.Extensions;
+using Kalabean.Infrastructure.Helpers;
 using Kalabean.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +33,9 @@ namespace Kalabean.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            MyAppContext.Configure();
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<AppDbContext>(options =>
                 {
@@ -57,19 +63,18 @@ namespace Kalabean.MVC
                 .AddScoped<IArticleRepository, ArticleRepository>()
                 .AddScoped<IAdvertiseRepository, AdvertiseRepository>()
                 .AddScoped<IProductCommentRepository, ProductCommentRepository>()
-                .AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+                .AddScoped<IRolePermissionRepository, RolePermissionRepository>()
+            .AddScoped<IPossibilitiesShopCenterRepository, PossibilitiesShopCenterRepository>();
             services.
                 AddFileProvider().
                 AddMappers().
                 AddServices().
                 AddMyIdentity().
-                GetConfigs(Configuration);
+                GetImagesConfigurations(Configuration);
+
+            services.Configure<Files>(Configuration.GetSection("Files"));
 
             services.AddControllersWithViews();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kala", Version = "v1" });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,10 +90,7 @@ namespace Kalabean.MVC
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 //app.UseHsts();
             }
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Kala v1"));
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -97,6 +99,18 @@ namespace Kalabean.MVC
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("Home", "",
+                    new { controller = "Home", action = "Index" });
+
+                endpoints.MapControllerRoute("ShoppingCenters", "shopping-centers/{typeName}-{typeId}",
+                    new { controller = "ShoppingCenters", action = "ShoppingCenters" });
+
+                endpoints.MapControllerRoute("StoresByShoppingCenter", "shopping-centers/{typeName}-{typeId}/{name}-{id}",
+                    new { controller = "ShoppingCenters", action = "Stores" });
+
+                endpoints.MapControllerRoute("Store", "store/{name}-{id}",
+                    new { controller = "Stores", action = "StoreProfile" });
+
                 endpoints.MapControllers();
             });
         }

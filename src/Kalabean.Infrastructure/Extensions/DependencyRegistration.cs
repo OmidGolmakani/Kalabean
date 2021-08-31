@@ -94,7 +94,7 @@ namespace Kalabean.Infrastructure.Extensions
             .AddDefaultTokenProviders();
             return services;
         }
-        public static IServiceCollection GetConfigs(this IServiceCollection services,
+        public static IServiceCollection GetImagesConfigurations(this IServiceCollection services,
                                                     IConfiguration configuration)
         {
             return services.Configure<AppSettingConfigs.Images.ImageSize>(configuration.GetSection("ImagesConfig"));

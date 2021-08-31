@@ -51,6 +51,7 @@ namespace Kalabean.Domain.Mappers
                 TelegramUrl = request.TelegramUrl,
                 WebsiteUrl = request.WebsiteUrl,
                 IsEnabled = request.IsEnabled,
+                IsFeatured = request.IsFeatured,
                 Lat = request.Lat,
                 Lng = request.Lng
             };
@@ -85,6 +86,7 @@ namespace Kalabean.Domain.Mappers
                 TelegramUrl = request.TelegramUrl,
                 WebsiteUrl = request.WebsiteUrl,
                 IsEnabled = request.IsEnabled,
+                IsFeatured = request.IsFeatured,
                 Lat = request.Lat,
                 Lng = request.Lng
             };
@@ -123,6 +125,7 @@ namespace Kalabean.Domain.Mappers
                 TelegramUrl = store.TelegramUrl,
                 WebsiteUrl = store.WebsiteUrl,
                 IsEnabled = store.IsEnabled,
+                IsFeatured = store.IsFeatured,
                 Lat = store.Lat,
                 Lng = store.Lng
             };
