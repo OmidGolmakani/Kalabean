@@ -80,7 +80,7 @@ namespace Kalabean.API
                 AddMappers().
                 AddServices().
                 AddMyIdentity().
-                GetConfigs(Configuration);
+                GetImagesConfigurations(Configuration);
 
             services.AddControllers();
 

@@ -1,6 +1,7 @@
 using Kalabean.Domain.Base;
 using Kalabean.Domain.Repositories;
 using Kalabean.Infrastructure;
+using Kalabean.Infrastructure.AppSettingConfigs;
 using Kalabean.Infrastructure.Extensions;
 using Kalabean.Infrastructure.Helpers;
 using Kalabean.Infrastructure.Repositories;
@@ -69,7 +70,9 @@ namespace Kalabean.MVC
                 AddMappers().
                 AddServices().
                 AddMyIdentity().
-                GetConfigs(Configuration);
+                GetImagesConfigurations(Configuration);
+
+            services.Configure<Files>(Configuration.GetSection("Files"));
 
             services.AddControllersWithViews();
         }
