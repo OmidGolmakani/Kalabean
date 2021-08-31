@@ -7,17 +7,15 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Entities
 {
-    public class Conversation : AuditDeleteEntity
+    public class Ticket : AuditDeleteEntity
     {
         public int Id { get; set; }
-        public long? RequirementId { get; set; }
         public long SenderUserId { get; set; }
         public long? RecipientUserId { get; set; }
         public string Title { get; set; }
         public byte Status { get; set; }
         public User SenderUser { get; set; }
         public User RecipientUser { get; set; }
-        public Requirement Requirement { get; set; }
-        public ICollection<ConversationDetail> ConversationDetails { get; set; }
+        public ICollection<TicketDetail> TicketDetails { get; set; }
     }
 }

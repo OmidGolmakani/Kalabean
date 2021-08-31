@@ -36,5 +36,9 @@ namespace Kalabean.Domain.Entities
         public ICollection<ProductComment> ProductCommentAdmins { get; set; }
         public ICollection<Conversation> SenderConversations { get; set; }
         public ICollection<Conversation> RecipientConversations { get; set; }
+        public ICollection<ConversationDetail> ConversationDetails { get; set; }
+        public ICollection<Ticket> SenderTickets { get; set; }
+        public ICollection<Ticket> RecipientTickets { get; set; }
+        public ICollection<TicketDetail> TicketDetails { get; set; }
     }
 }

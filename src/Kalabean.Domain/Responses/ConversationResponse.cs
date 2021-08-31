@@ -1,13 +1,12 @@
-﻿using Kalabean.Domain.Entities.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kalabean.Domain.Entities
+namespace Kalabean.Domain.Responses
 {
-    public class Conversation : AuditDeleteEntity
+    public class ConversationResponse
     {
         public int Id { get; set; }
         public long? RequirementId { get; set; }
@@ -15,9 +14,6 @@ namespace Kalabean.Domain.Entities
         public long? RecipientUserId { get; set; }
         public string Title { get; set; }
         public byte Status { get; set; }
-        public User SenderUser { get; set; }
-        public User RecipientUser { get; set; }
-        public Requirement Requirement { get; set; }
-        public ICollection<ConversationDetail> ConversationDetails { get; set; }
+        public ICollection<ThumbResponse<long>> Messages { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using Kalabean.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kalabean.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210830182055_AddSenderUserIdToDetailConversation")]
+    partial class AddSenderUserIdToDetailConversation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1208,100 +1210,6 @@ namespace Kalabean.API.Migrations
                     b.ToTable("Stores");
                 });
 
-            modelBuilder.Entity("Kalabean.Domain.Entities.Ticket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<long?>("RecipientUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SenderUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<byte>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint")
-                        .HasDefaultValue((byte)1);
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipientUserId");
-
-                    b.HasIndex("SenderUserId");
-
-                    b.ToTable("Ticket");
-                });
-
-            modelBuilder.Entity("Kalabean.Domain.Entities.TicketDetail", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateSeen")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("SenderUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TicketId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SenderUserId");
-
-                    b.HasIndex("TicketId");
-
-                    b.ToTable("TicketDetail");
-                });
-
             modelBuilder.Entity("Kalabean.Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -1814,43 +1722,6 @@ namespace Kalabean.API.Migrations
                     b.Navigation("StoreUser");
                 });
 
-            modelBuilder.Entity("Kalabean.Domain.Entities.Ticket", b =>
-                {
-                    b.HasOne("Kalabean.Domain.Entities.User", "RecipientUser")
-                        .WithMany("RecipientTickets")
-                        .HasForeignKey("RecipientUserId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Kalabean.Domain.Entities.User", "SenderUser")
-                        .WithMany("SenderTickets")
-                        .HasForeignKey("SenderUserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("RecipientUser");
-
-                    b.Navigation("SenderUser");
-                });
-
-            modelBuilder.Entity("Kalabean.Domain.Entities.TicketDetail", b =>
-                {
-                    b.HasOne("Kalabean.Domain.Entities.User", "SenderUser")
-                        .WithMany("TicketDetails")
-                        .HasForeignKey("SenderUserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Kalabean.Domain.Entities.Ticket", "Ticket")
-                        .WithMany("TicketDetails")
-                        .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("SenderUser");
-
-                    b.Navigation("Ticket");
-                });
-
             modelBuilder.Entity("Kalabean.Domain.Entities.UserClaim", b =>
                 {
                     b.HasOne("Kalabean.Domain.Entities.User", null)
@@ -1963,11 +1834,6 @@ namespace Kalabean.API.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Kalabean.Domain.Entities.Ticket", b =>
-                {
-                    b.Navigation("TicketDetails");
-                });
-
             modelBuilder.Entity("Kalabean.Domain.Entities.User", b =>
                 {
                     b.Navigation("Articles");
@@ -1982,8 +1848,6 @@ namespace Kalabean.API.Migrations
 
                     b.Navigation("RecipientConversations");
 
-                    b.Navigation("RecipientTickets");
-
                     b.Navigation("RequirementAdmins");
 
                     b.Navigation("RequirementUsers");
@@ -1992,11 +1856,7 @@ namespace Kalabean.API.Migrations
 
                     b.Navigation("SenderConversations");
 
-                    b.Navigation("SenderTickets");
-
                     b.Navigation("Stores");
-
-                    b.Navigation("TicketDetails");
 
                     b.Navigation("ToOrderHeaders");
                 });
