@@ -14,8 +14,9 @@ namespace Kalabean.MVC.Models
         {
             get
             {
-                return string.Format("{0}/Products/243_201/{1}.jpeg", this._basePath, this.Id);
+                return string.Format("{0}/Products/245_205/{1}.jpeg", this._basePath, this.Id);
             }
         }
+        
     }
 }

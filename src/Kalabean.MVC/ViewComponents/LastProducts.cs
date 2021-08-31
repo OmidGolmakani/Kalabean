@@ -39,8 +39,7 @@ namespace Kalabean.MVC.ViewComponents
                         Id = s.Category.Id,
                         Name = s.Category.Name
                     },
-                    Name = s.Name,
-                    Id = s.Id
+                    
                 }).
                 ToList();
             }

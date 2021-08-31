@@ -24,11 +24,13 @@ namespace Kalabean.MVC.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync(bool isDone)
         {
-            List<Store> stores = _storeRepository.List(s => s.IsEnabled && !s.IsDeleted && s.HasImage).
-            OrderByDescending(s => s.Id).
-            Take(15).
-            Include(s => s.Category).
-            ToList();
+            List<Store> stores = _storeRepository.
+                List(s => s.IsEnabled && !s.IsDeleted && s.HasImage && s.IsFeatured).
+                OrderByDescending(s => s.Id).
+                Take(15).
+                Include(s => s.Category).
+                Include(s => s.Products).
+                ToList();
             List<StoreViewModel> model = null;
             if (stores.Count > 0)
             {
@@ -40,7 +42,8 @@ namespace Kalabean.MVC.ViewComponents
                         Name = s.Category.Name
                     },
                     Name = s.Name,
-                    Id = s.Id
+                    Id = s.Id,
+                    ProductsCount = s.Products != null ? s.Products.Count : 0
                 }).
                 ToList();
             }
