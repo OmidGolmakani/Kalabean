@@ -1,9 +1,13 @@
 ﻿using Kalabean.Domain.Entities;
+using Kalabean.Domain.Repositories;
 using Kalabean.Domain.Requests.ShoppingCenter;
 using Kalabean.Domain.Responses;
 using Kalabean.Domain.Services;
+using Kalabean.Infrastructure.AppSettingConfigs;
+using Kalabean.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,47 +19,38 @@ namespace Kalabean.API.Controllers
 {
     public class ShoppingCentersController : Controller
     {
-        private readonly IShoppingCenterService _shoppingCenterService;
-        public ShoppingCentersController(IShoppingCenterService shoppingCenterService)
+        IShoppingCenterRepository _repository;
+        private readonly Files _filesConfig = null;
+        public ShoppingCentersController(IShoppingCenterRepository repository,
+            IOptions<Files> filesConfig)
         {
-            _shoppingCenterService = shoppingCenterService;
+            this._repository = repository;
+            _filesConfig = filesConfig?.Value;
         }
 
-        public async Task<IActionResult> ShoppingCenters()
+        public async Task<IActionResult> ShoppingCenters(string typeName, int typeId, string query, int? cityId)
         {
-            return View();
-        }
-        public async Task<IActionResult> Stores()
-        {
-            return View();
-        }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            return Ok(await _shoppingCenterService.
-                GetShoppingCenterAsync(new GetShoppingCenterRequest { Id = id }));
-        }
+            IQueryable<ShoppingCenter> shoppings = this._repository.
+                List(r => r.IsEnabled && !r.IsDeleted && r.Type.Id == typeId);
+            if (!string.IsNullOrEmpty(query))
+                shoppings = shoppings.Where(s => s.Name.Contains(query));
+            if (cityId.HasValue && cityId > 0)
+                shoppings = shoppings.Where(s => s.CityId == cityId);
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromForm] AddShoppingCenterRequest request)
-        {
-            var result = await _shoppingCenterService.AddShoppingCenterAsync(request);
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
-        }
-
-        [HttpPost("BatchDelete")]
-        public async Task<IActionResult> BatchDelete(int[] Ids)
-        {
-            await _shoppingCenterService.BatchDeleteShoppingCentersAsync(Ids);
-            return Ok();
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromForm] EditShoppingCenterRequest request)
-        {
-            request.Id = id;
-            var result = await _shoppingCenterService.EditShoppingCenterAsync(request);
-            return Ok(result);
+            List<ShoppingCenterViewModel> model = null;
+            if (shoppings.Count() > 0)
+            {
+                model = shoppings.Select(s => new ShoppingCenterViewModel(_filesConfig.BaseUrl)
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Address = s.Address,
+                    Description = s.Description,
+                    StoresCount = s.Stores != null ? s.Stores.Count : 0
+                }).
+                ToList();
+            }
+            return View(model);
         }
     }
 }

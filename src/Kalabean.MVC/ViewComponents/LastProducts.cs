@@ -24,21 +24,19 @@ namespace Kalabean.MVC.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync(bool isDone)
         {
-            List<Product> stores = _productRepository.
+            List<Product> products = _productRepository.
                 List(p => p.IsEnabled && !p.IsDeleted && p.ProductImages != null).
                 OrderByDescending(s => s.Id).
+                Include(s => s.Category).
                 Take(15).
                 ToList();
-            List<StoreViewModel> model = null;
-            if (stores.Count > 0)
+            List<ProductViewModel> model = null;
+            if (products.Count > 0)
             {
-                model = stores.Select(s => new StoreViewModel(_filesConfig.BaseUrl)
+                model = products.Select(s => new ProductViewModel(_filesConfig.BaseUrl)
                 {
-                    Category = new CategoryViewModel(_filesConfig.BaseUrl)
-                    {
-                        Id = s.Category.Id,
-                        Name = s.Category.Name
-                    },
+                    Name = s.ProductName,
+                    Id = s.Id
                     
                 }).
                 ToList();

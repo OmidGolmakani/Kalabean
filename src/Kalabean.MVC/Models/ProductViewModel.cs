@@ -8,7 +8,7 @@ namespace Kalabean.MVC.Models
         public ProductViewModel(string basePath) {
             _basePath = basePath;
         }
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public string ImageListPath
         {
