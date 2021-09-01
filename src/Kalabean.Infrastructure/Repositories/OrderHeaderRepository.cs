@@ -31,12 +31,13 @@ namespace Kalabean.Infrastructure.Repositories
                 p => (includeDeleted || !p.IsDeleted) &&
                 (request.StoreId == null || p.StoreId == request.StoreId) &&
                 (request.OrderNum == null || p.OrderNum == request.OrderNum) &&
-                (request.OrderFrom == null || request.OrderTo == null || 
+                (request.OrderFrom == null || request.OrderTo == null ||
                 (p.CreatedDate >= request.OrderFrom && p.CreatedDate <= request.OrderTo)) &&
                 (request.PaymentFrom == null || request.PaymentTo == null ||
                 (p.PaymenyDate >= request.PaymentFrom && p.PaymenyDate <= request.PaymentTo)) &&
-                (request.Type == "issued" || request.FromUserId == null || p.FromUserId == request.FromUserId) &&
-                (request.Type == "received" || request.ToUserId == null || p.ToUserId == request.ToUserId))
+                ((request.UserId != null && request.OrderType == Domain.OrderType.All && (p.FromUserId == request.UserId || p.ToUserId == request.UserId)) ||
+                (request.UserId != null && request.OrderType == Domain.OrderType.Issued && p.FromUserId == request.UserId) ||
+                (request.UserId != null && request.OrderType == Domain.OrderType.Received && p.ToUserId == request.UserId)))
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(pi => pi.Store)
                 .Include(p => p.OrderDetails)
@@ -45,16 +46,19 @@ namespace Kalabean.Infrastructure.Repositories
 
         public async Task<int> Count(GetOrdersRequest request, bool includeDeleted = false)
         {
-            return this.List(
-                 p => (includeDeleted || !p.IsDeleted) &&
+            return this
+                .List(
+                p => (includeDeleted || !p.IsDeleted) &&
                 (request.StoreId == null || p.StoreId == request.StoreId) &&
                 (request.OrderNum == null || p.OrderNum == request.OrderNum) &&
                 (request.OrderFrom == null || request.OrderTo == null ||
                 (p.CreatedDate >= request.OrderFrom && p.CreatedDate <= request.OrderTo)) &&
                 (request.PaymentFrom == null || request.PaymentTo == null ||
                 (p.PaymenyDate >= request.PaymentFrom && p.PaymenyDate <= request.PaymentTo)) &&
-                (request.Type == "issued" || request.FromUserId == null || p.FromUserId == request.FromUserId) &&
-                (request.Type == "received" || request.ToUserId == null || p.ToUserId == request.ToUserId)).Count();
+                ((request.UserId != null && request.OrderType == Domain.OrderType.All && (p.FromUserId == request.UserId || p.ToUserId == request.UserId)) ||
+                (request.UserId != null && request.OrderType == Domain.OrderType.Issued && p.FromUserId == request.UserId) ||
+                (request.UserId != null && request.OrderType == Domain.OrderType.Received && p.ToUserId == request.UserId)))
+                .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
         }
 
         public async Task Publish(long Id)
@@ -66,7 +70,7 @@ namespace Kalabean.Infrastructure.Repositories
         public async Task<long> GetOrderNum()
         {
             long max = 0;
-            if(DbSet.Count() > 0)
+            if (DbSet.Count() > 0)
                 max = DbSet.Max(p => p.OrderNum);
 
             return max + 1;

@@ -58,7 +58,7 @@ namespace Kalabean.Infrastructure.Services
             var userRoles = await _userManager.GetRolesAsync(user);
             if (userRoles.FirstOrDefault(u => u == "Administrator") == null)
             {
-                request.FromUserId = UserId;
+                request.UserId = UserId;
             }
 
             var result = await _orderRepository.Get(request);
