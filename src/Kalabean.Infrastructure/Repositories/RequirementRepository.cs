@@ -30,15 +30,17 @@ namespace Kalabean.Infrastructure.Repositories
                            (string.IsNullOrEmpty(request.ProductName) || r.ProductName.Contains(request.ProductName)) &&
                            (request.Status == RequirementStatus.All || r.RequirementStatus == (byte)request.Status) &&
                            (request.From == null || request.To == null || r.CreatedDate >= request.From && r.CreatedDate <= request.To) &&
-                           (request.UserId != null && (request.ReqirementType == RequirementType.All && (r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId))) ||
-                                                      (request.ReqirementType == RequirementType.Sent && r.UserId == request.UserId) ||
-                                                      (request.ReqirementType == RequirementType.Received && r.Category.Stores.Any(s => s.UserId == request.UserId)) &&
-                                                      (request.SeeReqirementType == SeeRequirementType.Read && r.RequirementUserSeen.UserId == request.UserId))
-                          )
-                .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
-                .Include(pi => pi.Category)
-                .ThenInclude(pi => pi.Stores)
-                .ThenInclude(pi => pi.StoreUser);
+                           ((request.ReqirementType == RequirementType.All && (request.UserId == null || (request.UserId != null && (r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId))))) ||
+                           (request.ReqirementType == RequirementType.Sent && (request.UserId == null || (request.UserId != null && (r.UserId == request.UserId)))) ||
+                           (request.ReqirementType == RequirementType.Received && (request.UserId == null || (request.UserId != null && (r.Category.Stores.Any(s => s.UserId == request.UserId)))))) &&
+                           ((request.SeeReqirementType == SeeRequirementType.All && (request.UserId == null || (request.UserId != null && (r.RequirementUserSeen.UserId == request.UserId || r.RequirementUserSeen == null)))) ||
+                           (request.SeeReqirementType == SeeRequirementType.Read && (request.UserId == null || (request.UserId != null && (r.RequirementUserSeen.UserId == request.UserId)))) ||
+                           (request.SeeReqirementType == SeeRequirementType.UnRead && (request.UserId == null || (request.UserId != null && (r.RequirementUserSeen == null)))))
+                           )
+            .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
+            .Include(pi => pi.Category)
+            .ThenInclude(pi => pi.Stores)
+            .ThenInclude(pi => pi.StoreUser);
         }
         public async Task<int> Count(GetRequirementsRequest request, bool includeDeleted = false)
         {
@@ -48,14 +50,14 @@ namespace Kalabean.Infrastructure.Repositories
                            (string.IsNullOrEmpty(request.ProductName) || r.ProductName.Contains(request.ProductName)) &&
                            (request.Status == RequirementStatus.All || r.RequirementStatus == (byte)request.Status) &&
                            (request.From == null || request.To == null || r.CreatedDate >= request.From && r.CreatedDate <= request.To) &&
-                           (request.UserId != null && (request.ReqirementType == RequirementType.All && (r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId))) ||
-                                                      (request.ReqirementType == RequirementType.Sent && r.UserId == request.UserId) ||
-                                                      (request.ReqirementType == RequirementType.Received && r.Category.Stores.Any(s => s.UserId == request.UserId)) &&
-                                                      (request.SeeReqirementType == SeeRequirementType.All && (r.RequirementUserSeen.UserId == request.UserId) || r.RequirementUserSeen == null) ||
-                                                      (request.SeeReqirementType == SeeRequirementType.Read && r.RequirementUserSeen.UserId == request.UserId) ||
-                                                      (request.SeeReqirementType == SeeRequirementType.UnRead && r.RequirementUserSeen == null))
-                          )
-                .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
+                           ((request.ReqirementType == RequirementType.All && (request.UserId == null || (request.UserId != null && (r.UserId == request.UserId || r.Category.Stores.Any(s => s.UserId == request.UserId))))) ||
+                           (request.ReqirementType == RequirementType.Sent && (request.UserId == null || (request.UserId != null && (r.UserId == request.UserId)))) ||
+                           (request.ReqirementType == RequirementType.Received && (request.UserId == null || (request.UserId != null && (r.Category.Stores.Any(s => s.UserId == request.UserId)))))) &&
+                           ((request.SeeReqirementType == SeeRequirementType.All && (request.UserId == null || (request.UserId != null && (r.RequirementUserSeen.UserId == request.UserId || r.RequirementUserSeen == null)))) ||
+                           (request.SeeReqirementType == SeeRequirementType.Read && (request.UserId == null || (request.UserId != null && (r.RequirementUserSeen.UserId == request.UserId)))) ||
+                           (request.SeeReqirementType == SeeRequirementType.UnRead && (request.UserId == null || (request.UserId != null && (r.RequirementUserSeen == null)))))
+                           )
+            .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
         }
 
         public async Task ChangeStatus(long Id, int categoryId, RequirementStatus status)

@@ -12,11 +12,11 @@ namespace Kalabean.Domain.Entities
         public long Id { get; set; }
         public int StoreId { get; set; }
         public long OrderNum { get; set; }
-        public DateTime? PaymenyDate { get; set; }
+        public DateTime? PaymentDate { get; set; }
         public long FromUserId { get; set; }
         public long ToUserId { get; set; }
         public int OrderPrice { get; set; }
-        public string PaymenyLink { get; set; }
+        public string PaymentLink { get; set; }
         public string Description { get; set; }
         public byte OrderStatus { get; set; }
         public bool HasImage { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Responses
 {
-    public class OrderHeaderResponse
+    public class OrderHeaderResponse : Base.AuditResponse
     {
         public long Id { get; set; }
         public int StoreId { get; set; }
@@ -15,7 +15,8 @@ namespace Kalabean.Domain.Responses
         public long OrderNum { get; set; }
         public DateTime? PaymentOrder { get; set; }
         public int OrderPrice { get; set; }
-        public string PaymenyLink { get; set; }
+        public string PaymentLink { get; set; }
+        public DateTime? PaymentDate { get; set; }
         public string Description { get; set; }
         public byte OrderStatus { get; set; }
         public string ImageUrl { get; set; }

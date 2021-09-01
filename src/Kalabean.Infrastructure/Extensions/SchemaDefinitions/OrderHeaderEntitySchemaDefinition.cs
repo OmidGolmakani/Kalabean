@@ -18,8 +18,8 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(p => p.FromUserId).IsRequired();
             builder.Property(p => p.OrderPrice).IsRequired();
             builder.Property(p => p.OrderPrice).IsRequired();
-            builder.Property(p => p.PaymenyLink).HasMaxLength(200);
-            builder.Property(p => p.PaymenyDate);
+            builder.Property(p => p.PaymentLink).HasMaxLength(200);
+            builder.Property(p => p.PaymentDate);
             builder.Property(p => p.OrderStatus).IsRequired().HasDefaultValue((byte)OrderStatus.AwaitingApproval);
             builder.Property(p => p.Description).HasMaxLength(200);
             builder.Property(p => p.Published);
