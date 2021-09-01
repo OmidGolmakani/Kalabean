@@ -52,9 +52,12 @@ namespace Kalabean.API.Controllers
             return Ok(result);
         }
         [HttpPost("Publish{id}")]
-        public async Task<IActionResult> ChangeStatus(int id, RequirementStatus status)
+        public async Task<IActionResult> ChangeStatus(PublishRequirementRequest request)
         {
-            await _RequirementService.ChangeStatus(id, status);
+            int id = request.Id;
+            int categoryId = request.CategoryId;
+            RequirementStatus status = request.Status;
+            await _RequirementService.ChangeStatus(id, categoryId, status);
             return Ok();
         }
     }

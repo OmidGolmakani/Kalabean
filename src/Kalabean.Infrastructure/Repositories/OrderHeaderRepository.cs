@@ -35,9 +35,9 @@ namespace Kalabean.Infrastructure.Repositories
                 (p.CreatedDate >= request.OrderFrom && p.CreatedDate <= request.OrderTo)) &&
                 (request.PaymentFrom == null || request.PaymentTo == null ||
                 (p.PaymenyDate >= request.PaymentFrom && p.PaymenyDate <= request.PaymentTo)) &&
-                ((request.UserId != null && request.OrderType == Domain.OrderType.All && (p.FromUserId == request.UserId || p.ToUserId == request.UserId)) ||
-                (request.UserId != null && request.OrderType == Domain.OrderType.Issued && p.FromUserId == request.UserId) ||
-                (request.UserId != null && request.OrderType == Domain.OrderType.Received && p.ToUserId == request.UserId)))
+                ((request.OrderType == Domain.OrderType.All && (request.UserId == null || p.FromUserId == request.UserId || p.ToUserId == request.UserId)) ||
+                (request.OrderType == Domain.OrderType.Issued && (request.UserId == null || p.FromUserId == request.UserId)) ||
+                (request.OrderType == Domain.OrderType.Received && (request.UserId == null || p.ToUserId == request.UserId))))
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                 .Include(pi => pi.Store)
                 .Include(p => p.OrderDetails)
@@ -55,9 +55,9 @@ namespace Kalabean.Infrastructure.Repositories
                 (p.CreatedDate >= request.OrderFrom && p.CreatedDate <= request.OrderTo)) &&
                 (request.PaymentFrom == null || request.PaymentTo == null ||
                 (p.PaymenyDate >= request.PaymentFrom && p.PaymenyDate <= request.PaymentTo)) &&
-                ((request.UserId != null && request.OrderType == Domain.OrderType.All && (p.FromUserId == request.UserId || p.ToUserId == request.UserId)) ||
-                (request.UserId != null && request.OrderType == Domain.OrderType.Issued && p.FromUserId == request.UserId) ||
-                (request.UserId != null && request.OrderType == Domain.OrderType.Received && p.ToUserId == request.UserId)))
+                ((request.OrderType == Domain.OrderType.All && (request.UserId == null || p.FromUserId == request.UserId || p.ToUserId == request.UserId)) ||
+                (request.OrderType == Domain.OrderType.Issued && (request.UserId == null ||  p.FromUserId == request.UserId)) ||
+                (request.OrderType == Domain.OrderType.Received && (request.UserId == null || p.ToUserId == request.UserId))))
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
         }
 

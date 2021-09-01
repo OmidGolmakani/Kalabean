@@ -13,6 +13,6 @@ namespace Kalabean.Domain.Repositories
         Task<Requirement> GetById(long id, bool includeDeleted = false);
         Task<IQueryable<Requirement>> Get(GetRequirementsRequest request, bool includeDeleted = false);
         Task<int> Count(GetRequirementsRequest request, bool includeDeleted = false);
-        Task ChangeStatus(long Id,RequirementStatus status);
+        Task ChangeStatus(long Id, int categoryId, RequirementStatus status);
     }
 }

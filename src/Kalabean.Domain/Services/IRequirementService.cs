@@ -12,6 +12,6 @@ namespace Kalabean.Domain.Services
         Task<RequirementResponse> AddRequirementAsync(AddRequirementRequest request);
         Task<RequirementResponse> EditRequirementAsync(EditRequirementRequest request);
         Task BatchDeleteRequirementsAsync(long[] ids);
-        Task ChangeStatus(long Id, Entities.RequirementStatus status);
+        Task ChangeStatus(long Id, int categoryId, Entities.RequirementStatus status);
     }
 }

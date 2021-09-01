@@ -46,7 +46,7 @@ namespace Kalabean.Infrastructure.Services
             this._resizeImageService = resizeImageService;
             this._requirementSeen = requirementSeen;
             this._UserManager = userManager;
-            _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.Requirement).ToList();
+            _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.Requirements).ToList();
         }
 
         public async Task<ListPagingResponse<RequirementResponse>> GetRequirementsAsync(GetRequirementsRequest request)
@@ -165,9 +165,9 @@ namespace Kalabean.Infrastructure.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task ChangeStatus(long Id, RequirementStatus status)
+        public async Task ChangeStatus(long Id, int categoryId, RequirementStatus status)
         {
-            await _RequirementRepository.ChangeStatus(Id, status);
+            await _RequirementRepository.ChangeStatus(Id, categoryId, status);
             await _unitOfWork.CommitAsync();
         }
     }

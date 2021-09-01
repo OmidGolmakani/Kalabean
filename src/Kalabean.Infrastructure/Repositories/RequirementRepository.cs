@@ -58,11 +58,12 @@ namespace Kalabean.Infrastructure.Repositories
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
         }
 
-        public async Task ChangeStatus(long Id, RequirementStatus status)
+        public async Task ChangeStatus(long Id, int categoryId, RequirementStatus status)
         {
             var currentRecord = this.DbSet.Find(Id);
             if (currentRecord == null) return;
             currentRecord.RequirementStatus = (byte)status;
+            currentRecord.CategoryId = categoryId;
             currentRecord.DateChangeStatus = System.DateTime.Now;
             currentRecord.AdminId = Helpers.JWTTokenManager.GetUserIdByToken();
             DbSet.Update(currentRecord);
