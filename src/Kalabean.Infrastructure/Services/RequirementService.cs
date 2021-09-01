@@ -80,7 +80,7 @@ namespace Kalabean.Infrastructure.Services
             var item = _RequirementMapper.Map(request);
             item.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
             item.RequirementStatus = (byte)RequirementStatus.AwaitingApproval;
-            item.Expire = DateTime.Now.AddHours(48).Minute;
+            item.Expire = (DateTime.Now.AddHours(48) - DateTime.Now).TotalMinutes;
             var result = _RequirementRepository.Add(item);
             Tuple<bool, string> ImgResult = null;
             if (await _unitOfWork.CommitAsync() > 0 &&
