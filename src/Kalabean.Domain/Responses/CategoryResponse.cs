@@ -11,6 +11,7 @@ namespace Kalabean.Domain.Responses
         public string Description { get; set; }
         public string HtmlContent { get; set; }
         public byte? Order { get; set; }
+        public string ImageUrl { get; set; }
         public CategoryResponse Parent { get; set; }
         public ICollection<CategoryResponse> Children { get; set; }
     }

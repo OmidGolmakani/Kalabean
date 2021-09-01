@@ -25,6 +25,7 @@ namespace Kalabean.Infrastructure.AppSettingConfigs.Images
         Order = 7,
         Store = 8,
         Advertise = 9,
-        PossibilitiesShopCenter = 10
+        PossibilitiesShopCenter = 10,
+        Category = 11
     }
 }

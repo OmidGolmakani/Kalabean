@@ -11,5 +11,7 @@ namespace Kalabean.Domain.Requests.Category
         public string HtmlContent { get; set; }
         public byte? Order { get; set; }
         public int? ParentId { get; set; }
+        public bool ImageEdited { get; set; }
+        public IFormFile Image { get; set; }
     }
 }

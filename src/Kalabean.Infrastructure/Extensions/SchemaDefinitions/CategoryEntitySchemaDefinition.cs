@@ -14,6 +14,7 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
 
             builder.Property(c => c.Name)
                 .IsRequired();
+            builder.Property(c => c.HasImage);
             builder.Property(c => c.IsDeleted)
                 .HasDefaultValue(false);
             builder.Property(c => c.LastModified);

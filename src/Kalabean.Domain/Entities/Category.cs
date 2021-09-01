@@ -12,6 +12,7 @@ namespace Kalabean.Domain.Entities
         public string Description { get; set; }
         public string HtmlContent { get; set; }
         public int? ParentId { get; set; }
+        public bool? HasImage { get; set; }
         public ICollection<Category> Children { get; set; }
         public Category Parent { get; set; }
         public ICollection<Store> Stores { get; set; }

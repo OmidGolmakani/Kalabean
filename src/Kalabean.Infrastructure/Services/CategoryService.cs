@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 using System;
 using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
+using Kalabean.Infrastructure.Services.Image;
+using Kalabean.Infrastructure.Files;
+using Kalabean.Infrastructure.AppSettingConfigs.Images;
+using Microsoft.Extensions.Options;
+using Kalabean.Domain.Requests.ResizeImage;
+using System.Drawing;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -16,13 +22,22 @@ namespace Kalabean.Infrastructure.Services
         private readonly ICategoryRepository _categoryRepository;
         private readonly ICategoryMapper _categoryMapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IResizeImageService<int> _resizeImageService;
+        private readonly KalabeanFileProvider _fileProvider;
+        private readonly List<ImageSize> _imageConfig;
         public CategoryService(ICategoryRepository categoryRepository,
-            ICategoryMapper categoryMapper,
-            IUnitOfWork unitOfWork)
+                               ICategoryMapper categoryMapper,
+                               IUnitOfWork unitOfWork,
+                               IFileAccessProvider fileProvider,
+                               IResizeImageService<int> resizeImageService,
+                               IOptions<ImageSize> ImageConfig)
         {
             _categoryRepository = categoryRepository;
             _categoryMapper = categoryMapper;
             _unitOfWork = unitOfWork;
+            _fileProvider = new KalabeanFileProvider(fileProvider);
+            this._resizeImageService = resizeImageService;
+            _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.Category).ToList();
         }
 
         public async Task<IEnumerable<CategoryResponse>> GetCategoriesAsync(GetCategoriesRequest request)
@@ -40,7 +55,28 @@ namespace Kalabean.Infrastructure.Services
         {
             var item = _categoryMapper.Map(request);
             var result = _categoryRepository.Add(item);
-            await _unitOfWork.CommitAsync();
+            Tuple<bool, string> ImgResult = null;
+            if (await _unitOfWork.CommitAsync() > 0 &&
+                request.Image != null)
+            {
+                using (var fileContent = request.Image.OpenReadStream())
+                    ImgResult = _fileProvider.SaveCategoryImage(fileContent, result.Id);
+
+                foreach (var ImageResize in _imageConfig)
+                {
+
+                    if (ImgResult != null && ImgResult.Item1)
+                    {
+                        await _resizeImageService.Resize(new GetImageRequest<int>()
+                        {
+                            Id = result.Id,
+                            ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                            ImageUrl = ImgResult.Item2,
+                            Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                        });
+                    }
+                }
+            }
 
             return _categoryMapper.Map(await _categoryRepository.GetById(result.Id));
         }
@@ -53,6 +89,39 @@ namespace Kalabean.Infrastructure.Services
 
             var entity = _categoryMapper.Map(request);
             entity.CreatedDate = existingRecord.CreatedDate;
+            if (request.ImageEdited)
+            {
+                if ((entity.HasImage ?? false) || request.Image != null)
+                {
+                    Tuple<bool, string> ImgResult = null;
+                    if (request.Image != null)
+                    {
+                        using (var fileContent = request.Image.OpenReadStream())
+                            ImgResult = _fileProvider.SaveCategoryImage(fileContent, entity.Id);
+                        entity.HasImage = true;
+
+                        foreach (var ImageResize in _imageConfig)
+                        {
+                            if (ImgResult != null && ImgResult.Item1)
+                            {
+                                await _resizeImageService.Resize(new GetImageRequest<int>()
+                                {
+                                    Id = existingRecord.Id,
+                                    ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                                    ImageUrl = ImgResult.Item2,
+                                    Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                                });
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    _fileProvider.DeleteCategoryImage(entity.Id);
+                    entity.HasImage = false;
+                }
+            }
             var result = _categoryRepository.Update(entity);
             await _unitOfWork.CommitAsync();
             return _categoryMapper.Map(await _categoryRepository.GetById(result.Id));

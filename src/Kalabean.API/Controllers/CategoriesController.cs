@@ -31,7 +31,7 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(AddCategoryRequest request)
+        public async Task<IActionResult> Post([FromForm] AddCategoryRequest request)
         {
             var result = await _categoryService.AddCategoryAsync(request);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
@@ -45,7 +45,7 @@ namespace Kalabean.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, EditCategoryRequest request)
+        public async Task<IActionResult> Put(int id, [FromForm] EditCategoryRequest request)
         {
             request.Id = id;
             var result = await _categoryService.EditCategoryAsync(request);

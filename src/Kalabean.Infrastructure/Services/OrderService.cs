@@ -82,6 +82,14 @@ namespace Kalabean.Infrastructure.Services
                     StatusCode = 400
                 }));
             }
+            if (request.ToUserId == Helpers.JWTTokenManager.GetUserIdByToken())
+            {
+                throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorResponse()
+                {
+                    Message = "دریافت کننده فاکتور نمیتواند یکسان باشد",
+                    StatusCode = 400
+                }));
+            }
             if (_userManager.Users.FirstOrDefault(x => x.Id == request.ToUserId) == null)
             {
                 throw new Exception(Newtonsoft.Json.JsonConvert.SerializeObject(new ErrorResponse()

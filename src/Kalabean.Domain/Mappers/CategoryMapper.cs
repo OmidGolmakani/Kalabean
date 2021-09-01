@@ -21,7 +21,8 @@ namespace Kalabean.Domain.Mappers
                 Order = request.Order,
                 Description = request.Description,
                 HtmlContent = request.HtmlContent,
-                ParentId = request.ParentId
+                ParentId = request.ParentId,
+                HasImage = request.Image != null && request.Image.Length > 0
             };
             return category;
         }
@@ -39,6 +40,10 @@ namespace Kalabean.Domain.Mappers
                 HtmlContent = request.HtmlContent,
                 ParentId = request.ParentId
             };
+            if (request.ImageEdited)
+            {
+                category.HasImage = request.Image != null && request.Image.Length > 0;
+            }
             return category;
         }
         public CategoryResponse Map(Category category)
@@ -51,7 +56,8 @@ namespace Kalabean.Domain.Mappers
                 Description = category.Description,
                 HtmlContent = category.HtmlContent,
                 Name = category.Name,
-                Order = category.Order
+                Order = category.Order,
+                ImageUrl = (category.HasImage ?? false) ? $"/KL_ImagesRepo/Categories/250_250/{category.Id}.jpeg" : ""
             };
 
             if (category.Parent != null)
@@ -90,7 +96,9 @@ namespace Kalabean.Domain.Mappers
                 Description = category.Description,
                 HtmlContent = category.HtmlContent,
                 Name = category.Name,
-                Order = category.Order
+                Order = category.Order,
+                ImageUrl = (category.HasImage ?? false) ? $"/KL_ImagesRepo/Categories/435_185/{category.Id}.jpeg" : ""
+
             };
         }
     }

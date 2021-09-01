@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,5 +12,6 @@ namespace Kalabean.Domain.Requests.Category
         public string HtmlContent { get; set; }
         public byte? Order { get; set; }
         public int? ParentId { get; set; }
+        public IFormFile Image { get; set; }
     }
 }
