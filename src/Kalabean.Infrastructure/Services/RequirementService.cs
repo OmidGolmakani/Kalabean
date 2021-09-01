@@ -80,7 +80,7 @@ namespace Kalabean.Infrastructure.Services
             var item = _RequirementMapper.Map(request);
             item.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
             item.RequirementStatus = (byte)RequirementStatus.AwaitingApproval;
-            item.Exprie = DateTime.Now.AddHours(48).Minute;
+            item.Expire = DateTime.Now.AddHours(48).Minute;
             var result = _RequirementRepository.Add(item);
             Tuple<bool, string> ImgResult = null;
             if (await _unitOfWork.CommitAsync() > 0 &&
@@ -116,6 +116,8 @@ namespace Kalabean.Infrastructure.Services
 
             var entity = _RequirementMapper.Map(request);
             entity.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            entity.CreatedDate = existingRecord.CreatedDate;
+            entity.Expire = (existingRecord.CreatedDate.AddHours(48) - existingRecord.CreatedDate).TotalMinutes;
             if (request.ImageEdited)
             {
                 if (entity.HasImage || request.Image != null)

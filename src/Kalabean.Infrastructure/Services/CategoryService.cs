@@ -52,6 +52,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _categoryMapper.Map(request);
+            entity.CreatedDate = existingRecord.CreatedDate;
             var result = _categoryRepository.Update(entity);
             await _unitOfWork.CommitAsync();
             return _categoryMapper.Map(await _categoryRepository.GetById(result.Id));

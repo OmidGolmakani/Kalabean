@@ -73,7 +73,7 @@ namespace Kalabean.Domain.Mappers
                 AdminId = request.AdminId,
                 CreatedDate = request.CreatedDate,
                 DateChangeStatus = request.DateChangeStatus,
-                Exprie = request.Exprie,
+                Expire = request.Expire,
                 CategoryThumb = _category.MapThumb(request.Category),
                 ImageUrl = request.HasImage ? $"/KL_ImagesRepo/Requirement/250_250/{request.Id}.jpeg" : ""
             };

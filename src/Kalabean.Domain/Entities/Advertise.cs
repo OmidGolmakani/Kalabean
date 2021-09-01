@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Entities
 {
-    public class Advertise : DeleteEntity
+    public class Advertise : AuditDeleteEntity
     {
         public int Id { get; set; }
         public byte AdPositionId { get; set; }

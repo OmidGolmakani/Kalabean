@@ -151,6 +151,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _orderMapper.Map(request);
+            entity.CreatedDate = existingRecord.CreatedDate;
             entity.FromUserId = Helpers.JWTTokenManager.GetUserIdByToken();
             if (request.OrderDetail != null)
             {
@@ -158,6 +159,7 @@ namespace Kalabean.Infrastructure.Services
                 entity.OrderDetails.FirstOrDefault().OrderId = entity.Id;
                 entity.OrderDetails.FirstOrDefault().Id =
                     _orderDetailsRepository.GetByOrderId(entity.Id).Result.Id;
+                entity.OrderDetails.FirstOrDefault().CreatedDate = existingRecord.OrderDetails.FirstOrDefault().CreatedDate;
             }
             if (request.ImageEdited)
             {

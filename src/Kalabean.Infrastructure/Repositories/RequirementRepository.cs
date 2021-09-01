@@ -26,6 +26,7 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this
                 .List(r => (includeDeleted || !r.IsDeleted) &&
+                           (r.Conversations.Count() != 0 || r.Expire == 0 || r.CreatedDate.AddMinutes((double)r.Expire) > System.DateTime.Now) &&
                            (request.CategoryId == null || r.CategoryId == request.CategoryId) &&
                            (string.IsNullOrEmpty(request.ProductName) || r.ProductName.Contains(request.ProductName)) &&
                            (request.Status == RequirementStatus.All || r.RequirementStatus == (byte)request.Status) &&
@@ -46,6 +47,7 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this
                 .List(r => (includeDeleted || !r.IsDeleted) &&
+                           (r.Conversations.Count() != 0 || r.Expire == 0 || r.CreatedDate.AddMinutes((double)r.Expire) > System.DateTime.Now) &&
                            (request.CategoryId == null || r.CategoryId == request.CategoryId) &&
                            (string.IsNullOrEmpty(request.ProductName) || r.ProductName.Contains(request.ProductName)) &&
                            (request.Status == RequirementStatus.All || r.RequirementStatus == (byte)request.Status) &&

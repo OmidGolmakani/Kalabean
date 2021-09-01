@@ -21,7 +21,7 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(p => p.TypePricing).IsRequired().HasDefaultValue(1);
             builder.Property(p => p.UserId).IsRequired();
             builder.Property(p => p.DateChangeStatus);
-            builder.Property(p => p.Exprie).IsRequired();
+            builder.Property(p => p.Expire).IsRequired();
             builder.Property(c => c.LastModified);
             builder.Property(c => c.LastModifiedBy).HasMaxLength(120);
             builder.Property(c => c.CreatedDate);

@@ -95,6 +95,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _shoppingMapper.Map(request);
+            entity.CreatedDate = existingRecord.CreatedDate;
             entity.HasImage = entity.HasImage || (!request.ImageEdited && existingRecord.HasImage);
             if (request.ImageEdited)
             {

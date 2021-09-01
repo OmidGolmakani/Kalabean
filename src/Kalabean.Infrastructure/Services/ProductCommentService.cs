@@ -62,6 +62,7 @@ namespace Kalabean.Infrastructure.Services
             {
                 entity.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
             }
+            entity.CreatedDate = existingRecord.CreatedDate;
             var result = _ProductCommentRepository.Update(entity);
             await _unitOfWork.CommitAsync();
             return _ProductCommentMapper.Map(await _ProductCommentRepository.GetById(result.Id));

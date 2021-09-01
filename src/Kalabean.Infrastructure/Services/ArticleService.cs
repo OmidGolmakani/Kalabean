@@ -97,6 +97,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _ArticleMapper.Map(request);
+            entity.CreatedDate = existingRecord.CreatedDate;
             entity.AdminId = Helpers.JWTTokenManager.GetUserIdByToken();
             entity.HasImage = entity.HasImage || (!request.ImageEdited && existingRecord.HasImage);
             if (request.ImageEdited)

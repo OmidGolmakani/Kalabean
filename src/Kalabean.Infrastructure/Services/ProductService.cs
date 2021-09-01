@@ -112,7 +112,8 @@ namespace Kalabean.Infrastructure.Services
 
             if (existingRecord == null)
                 throw new ArgumentException($"Entity with {request.Id} is not present");
-            var item = _ProductMapper.Map(request);
+            var entity = _ProductMapper.Map(request);
+            entity.CreatedDate = existingRecord.CreatedDate;
             List<ProductImage> addedImages = null;
             if (request.Images != null && request.Images.Count() > 0)
             {
@@ -134,8 +135,8 @@ namespace Kalabean.Infrastructure.Services
                     _fileProvider.DeleteProductImage(i);
                 }
             }
-            item.HasFile = item.HasFile || (!request.FileEdited && existingRecord.HasFile);
-            var result = _ProductRepository.Update(item);
+            entity.HasFile = entity.HasFile || (!request.FileEdited && existingRecord.HasFile);
+            var result = _ProductRepository.Update(entity);
             int commited = await _unitOfWork.CommitAsync();
 
             if (commited > 0 &&

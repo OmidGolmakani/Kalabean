@@ -94,6 +94,7 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _storeMapper.Map(request);
+            entity.CreatedDate = existingRecord.CreatedDate;
             var result = _storeRepository.Update(entity);
             await _unitOfWork.CommitAsync();
             if (entity.HasImage || request.Image != null)
