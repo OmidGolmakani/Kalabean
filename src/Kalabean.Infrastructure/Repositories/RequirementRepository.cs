@@ -17,7 +17,10 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this.DbSet
                 .Where(r => r.Id == id && (includeDeleted || !r.IsDeleted))
+                .Include(pi => pi.Conversations)
                 .Include(pi => pi.Category)
+                .ThenInclude(pi => pi.Stores)
+                .ThenInclude(pi => pi.StoreUser)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
@@ -39,6 +42,7 @@ namespace Kalabean.Infrastructure.Repositories
                            (request.SeeReqirementType == SeeRequirementType.UnRead && (request.UserId == null || (request.UserId != null && (r.RequirementUserSeen == null)))))
                            )
             .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
+            .Include(pi=> pi.Conversations)
             .Include(pi => pi.Category)
             .ThenInclude(pi => pi.Stores)
             .ThenInclude(pi => pi.StoreUser);
