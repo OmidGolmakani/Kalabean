@@ -19,6 +19,7 @@ namespace Kalabean.Domain.Responses
         public string ImageUrl { get; set; }
         public long? AdminId { get; set; }
         public double Expire { get; set; }
+        public int? ConversationId { get; set; }
         public DateTime? DateChangeStatus { get; set; }
         public ThumbResponse<int> CategoryThumb { get; set; }
     }
