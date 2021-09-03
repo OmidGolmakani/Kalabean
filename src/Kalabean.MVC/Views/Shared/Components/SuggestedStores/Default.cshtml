@@ -17,20 +17,28 @@
             <div class="w-100 mt-3">
                 <div class='swiper-container ' id='swiper06'>
                     <div class="swiper-wrapper">
-                        @foreach (StoreViewModel store in Model)
+                        @if (Model == null || Model.Count <= 0)
                         {
-                            <div class="swiper-slide" data-wow-delay="0.2s">
-                                <div class="item-cat-prod">
-                                    <figure>
-                                        <a href="#"><img src="@store.ImageFeatured" class="rounded-top img-fluid w-100" /></a>
-                                    </figure>
-                                    <div class="p-3">
-                                        <h3 class="border-0"><a href="#">@store.Name</a></h3>
-                                        <div>@store.Category.Name</div>
-                                        <div class="mt-2"><span>@store.ProductsCount</span>محصول</div>
+                         
+                            <h5 class="text-danger">داده ای موجود نیست</h5>
+                        }
+                        else
+                        {
+                            @foreach (StoreViewModel store in Model)
+                            {
+                                <div class="swiper-slide" data-wow-delay="0.2s">
+                                    <div class="item-cat-prod">
+                                        <figure>
+                                            <a href="#"><img src="@store.ImageFeatured" class="rounded-top img-fluid w-100" /></a>
+                                        </figure>
+                                        <div class="p-3">
+                                            <h3 class="border-0"><a href="#">@store.Name</a></h3>
+                                            <div>@store.Category.Name</div>
+                                            <div class="mt-2"><span>@store.ProductsCount</span>محصول</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         }
 
                     </div>

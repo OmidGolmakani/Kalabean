@@ -1,0 +1,138 @@
+﻿@model Kalabean.MVC.ViewComponents.Search.SearchViewModel
+
+<div class="search-banner">
+
+    <div class="row select-search-row">
+        <form id="#" class="w-100">
+            <div class="d-inline-block parent-select-search">
+                <div class=" d-inline-block div-select-search first-select-search">
+                    <input type="text" placeholder="جستجو کالا و مشاغل شهری" class="form-control input-search-project" id="SearchQ" name="">
+                </div>
+
+                <div class="d-inline-block div-select-search">
+                    <select class="form-control select-search" id="Location_Id">
+                        @*<option value="">گروه مورد نظر را انتخاب نمایید</option>*@
+                        @if (Model.typeList == null || Model.typeList.Count <= 0)
+                        {
+                            <option>داده ای موجود نیست</option>
+                        }
+                        else
+                        {
+
+                            foreach (var item in Model.typeList)
+                            {
+                                <option value="@item.TypeId">@item.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class=" d-inline-block  div-select-search">
+                    <select class="form-control select-search" id="Region_Id" @*name="Region_Id"*@>
+                        @*<option value=""></option>*@
+                        @if (Model.cityList == null || Model.cityList.Count <= 0)
+                        {
+                            <option>داده ای موجود نیست</option>
+                        }
+                        else
+                        {
+                            foreach (var item in Model.cityList)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="d-inline-block div-select-search">
+                    <button onclick="search()" id="#" name="#" type="button" class="btn-search-prod">
+                        بگرد
+                        <span><i class="fas fa-search faa-burst animated"></i></span>
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <div class="row" style="padding-right: 50px;">
+
+        @foreach (var item in Model.typeList)
+        {
+            <div class="d-inline-block type-store-parent">
+                <figure class="type-store-figure">
+                    <a href="@Url.ShoppingCenters(item.Name, item.TypeId.Value)">
+                        <img src="@item.ImagePath" class="type-store-img">
+                    </a>
+                </figure>
+                <h2><a href="@Url.ShoppingCenters(item.Name, item.TypeId.Value)">@item.Name</a></h2>
+            </div>
+        }
+
+        @*<div class="d-inline-block type-store-parent">
+            <figure class="type-store-figure">
+                <a href="#">
+                    <img src="/images/img1213.png" class="type-store-img">
+                </a>
+            </figure>
+            <h2><a href="#">بازارها</a></h2>
+        </div>
+
+        <div class="d-inline-block type-store-parent">
+            <figure class="type-store-figure">
+                <a href="#">
+                    <img src="/images/img1212.png" class="type-store-img">
+                </a>
+            </figure>
+            <h2><a href="#">مجتمع های تجاری</a></h2>
+        </div>
+
+        <div class="d-inline-block type-store-parent">
+            <figure class="type-store-figure">
+                <a href="#">
+                    <img src="/images/img1214.png" class="type-store-img">
+                </a>
+            </figure>
+            <h2><a href="#">فروشگاه های زنجیره ای</a></h2>
+        </div>
+
+        <div class="d-inline-block type-store-parent">
+            <figure class="type-store-figure">
+                <a href="#">
+                    <img src="/images/img1215.png" class="type-store-img">
+                </a>
+            </figure>
+            <h2><a href="#">برترین ها</a></h2>
+        </div>*@
+
+    </div>
+</div>
+
+<script>
+    function search() {
+        var $Location_Id = document.getElementById("Location_Id");
+        var typeId = $Location_Id.options[$Location_Id.selectedIndex].value;
+        var typeName = $Location_Id.options[$Location_Id.selectedIndex].text;
+
+        var query = document.getElementById("SearchQ").value;
+
+        var $Region_Id = document.getElementById("Region_Id");
+        var cityId = $Region_Id.options[$Region_Id.selectedIndex].value;
+
+        fetch('https://jsonplaceholder.typicode.com/todos/1')
+            .then(resp => resp.blob())
+            .then(blob => {
+                const url = window.location.origin + `/shopping-centers/${typeName}-${typeId}?query=${query}&&cityId=${cityId}`;
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                // the filename you want
+                //a.download = 'Customer.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                Swal.fire('<h4 style="color:black">دانلود با موفقت انجام شد</h4>')
+            })
+            .catch(() => Swal.fire('<h4 style="color:black">خطا در دانلود مجددا امتحان فرمایید</h4>'));
+    }
+</script>

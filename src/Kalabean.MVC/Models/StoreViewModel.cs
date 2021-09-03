@@ -27,6 +27,5 @@ namespace Kalabean.MVC.Models
             }
         }
         public CategoryViewModel Category { get; set; }
-
     }
 }

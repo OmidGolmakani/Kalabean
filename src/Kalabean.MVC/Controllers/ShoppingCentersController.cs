@@ -4,6 +4,7 @@ using Kalabean.Domain.Requests.ShoppingCenter;
 using Kalabean.Domain.Responses;
 using Kalabean.Domain.Services;
 using Kalabean.Infrastructure.AppSettingConfigs;
+using Kalabean.MVC.Helpers;
 using Kalabean.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ namespace Kalabean.API.Controllers
             _filesConfig = filesConfig?.Value;
         }
 
-        public async Task<IActionResult> ShoppingCenters(string typeName, int typeId, string query, int? cityId)
+        public IActionResult ShoppingCenters(string typeName, int typeId, string query, int? cityId)
         {
             IQueryable<ShoppingCenter> shoppings = this._repository.
                 List(r => r.IsEnabled && !r.IsDeleted && r.Type.Id == typeId);
@@ -42,6 +43,8 @@ namespace Kalabean.API.Controllers
             {
                 model = shoppings.Select(s => new ShoppingCenterViewModel(_filesConfig.BaseUrl)
                 {
+                    TypeId = typeId,
+                    TypeName = typeName,
                     Id = s.Id,
                     Name = s.Name,
                     Address = s.Address,
@@ -49,6 +52,38 @@ namespace Kalabean.API.Controllers
                     StoresCount = s.Stores != null ? s.Stores.Count : 0
                 }).
                 ToList();
+            }
+            return View(model);
+        }
+
+        public IActionResult ShoppingCenterDeatails(string name, int id)
+        {
+            ShoppingCenter shoppings = this._repository.
+                GetById(id).Result;
+
+
+            ShoppingCenterDeatailViewModel model = null;
+            if (shoppings != null)
+            {
+                model = new ShoppingCenterDeatailViewModel(_filesConfig.BaseUrl)
+                {
+                    ShoppingCenterDeatails = shoppings,
+                    Longitude = "36.32356134189473",
+                    Latitude = "59.57780599594117",
+                    Services = shoppings.ShoppingCenterServices.Trim().Split().ToList()
+                };
+                if (model.ShoppingCenterDeatails?.Stores != null)
+                {
+                    foreach (var item in model.ShoppingCenterDeatails.Stores)
+                    {
+                        var store = new StoreViewModel(_filesConfig.BaseUrl);
+                        store.Name = item.Name;
+                        store.Category.Name = item.Category.Name;
+                        store.Id = item.Id;
+
+                        model.StoreModels.Add(store);
+                    }
+                }
             }
             return View(model);
         }
