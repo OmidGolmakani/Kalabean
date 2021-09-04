@@ -74,7 +74,7 @@ namespace Kalabean.Domain.Mappers
                 CreatedDate = request.CreatedDate,
                 DateChangeStatus = request.DateChangeStatus,
                 Expire = request.Expire,
-                ConversationId = request.Conversations.Count == 0 ? (int?)null : request.Conversations.FirstOrDefault().Id,
+                ConversationId = request.Conversations == null ? (int?)null : request.Conversations.FirstOrDefault().Id,
                 CategoryThumb = _category.MapThumb(request.Category),
                 ImageUrl = request.HasImage ? $"/KL_ImagesRepo/Requirement/250_250/{request.Id}.jpeg" : ""
             };
