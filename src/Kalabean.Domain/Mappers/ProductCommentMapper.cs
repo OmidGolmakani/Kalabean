@@ -1,4 +1,5 @@
 ﻿using Kalabean.Domain.Entities;
+using Kalabean.Domain.Helper;
 using Kalabean.Domain.Requests.ProductComment;
 using Kalabean.Domain.Responses;
 using System;
@@ -73,7 +74,7 @@ namespace Kalabean.Domain.Mappers
                 ProductId = request.ProductId,
                 Status = request.Status,
                 AdminId = request.AdminId,
-                DatePublished = request.DatePublished == null ? "" : Helper.PersionDate.GetShamsi((request.DatePublished ?? DateTime.Now)),
+                DatePublished = request.DatePublished.ToDate(),
                 AdminThumb = _user.MapThumb(request.AdminUser),
                 UserThumb = _user.MapThumb(request.User),
                 ProductThumb = _product.MapThumb(request.Product),

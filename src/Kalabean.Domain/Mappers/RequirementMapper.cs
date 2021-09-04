@@ -1,4 +1,5 @@
 ﻿using Kalabean.Domain.Entities;
+using Kalabean.Domain.Helper;
 using Kalabean.Domain.Requests.Requirement;
 using Kalabean.Domain.Responses;
 using System;
@@ -72,7 +73,7 @@ namespace Kalabean.Domain.Mappers
                 CreatedBy = request.CreatedBy,
                 AdminId = request.AdminId,
                 CreatedDate = request.CreatedDate,
-                DateChangeStatus = request.DateChangeStatus,
+                DateChangeStatus = request.DateChangeStatus.ToDate(),
                 Expire = request.Expire,
                 ConversationId = request.Conversations == null ? (int?)null : request.Conversations.FirstOrDefault().Id,
                 CategoryThumb = _category.MapThumb(request.Category),

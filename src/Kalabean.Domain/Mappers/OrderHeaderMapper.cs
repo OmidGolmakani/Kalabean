@@ -1,4 +1,5 @@
 ﻿using Kalabean.Domain.Entities;
+using Kalabean.Domain.Helper;
 using Kalabean.Domain.Requests.OrderHeader;
 using Kalabean.Domain.Responses;
 using System;
@@ -71,14 +72,14 @@ namespace Kalabean.Domain.Mappers
                 LastModifiedBy = request.LastModifiedBy,
                 OrderStatus = request.OrderStatus,
                 PaymentLink = request.PaymentLink,
-                PaymentDate = request.PaymentDate,
+                PaymentDate = request.PaymentDate.ToDate(),
                 StoreId = request.StoreId,
                 FromUserId = request.FromUserId,
                 ToUserId = request.ToUserId,
                 Published = request.Published,
                 StoreThumb = _store.MapThumb(request.Store),
                 OrderNum = request.OrderNum,
-                PaymentOrder = request.PaymentDate,
+                OrderDate = request.CreatedDate.ToDate(),
                 OrderDetails = request.OrderDetails == null || request.OrderDetails.Count == 0 ? null : request.OrderDetails.Select(d => _orderDetail.Map(d)).ToList(),
                 ImageUrl = request.HasImage ? $"/KL_ImagesRepo/Orders/250_250/{request.Id}.jpeg" : ""
             };

@@ -6,6 +6,31 @@ namespace Kalabean.Domain.Helper
 {
     public static class Extention
     {
+        public static string ToDate(this DateTime x)
+        {
+            try
+            {
+                return x.Date.ToString("yyyy/MM/dd");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public static string ToDate(this DateTime? x)
+        {
+            try
+            {
+                if (x == null) return null;
+                return x.Value.Date.ToString("yyyy/MM/dd");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         /// <summary>
         /// رشته میگیرد و Int برمیگرداند
         /// </summary>

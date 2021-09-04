@@ -1,4 +1,5 @@
 ﻿using Kalabean.Domain.Entities;
+using Kalabean.Domain.Helper;
 using Kalabean.Domain.Requests.Product;
 using Kalabean.Domain.Responses;
 using System;
@@ -122,8 +123,8 @@ namespace Kalabean.Domain.Mappers
 
                 Id = product.Id,
                 Manufacturer = product.Manufacturer,
-                ArchivingDate = product.ArchivingDate?.ToString("yyyy/MM/dd"),
-                PublishingDate = product.ArchivingDate?.ToString("yyyy/MM/dd"),
+                ArchivingDate = product.ArchivingDate.ToDate(),
+                PublishingDate = product.ArchivingDate.ToDate(),
                 Discount = product.Discount,
                 Num = product.Num,
                 Order = product.Order,
