@@ -1,7 +1,7 @@
 ﻿@{
-    ViewData["Title"] = "مجتمع های تجاری";
+    ViewData["Title"] = Model.Name;
 }
-
+@model StoreViewModel
 
 <section class="information-shop-section">
     <div class="bg-white shadow-sm">
@@ -9,33 +9,39 @@
 
             <div class="my-4">
                 <figure class="shop-single-figure">
-                    <img src="images/temp/store-22.png" class="shop-single-img">
+                    <img src="@Model.ImageProfile" class="shop-single-img">
                 </figure>
             </div>
 
             <div class="mx-4 mt-5">
-                <h3 class="font-weight-bold">گالری پرده دیاموند</h3>
-                <div class="mt-3 text-muted">مبلمان / دکوراسیون</div>
+                <h3 class="font-weight-bold">@Model.Name</h3>
+                <div class="mt-3 text-muted">@Model.Category.Name</div>
                 <div class="d-inline-block mt-3">
 
                     <div class="mb-3 border-left-0 border-right d-inline-block">
                         <span class="sp-icon text-muted"><i class="fas fa-map-marker-alt"></i></span>
                         <p class="mr-3 ml-0 d-inline-block text-muted">
-                            <span class="information-shop-location">مشهد</span>
-                            ، خیابان دانشگاه، دانشگاه2،
+                            
+                            @Model.Address
                         </p>
                     </div>
                     <div class="mb-3 border-left-0 border-right d-inline-block">
                         <span class="sp-icon text-muted"><i class="fas fa-phone"></i></span>
-                        <p class="mr-3 ml-0 d-inline-block text-muted">09155555555</p>
+                        <p class="mr-3 ml-0 d-inline-block text-muted">
+                            @(string.IsNullOrEmpty(Model.Tel) ? "...." : Model.Tel )
+                        </p>
                     </div>
                     <div class="mb-3 border-left-0 border-right d-inline-block">
                         <span class="sp-icon text-muted"><i class="fas fa-clock"></i></span>
-                        <p class="mr-3 ml-0 d-inline-block text-muted">8am - 11pm</p>
+                        <p class="mr-3 ml-0 d-inline-block text-muted">
+                            @(string.IsNullOrEmpty(Model.WorkingHours) ? "...." : Model.WorkingHours )
+                        </p>
                     </div>
                     <div class="mb-3 border-left-0 border-right d-inline-block">
                         <span class="sp-icon text-muted"><i class="fas fa-camera-retro"></i></span>
-                        <p class="mr-3 ml-0 d-inline-block text-muted">تور مجازی</p>
+                        <p class="mr-3 ml-0 d-inline-block text-muted">
+                            @(string.IsNullOrEmpty(Model.VirtualTour) ? "تور مجازی" : Model.VirtualTour)
+                        </p>
                     </div>
 
                 </div>
@@ -63,235 +69,78 @@
             <div class="my-4">
                 <div class="mb-3">
                     <span class="sp-icon"><i class="fas fa-map-marker-alt"></i></span>
-                    <p class="mx-2 d-inline-block">مشهد ، خیابان دانشگاه، دانشگاه2،</p>
+                    <p class="mx-2 d-inline-block">@Model.Address</p>
                 </div>
                 <div class="mb-3">
                     <span class="sp-icon"><i class="fas fa-phone"></i></span>
-                    <p class="mx-2 d-inline-block">09155555555</p>
+                    <p class="mx-2 d-inline-block">@Model.Tel</p>
                 </div>
                 <div class="mb-3">
                     <span class="sp-icon"><i class="fas fa-clock"></i></span>
-                    <p class="mx-2 d-inline-block">8am - 11pm</p>
+                    <p class="mx-2 d-inline-block">@Model.WorkingHours</p>
                 </div>
             </div>
 
             <div class="my-4">
                 <span class="right-bar-title border-0 p-0">درباره فروشگاه</span>
                 <div class="mt-2">
-                    <p>درباره فروشگاه درباره فروشگاه درباره فروشگاه درباره فروشگاه </p>
+                    <p>@Model.Description</p>
                 </div>
             </div>
 
             <div class="my-3">
                 <ul class="icon-social">
                     <li>
-                        <a href="https://t.me/" target="_self">تلگرام</a>
+                        <a href="https://t.me/@Model.Telegram" target="_self">تلگرام</a>
                     </li>
                     <li>
-                        <a href="https://www.instagram.com" target="_blank">اینستاگرام</a>
+                        <a href="https://www.instagram.com/@Model.Instagram" target="_blank">اینستاگرام</a>
                     </li>
                 </ul>
             </div>
 
-            <div class="my-3">
+            @*<div class="my-3">
                 <span class="d-inline-block" style="color: #fb8c6b;">1978</span>
                 <p class="d-inline-block text-muted mx-2">بازدید</p>
-            </div>
+            </div>*@
 
         </div>
 
         <div class="shop-centers store-page">
             <div class="row">
+                @if (Model.Products != null && Model.Products.Count > 0)
+                {
+                    @foreach (ProductViewModel product in Model.Products)
+                    {
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="item-cat-prod shopping-center-div">
+                                <figure class="position-relative">
+                                    <a href="#">
+                                        <img src="@product.ImageListPath" class="rounded-top img-fluid w-100" />
+                                    </a>
+                                </figure>
+                                <div class="p-3 position-relative">
+                                    <h3><a href="#" class="border-0 pb-0">@product.Name</a></h3>
+                                    <div style="color: #b5b8be;">
+                                        <span style="color: #43bc55;">@product.FormattedPrice</span>تومان
+                                    </div>
 
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="item-cat-prod shopping-center-div">
-                        <figure class="position-relative">
-                            <a href="#">
-                                <img src="images/temp/1111.png" class="rounded-top img-fluid w-100" />
-                            </a>
-                        </figure>
-                        <div class="p-3 position-relative">
-                            <h3><a href="#" class="border-0 pb-0">ساتن گلدار سارای</a></h3>
-                            <div style="color: #b5b8be;">
-                                <span style="color: #43bc55;">999.000.000</span>تومان
+                                    <a href="#" class="shopping-center-more">
+                                        <span>
+                                            <i class="fal fa-angle-left"></i>
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
-
-                            <a href="#" class="shopping-center-more">
-                                <span>
-                                    <i class="fal fa-angle-left"></i>
-                                </span>
-                            </a>
                         </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="item-cat-prod shopping-center-div">
-                        <figure class="position-relative">
-                            <a href="#">
-                                <img src="images/temp/1111.png" class="rounded-top img-fluid w-100" />
-                            </a>
-                        </figure>
-                        <div class="p-3 position-relative">
-                            <h3><a href="#" class="border-0 pb-0">ساتن گلدار سارای</a></h3>
-                            <div style="color: #b5b8be;">
-                                <span style="color: #43bc55;">999.000.000</span>تومان
-                            </div>
-
-                            <a href="#" class="shopping-center-more">
-                                <span>
-                                    <i class="fal fa-angle-left"></i>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="item-cat-prod shopping-center-div">
-                        <figure class="position-relative">
-                            <a href="#">
-                                <img src="images/temp/1111.png" class="rounded-top img-fluid w-100" />
-                            </a>
-                        </figure>
-                        <div class="p-3 position-relative">
-                            <h3><a href="#" class="border-0 pb-0">ساتن گلدار سارای</a></h3>
-                            <div style="color: #b5b8be;">
-                                <span style="color: #43bc55;">999.000.000</span>تومان
-                            </div>
-
-                            <a href="#" class="shopping-center-more">
-                                <span>
-                                    <i class="fal fa-angle-left"></i>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="item-cat-prod shopping-center-div">
-                        <figure class="position-relative">
-                            <a href="#">
-                                <img src="images/temp/1111.png" class="rounded-top img-fluid w-100" />
-                            </a>
-                        </figure>
-                        <div class="p-3 position-relative">
-                            <h3><a href="#" class="border-0 pb-0">ساتن گلدار سارای</a></h3>
-                            <div style="color: #b5b8be;">
-                                <span style="color: #43bc55;">999.000.000</span>تومان
-                            </div>
-
-                            <a href="#" class="shopping-center-more">
-                                <span>
-                                    <i class="fal fa-angle-left"></i>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="item-cat-prod shopping-center-div">
-                        <figure class="position-relative">
-                            <a href="#">
-                                <img src="images/temp/1111.png" class="rounded-top img-fluid w-100" />
-                            </a>
-                        </figure>
-                        <div class="p-3 position-relative">
-                            <h3><a href="#" class="border-0 pb-0">ساتن گلدار سارای</a></h3>
-                            <div style="color: #b5b8be;">
-                                <span style="color: #43bc55;">999.000.000</span>تومان
-                            </div>
-
-                            <a href="#" class="shopping-center-more">
-                                <span>
-                                    <i class="fal fa-angle-left"></i>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="item-cat-prod shopping-center-div">
-                        <figure class="position-relative">
-                            <a href="#">
-                                <img src="images/temp/1111.png" class="rounded-top img-fluid w-100" />
-                            </a>
-                        </figure>
-                        <div class="p-3 position-relative">
-                            <h3><a href="#" class="border-0 pb-0">ساتن گلدار سارای</a></h3>
-                            <div style="color: #b5b8be;">
-                                <span style="color: #43bc55;">999.000.000</span>تومان
-                            </div>
-
-                            <a href="#" class="shopping-center-more">
-                                <span>
-                                    <i class="fal fa-angle-left"></i>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="item-cat-prod shopping-center-div">
-                        <figure class="position-relative">
-                            <a href="#">
-                                <img src="images/temp/1111.png" class="rounded-top img-fluid w-100" />
-                            </a>
-                        </figure>
-                        <div class="p-3 position-relative">
-                            <h3><a href="#" class="border-0 pb-0">ساتن گلدار سارای</a></h3>
-                            <div style="color: #b5b8be;">
-                                <span style="color: #43bc55;">999.000.000</span>تومان
-                            </div>
-
-                            <a href="#" class="shopping-center-more">
-                                <span>
-                                    <i class="fal fa-angle-left"></i>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="item-cat-prod shopping-center-div">
-                        <figure class="position-relative">
-                            <a href="#">
-                                <img src="images/temp/1111.png" class="rounded-top img-fluid w-100" />
-                            </a>
-                        </figure>
-                        <div class="p-3 position-relative">
-                            <h3><a href="#" class="border-0 pb-0">ساتن گلدار سارای</a></h3>
-                            <div style="color: #b5b8be;">
-                                <span style="color: #43bc55;">999.000.000</span>تومان
-                            </div>
-
-                            <a href="#" class="shopping-center-more">
-                                <span>
-                                    <i class="fal fa-angle-left"></i>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="item-cat-prod shopping-center-div">
-                        <figure class="position-relative">
-                            <a href="#">
-                                <img src="images/temp/1111.png" class="rounded-top img-fluid w-100" />
-                            </a>
-                        </figure>
-                        <div class="p-3 position-relative">
-                            <h3><a href="#" class="border-0 pb-0">ساتن گلدار سارای</a></h3>
-                            <div style="color: #b5b8be;">
-                                <span style="color: #43bc55;">999.000.000</span>تومان
-                            </div>
-
-                            <a href="#" class="shopping-center-more">
-                                <span>
-                                    <i class="fal fa-angle-left"></i>
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-center">
+                        کالایی وجود ندارد
+                    </p>
+                }
             </div>
         </div>
     </div>

@@ -24,6 +24,8 @@ namespace Kalabean.Domain.Entities
         public string TelegramUrl { get; set; }
         public string WebsiteUrl { get; set; }
         public bool IsEnabled { get; set; }
+        public double? Lat { get; set; }
+        public double? Lng { get; set; }
         public ICollection<Floor> Floors { get; set; }
         public ICollection<Store> Stores { get; set; }
     }

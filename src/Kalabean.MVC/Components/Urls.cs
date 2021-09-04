@@ -37,10 +37,12 @@ namespace Kalabean.MVC
             }));
         }
 
-        public static string ShoppingCenter(this IUrlHelper url, string name, int id)
+        public static string ShoppingCenter(this IUrlHelper url, string typeName, int typeId, string name, int id)
         {
             return CreateAbsoluteUrl(url, url.RouteUrl("ShoppingCenter", new
             {
+                typeName = typeName,
+                typeId = typeId,
                 name = name,
                 id = id
             }));

@@ -17,6 +17,8 @@ namespace Kalabean.Infrastructure.Repositories
         {
             return this.DbSet
                 .Where(c => c.Id == id && (includeDeleted || !c.IsDeleted))
+                .Include(c => c.Stores)
+                .ThenInclude(c => c.Category)
                 .Include(c => c.Type)
                 .Include(c => c.City)
                 .AsNoTracking()

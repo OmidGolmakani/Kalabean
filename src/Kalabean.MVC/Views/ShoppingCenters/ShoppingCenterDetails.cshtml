@@ -1,0 +1,186 @@
+﻿@{
+    ViewData["Title"] = "مجتمع های تجاری";
+}
+@model ShoppingCenterViewModel
+
+<section>
+    <div class="shop-single-banner bg-image">
+        <div class="container d-flex">
+
+            <div class="d-inline-block-  mt-5">
+                <figure class="shop-single-figure">
+                    <img src="@Model.ImageProfile" class="shop-single-img">
+                </figure>
+            </div>
+
+            <div class="d-inline-block- text-white mx-4 mt-5">
+                <h3>@Model.Name</h3>
+                <div class="mt-4">
+                    @Model.Description
+                </div>
+                <div class="d-inline-block mt-4">
+                    <div class="shop-single-number mb-2">
+                        <span class="Count">@Model.StoresCount</span>
+                        <span class="px-2">فروشگاه</span>
+                    </div>
+                    <div class="shop-single-number mx-2 mb-2">
+                        <span class="Count">@(Model.Floors != null ? Model.Floors.Count : 0 )</span>
+                        <span class="px-2">طبقه</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div class="container-fluid bg-white px-md-5 shadow-sm">
+    <section class="py-3">
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div>
+                    <div class="mb-3">
+                        <span class="sp-icon"><i class="fas fa-map-marker-alt"></i></span>
+                        <p class="mx-2 d-inline-block">@( string.IsNullOrEmpty(Model.Address) ? "... " : Model.Address )</p>
+                    </div>
+                    <div class="mb-3">
+                        <span class="sp-icon"><i class="fas fa-phone"></i></span>
+                        <p class="mx-2 d-inline-block">@( string.IsNullOrEmpty(Model.Tel) ? "... " : Model.Tel )</p>
+                    </div>
+                    <div class="mb-3">
+                        <span class="sp-icon"><i class="fas fa-clock"></i></span>
+                        <p class="mx-2 d-inline-block">@( string.IsNullOrEmpty(Model.WorkingHours) ? "... " : Model.WorkingHours )</p>
+                    </div>
+                    <div class="mb-3">
+                        <span class="sp-icon"><i class="fas fa-camera-retro"></i></span>
+                        <p class="mx-2 d-inline-block">@( string.IsNullOrEmpty(Model.VirtualTourUrl) ? "..." : "تور مجازی" )</p>
+                    </div>
+                    <div class="mb-3">
+                        <span class="sp-icon"><i class="fas fa-link"></i></span>
+                        <p class="mx-2 d-inline-block">@( string.IsNullOrEmpty(Model.Website) ? "... " : Model.Website )</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 services-shop-center">
+                <div class="row border-left">
+                    @if (Model.Services != null || Model.Services.Count > 0)
+                    {
+                        foreach (var item in Model.Services)
+                        {
+                            <div class="col-4">
+                                <div class="d-inline-block mb-3">
+                                    <img src="/images/services/default.png" />
+                                </div>
+                                <div class="d-inline-block">
+                                    @item.Name
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                @if (Model.Lat.HasValue && Model.Lng.HasValue)
+                {
+                    <div>
+                        <!--Google map -->
+                        <div class="mapouter">
+                            <div class="gmap_canvas">
+                                <iframe width="415" height="215" id="gmap_canvas"
+                                        src=@($"https://maps.google.com/maps?q={Model.Lat},{Model.Lng}&t=&z=13&ie=UTF8&iwloc=&output=embed") frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><br />
+                                <style>
+                                    .mapouter {
+                                        position: relative;
+                                        text-align: right;
+                                        height: 215px;
+                                        width: 415px;
+                                    }
+                                </style>
+                                <style>
+                                    .gmap_canvas {
+                                        overflow: hidden;
+                                        background: none !important;
+                                        height: 215px;
+                                        width: 415px;
+                                    }
+                                </style>
+                            </div>
+                        </div>
+                        <!--Google map -->
+                    </div>
+                }
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<div class="container-fluid px-md-5 py-4">
+    <div class="w-100 d-flex justify-content-around position-relative">
+        @if (Model.Floors != null && Model.Floors.Count > 0)
+        {
+            int i = 0;
+            <div class="list-floors">
+                <ul>
+                    @foreach (var item in Model.Floors)
+                    {
+                        <li>
+                            <a href="#">
+                                <div class="store-number shadow-sm">
+                                    <span class="Count">@(i++)</span>
+                                    <span class="store-name">@item.Name</span>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="shop-centers">
+            <div class="row">
+
+                @if (Model.Stores == null || Model.Stores.Count <= 0)
+                {
+                    <h5 class="text-center" >فروشگاهی ثبت نشده است</h5>
+                }
+                else
+                {
+                    foreach (var item in Model.Stores)
+                    {
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="item-cat-prod shopping-center-div">
+                                <figure class="position-relative">
+                                    <a href="@Url.Store(item.Name, item.Id)">
+                                        <img src="@item.ImageListPath" class="rounded-top img-fluid w-100" />
+                                        @if (item.DiscountPercentage.HasValue &&
+                                      item.DiscountPercentage.Value > 0)
+                                        {
+                                            <div class="store-number">
+                                                <span class="store-name">%@item.DiscountPercentage تخفیف</span>
+                                            </div>
+                                        }
+                                    </a>
+                                </figure>
+                                <div class="p-3 position-relative">
+                                    <h3><a href="#" class="border-0 pb-0">@item.Name</a></h3>
+                                    <div>@item.Category.Name</div>
+
+                                    <a href="@Url.Store(item.Name, item.Id)" class="shopping-center-more d-inline">
+                                        <span>
+                                            <i class="fal fa-angle-left"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+    </div>
+</div>

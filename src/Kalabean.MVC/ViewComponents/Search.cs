@@ -50,7 +50,7 @@ namespace Kalabean.MVC.ViewComponents
             {
                 get
                 {
-                    return string.Format("{0}/ShoppingCenterTypes/250_250/{1}.jpeg", this._basePath, this.TypeId);
+                    return string.Format("{0}/Sh_C_Types/100_100/{1}.jpeg", this._basePath, this.TypeId);
                 }
             }
         }

@@ -23,5 +23,7 @@ namespace Kalabean.Domain.Responses
         public bool IsEnabled { get; set; }
         public bool HasAuction { get; set; }
         public string ImageUrl { get; set; }
+        public double? Lat { get; set; }
+        public double? Lng { get; set; }
     }
 }

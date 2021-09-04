@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "مجتمع های تجاری";
 }
-@model List<ShoppingCenterViewModel>
+@model ShoppingCentersModel
 
 <section class="py-2">
     <div class="shopping-center-banner">
@@ -10,65 +10,37 @@
 </section>
 
 <div class="container-fluid">
-    @if (Model != null && Model.Count > 0)
-    {
-        <section class="py-5">
-            <div class="--container">
-                <div class="row offset-md-1">
 
-                    <div class="col-12 col-md-2 col-sm-6 my-2">
-                        <div class="text-center">
-                            <a href="#" class="shopping-center-a">
-                                <span><i class="fa fa-check"></i></span>
-                                همه
-                            </a>
+    <section class="py-5">
+        <div class="--container">
+            <div class="row offset-md-1">
+                @if (Model.Types != null)
+                {
+                    @foreach (ShoppingCenterTypeModel type in Model.Types)
+                    {
+                        <div class="col-12 col-md-2 col-sm-6 my-2">
+                            <div class="text-center">
+                                <a href="@Url.ShoppingCenters(type.Name, type.Id)" class="shopping-center-a">
+                                    <span><i class="fa fa-check"></i></span>
+                                    @type.Name
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-md-2 col-sm-6 my-2">
-                        <div class="text-center">
-                            <a href="#" class="shopping-center-a">
-                                <span><i class="fa fa-check"></i></span>
-                                بازارها
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-2 col-sm-6 my-2">
-                        <div class="text-center">
-                            <a href="#" class="shopping-center-a">
-                                <span><i class="fa fa-check"></i></span>
-                                مجتمع تجاری
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-2 col-sm-6 my-2">
-                        <div class="text-center">
-                            <a href="#" class="shopping-center-a">
-                                <span><i class="fa fa-check"></i></span>
-                                فروشگاه زنجیره ای
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-2 col-sm-6 my-2">
-                        <div class="text-center">
-                            <a href="#" class="shopping-center-a">
-                                <span><i class="fa fa-check"></i></span>
-                                برترین ها
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
+                    }
+                }
             </div>
-        </section>
-
+        </div>
+    </section>
+    @if (Model?.ShoppingCenters != null && Model.ShoppingCenters.Count > 0)
+    {
         <section class="py-2">
             <div class="row">
-                @foreach (ShoppingCenterViewModel sh in Model)
+                @foreach (ShoppingCenterViewModel sh in Model.ShoppingCenters)
                 {
                     <div class="col-12 col-md-4">
                         <div class="item-cat-prod shopping-center-div">
                             <figure class="position-relative">
-                                <a href="@Url.StoresByShoppingCenter(sh.TypeName, sh.TypeId, sh.Name, sh.Id)">
+                                <a href="@Url.ShoppingCenter(sh.TypeName, sh.TypeId, sh.Name, sh.Id)">
                                     <img src="@sh.ImagePath" class="rounded-top img-fluid w-100" />
                                     <div class="store-number">
                                         <span class="Count">@sh.StoresCount</span>
@@ -77,11 +49,11 @@
                                 </a>
                             </figure>
                             <div class="p-3 position-relative">
-                                <h3><a href="#" class="border-0 pb-0">@sh.Name</a></h3>
+                                <h3><a href="@Url.ShoppingCenter(sh.TypeName, sh.TypeId, sh.Name, sh.Id)" class="border-0 pb-0">@sh.Name</a></h3>
                                 <div>@sh.Address</div>
                                 <div class="mt-2 text-dark">@sh.Description</div>
 
-                                <a href="#" class="shopping-center-more">
+                                <a href="@Url.ShoppingCenter(sh.TypeName, sh.TypeId, sh.Name, sh.Id)" class="shopping-center-more">
                                     <span>
                                         <i class="fal fa-angle-left"></i>
                                     </span>
@@ -93,8 +65,9 @@
             </div>
         </section>
     }
-    else {
-        <p class="text-center" >
+    else
+    {
+        <p class="text-center">
             مرکز خرید جهت نمایش وجود ندارد
         </p>
     }

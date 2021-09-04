@@ -11,15 +11,13 @@
 
                 <div class="d-inline-block div-select-search">
                     <select class="form-control select-search" id="Location_Id">
-                        @*<option value="">گروه مورد نظر را انتخاب نمایید</option>*@
                         @if (Model.typeList == null || Model.typeList.Count <= 0)
                         {
                             <option>داده ای موجود نیست</option>
                         }
                         else
                         {
-
-                            foreach (var item in Model.typeList)
+                            @foreach (var item in Model.typeList)
                             {
                                 <option value="@item.TypeId">@item.Name</option>
                             }
@@ -27,7 +25,7 @@
                     </select>
                 </div>
 
-                <div class=" d-inline-block  div-select-search">
+                <div class="d-inline-block div-select-search">
                     <select class="form-control select-search" id="Region_Id" @*name="Region_Id"*@>
                         @*<option value=""></option>*@
                         @if (Model.cityList == null || Model.cityList.Count <= 0)
@@ -36,7 +34,7 @@
                         }
                         else
                         {
-                            foreach (var item in Model.cityList)
+                            @foreach (var item in Model.cityList)
                             {
                                 <option value="@item.Id">@item.Name</option>
                             }
@@ -70,40 +68,40 @@
         }
 
         @*<div class="d-inline-block type-store-parent">
-            <figure class="type-store-figure">
-                <a href="#">
-                    <img src="/images/img1213.png" class="type-store-img">
-                </a>
-            </figure>
-            <h2><a href="#">بازارها</a></h2>
-        </div>
+                <figure class="type-store-figure">
+                    <a href="#">
+                        <img src="/images/img1213.png" class="type-store-img">
+                    </a>
+                </figure>
+                <h2><a href="#">بازارها</a></h2>
+            </div>
 
-        <div class="d-inline-block type-store-parent">
-            <figure class="type-store-figure">
-                <a href="#">
-                    <img src="/images/img1212.png" class="type-store-img">
-                </a>
-            </figure>
-            <h2><a href="#">مجتمع های تجاری</a></h2>
-        </div>
+            <div class="d-inline-block type-store-parent">
+                <figure class="type-store-figure">
+                    <a href="#">
+                        <img src="/images/img1212.png" class="type-store-img">
+                    </a>
+                </figure>
+                <h2><a href="#">مجتمع های تجاری</a></h2>
+            </div>
 
-        <div class="d-inline-block type-store-parent">
-            <figure class="type-store-figure">
-                <a href="#">
-                    <img src="/images/img1214.png" class="type-store-img">
-                </a>
-            </figure>
-            <h2><a href="#">فروشگاه های زنجیره ای</a></h2>
-        </div>
+            <div class="d-inline-block type-store-parent">
+                <figure class="type-store-figure">
+                    <a href="#">
+                        <img src="/images/img1214.png" class="type-store-img">
+                    </a>
+                </figure>
+                <h2><a href="#">فروشگاه های زنجیره ای</a></h2>
+            </div>
 
-        <div class="d-inline-block type-store-parent">
-            <figure class="type-store-figure">
-                <a href="#">
-                    <img src="/images/img1215.png" class="type-store-img">
-                </a>
-            </figure>
-            <h2><a href="#">برترین ها</a></h2>
-        </div>*@
+            <div class="d-inline-block type-store-parent">
+                <figure class="type-store-figure">
+                    <a href="#">
+                        <img src="/images/img1215.png" class="type-store-img">
+                    </a>
+                </figure>
+                <h2><a href="#">برترین ها</a></h2>
+            </div>*@
 
     </div>
 </div>

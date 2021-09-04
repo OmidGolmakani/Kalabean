@@ -39,7 +39,9 @@ namespace Kalabean.Domain.Mappers
                 WorkingHours = request.WorkingHours,
                 TelegramUrl = request.TelegramUrl,
                 VirtualTourUrl = request.VirtualTourUrl,
-                WebsiteUrl = request.WebsiteUrl
+                WebsiteUrl = request.WebsiteUrl,
+                Lat = request.Lat,
+                Lng = request.Lng
             };
 
             if (request.Services != null && request.Services.Length > 0)
@@ -72,7 +74,9 @@ namespace Kalabean.Domain.Mappers
                 WorkingHours = request.WorkingHours,
                 TelegramUrl = request.TelegramUrl,
                 VirtualTourUrl = request.VirtualTourUrl,
-                WebsiteUrl = request.WebsiteUrl
+                WebsiteUrl = request.WebsiteUrl,
+                Lat = request.Lat,
+                Lng = request.Lng
             };
 
             if (request.Services != null && request.Services.Length > 0)
@@ -108,7 +112,9 @@ namespace Kalabean.Domain.Mappers
                 VirtualTourUrl = shoppingCenter.VirtualTourUrl,
                 WebsiteUrl = shoppingCenter.WebsiteUrl,
                 WorkingHours = shoppingCenter.WorkingHours,
-                TypeThumb = _typeMapper.MapThump(shoppingCenter.Type)
+                TypeThumb = _typeMapper.MapThump(shoppingCenter.Type),
+                Lat = shoppingCenter.Lat,
+                Lng = shoppingCenter.Lng
             };
             if (shoppingCenter.HasImage)
                 response.ImageUrl = $"/KL_ImagesRepo/Sh_C/250_250/{shoppingCenter.Id}.jpeg";

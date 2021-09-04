@@ -21,5 +21,7 @@ namespace Kalabean.Domain.Requests.ShoppingCenter
         public bool IsEnabled { get; set; }
         public bool HasAuction { get; set; }
         public IFormFile Image { get; set; }
+        public double? Lat { get; set; }
+        public double? Lng { get; set; }
     }
 }

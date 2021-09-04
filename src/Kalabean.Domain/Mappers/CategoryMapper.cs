@@ -97,7 +97,7 @@ namespace Kalabean.Domain.Mappers
                 HtmlContent = category.HtmlContent,
                 Name = category.Name,
                 Order = category.Order,
-                ImageUrl = (category.HasImage ?? false) ? $"/KL_ImagesRepo/Categories/435_185/{category.Id}.jpeg" : ""
+                ImageUrl = (category.HasImage ?? false) ? $"/KL_ImagesRepo/Categories/250_250/{category.Id}.jpeg" : ""
 
             };
         }
