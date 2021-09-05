@@ -20,7 +20,7 @@ namespace Kalabean.Domain.Responses
         public long? AdminId { get; set; }
         public double Expire { get; set; }
         public int? ConversationId { get; set; }
-        public DateTime? DateChangeStatus { get; set; }
+        public string DateChangeStatus { get; set; }
         public ThumbResponse<int> CategoryThumb { get; set; }
     }
 }

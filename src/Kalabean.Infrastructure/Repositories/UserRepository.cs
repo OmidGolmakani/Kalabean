@@ -19,7 +19,7 @@ namespace Kalabean.Infrastructure.Repositories
 
         public async Task<IQueryable<User>> Get(GetUsersRequest request, bool includeDeleted = false)
         {
-            return this.List(u => 
+            return this.List(u =>
                                    string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(u.Name) || u.Name.Contains(request.Name) &&
                                    string.IsNullOrEmpty(request.PhoneNUmber) || string.IsNullOrEmpty(u.PhoneNumber) || u.Name.Contains(request.PhoneNUmber) &&
                                    string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(u.Email) || u.Name.Contains(request.Email))
@@ -45,10 +45,11 @@ namespace Kalabean.Infrastructure.Repositories
         }
         public async Task<int> Count(GetUsersRequest request, bool includeDeleted = false)
         {
-            return this.List(u => 
-                                   string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(u.Name) || u.Name.Contains(request.Name) &&
-                                   string.IsNullOrEmpty(request.PhoneNUmber) || string.IsNullOrEmpty(u.PhoneNumber) || u.Name.Contains(request.PhoneNUmber) &&
-                                   string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(u.Email) || u.Name.Contains(request.Email)).Count();
+            return this.List(u =>
+                                    string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(u.Name) || u.Name.Contains(request.Name) &&
+                                    string.IsNullOrEmpty(request.PhoneNUmber) || string.IsNullOrEmpty(u.PhoneNumber) || u.Name.Contains(request.PhoneNUmber) &&
+                                    string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(u.Email) || u.Name.Contains(request.Email))
+                .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
         }
     }
 }
