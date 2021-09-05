@@ -1,4 +1,5 @@
 ﻿using Kalabean.Domain.Entities;
+using Kalabean.Domain.Helper;
 using Kalabean.Domain.Requests.Conversation;
 using Kalabean.Domain.Responses;
 using System;
@@ -12,10 +13,13 @@ namespace Kalabean.Domain.Mappers
     public class ConversationMapper : IConversationMapper
     {
         private readonly IConversationDetailMapper _conversationDetail;
+        private readonly IUserMapper _user;
 
-        public ConversationMapper(IConversationDetailMapper conversationDetail)
+        public ConversationMapper(IConversationDetailMapper conversationDetail,
+                                  IUserMapper user)
         {
             this._conversationDetail = conversationDetail;
+            this._user = user;
         }
 
         public Conversation Map(AddConversationRequest request)
@@ -44,19 +48,28 @@ namespace Kalabean.Domain.Mappers
             ConversationResponse response = new ConversationResponse()
             {
                 Id = request.Id,
-                RecipientUserId = request.RecipientUserId,
                 RequirementId = request.RequirementId,
-                SenderUserId = request.SenderUserId,
-                Status = request.Status,
-                Title = request.Title
+                Title = request.Title,
+                FromUser = _user.MapThumb(request.SenderUser),
+                ToUser = _user.MapThumb(request.RecipientUser),
+                SentDate = request.CreatedDate.ToDate(),
+                LastMessageDate = request.ConversationDetails != null ? request.ConversationDetails.Max(d => d.CreatedDate).ToDate() : null,
+                MessageCount = request.ConversationDetails != null ? request.ConversationDetails.Count : 0
             };
-            if (request.ConversationDetails != null && request.ConversationDetails.Count != 0)
-            {
-                response.Messages = new List<ThumbResponse<long>>();
-                response.Messages = request.ConversationDetails.
-                    Select(d => _conversationDetail.MapThumb(d)).ToList();
-            }
             return response;
+        }
+
+        public ConversationDetailResponse MapDetail(ConversationDetail request)
+        {
+            if (request == null) return null;
+            return new ConversationDetailResponse()
+            {
+                Sender = _user.MapThumb(request.SenderUser),
+                Receiver = request.SenderUserId == request.SenderUserId ?
+                                   _user.MapThumb(request.Conversation.RecipientUser) : _user.MapThumb(request.SenderUser),
+                Body = request.Message,
+                SendDate = request.CreatedDate.ToShamsi(false)
+            };
         }
 
         public ThumbResponse<long> MapThumb(Conversation request)

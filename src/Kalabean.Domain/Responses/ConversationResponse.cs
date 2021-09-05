@@ -10,10 +10,11 @@ namespace Kalabean.Domain.Responses
     {
         public int Id { get; set; }
         public long? RequirementId { get; set; }
-        public long SenderUserId { get; set; }
-        public long? RecipientUserId { get; set; }
+        public ThumbResponse<long> FromUser { get; set; }
+        public ThumbResponse<long> ToUser { get; set; }
         public string Title { get; set; }
-        public byte Status { get; set; }
-        public ICollection<ThumbResponse<long>> Messages { get; set; }
+        public string SentDate { get; set; }
+        public int MessageCount { get; set; }
+        public string LastMessageDate { get; set; }
     }
 }

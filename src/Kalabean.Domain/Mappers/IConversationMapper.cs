@@ -14,5 +14,6 @@ namespace Kalabean.Domain.Mappers
         Conversation Map(AddConversationRequest request);
         ConversationResponse Map(Conversation request);
         ThumbResponse<long> MapThumb(Conversation request);
+        ConversationDetailResponse MapDetail(ConversationDetail request);
     }
 }

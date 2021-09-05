@@ -10,5 +10,6 @@ namespace Kalabean.Domain.Services
         Task<ListPagingResponse<ConversationResponse>> GetConversationsAsync(GetConversationsRequest request);
         Task<ConversationResponse> GetConversationAsync(GetConversationRequest request);
         Task<ConversationResponse> AddConversationAsync(AddConversationRequest request);
+        Task<ListPagingResponse<ConversationDetailResponse>> GetConversationDetailAsync(GetConversationRequest request);
     }
 }
