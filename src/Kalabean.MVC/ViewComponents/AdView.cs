@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Kalabean.Domain.Entities;
+using Kalabean.Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +10,16 @@ namespace Kalabean.MVC.ViewComponents
 {
     public class AdViewViewComponent: ViewComponent
     {
-        public AdViewViewComponent() { }
-        public async Task<IViewComponentResult> InvokeAsync(bool isDone)
+        IAdvertiseRepository _repository;
+        public AdViewViewComponent(IAdvertiseRepository repository)
         {
-            return View(isDone);
+            _repository = repository;
+        }
+        public async Task<IViewComponentResult> InvokeAsync(int positionId)
+        {
+            IQueryable<Advertise> ads = _repository.
+                List(a => !a.IsDeleted && a.AdPositionId == positionId);
+            return View(ads);
         }
     }
 }
