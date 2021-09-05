@@ -10,6 +10,7 @@ using Kalabean.Domain.Base;
 using Kalabean.Domain.Services;
 using Microsoft.AspNetCore.Identity;
 using Kalabean.Domain.Entities;
+using Kalabean.Infrastructure.Helpers;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -53,6 +54,7 @@ namespace Kalabean.Infrastructure.Services
         public async Task<UserResponse> AddUserAsync(AddUserRequest request)
         {
             var item = _userMapper.Map(request);
+            await UserValidation(item);
             item.PhoneNumberConfirmed = true;
             item.EmailConfirmed = true;
             var Result = await _userManager.CreateAsync(item, request.Password);
@@ -77,6 +79,7 @@ namespace Kalabean.Infrastructure.Services
             existingRecord.Email = request.Email;
             existingRecord.Name = request.Name;
             existingRecord.Family = request.Family;
+            await UserValidation(existingRecord);
             var Result = await _userManager.UpdateAsync(existingRecord);
             if (Result.Succeeded)
             {
@@ -160,6 +163,27 @@ namespace Kalabean.Infrastructure.Services
             if (request == null) throw new ArgumentNullException();
             var User = await _userRepository.Count(request);
             return User;
+        }
+
+        public async Task UserValidation(User user)
+        {
+            var users = await GetUsersAsync(new GetUsersRequest());
+            var _users = users.Items.Where(x => x.Id != user.Id);
+            ErrorResponseV2 Error = new ErrorResponseV2() { StatusCode = 400 };
+            if (users.Total == 0) return;
+            if (_users.Count(u => u.UserName == user.UserName) != 0)
+            {
+                Error.MsgErrors.Add( "نام کاربری تکراری می باشد");
+            }
+            if (_users.Count(u => u.PhoneNumber == user.PhoneNumber) != 0)
+            {
+                Error.MsgErrors.Add("تلفن همراه تکراری می باشد");
+            }
+            if (_users.Count(u => u.Email == user.Email) != 0)
+            {
+                Error.MsgErrors.Add("پست الکترونیک تکراری می باشد");
+            }
+            if (Error.MsgErrors.Count != 0) throw new Exception(Error.JsonConvert());
         }
     }
 }
