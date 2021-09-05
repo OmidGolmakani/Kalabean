@@ -501,5 +501,10 @@ namespace Kalabean.Infrastructure.Helpers
                 throw ex;
             }
         }
+        public static string JsonConvert<T>(this List<T> List)
+        {
+            if (List.Count == 0) return null;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(List);
+        }
     }
 }

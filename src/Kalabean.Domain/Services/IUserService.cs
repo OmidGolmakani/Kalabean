@@ -17,5 +17,6 @@ namespace Kalabean.Domain.Services
         Task<List<IdentityResult>> AddUserToRole(AddUserToRoleRequest request);
         Task BatchDeleteUsersAsync(long[] Ids);
         Task SignOut();
+        Task UserValidation(Entities.User user);
     }
 }

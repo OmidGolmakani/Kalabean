@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Kalabean.Domain.Responses
 {
-    public class ErrorResponse
+    public class ErrorResponseV2
     {
         public int StatusCode { get; set; }
-        public string Message { get; set; }
+        public List<string> MsgErrors { get; set; } = new List<string>();
         public string JsonConvert()
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
