@@ -1,6 +1,13 @@
-﻿@model AdViewModel
-<aside class="text-center">
-    <a href="@Model.Link">
-        <img src="@Model.ImagePath" class="effectck-apollo">
-    </a>
-</aside>
+﻿@model List<AdViewModel>
+@if (Model != null && Model.Count > 0)
+{
+    <aside class="text-center">
+        <a href="@Model[0].Link">
+            <img src="@Model[0].ImagePath" class="effectck-apollo" alt="@Model[0].Name" >
+        </a>
+    </aside>
+}
+else
+{
+    <p class="text-center">بدون محتوا!</p>
+}
