@@ -72,10 +72,10 @@ namespace Kalabean.Domain.Mappers
                 UserId = request.UserId,
                 CreatedBy = request.CreatedBy,
                 AdminId = request.AdminId,
-                CreatedDate = request.CreatedDate,
-                DateChangeStatus = request.DateChangeStatus.ToDate(),
+                CreatedDate = request.CreatedDate.ToDate(),
+                DateChangeStatus = request.DateChangeStatus == null ? null : request.DateChangeStatus.ToDate(),
                 Expire = request.Expire,
-                ConversationId = request.Conversations == null ? (int?)null : request.Conversations.FirstOrDefault().Id,
+                ConversationId = request.Conversations == null || request.Conversations.Count == 0 ? (int?)null : request.Conversations.FirstOrDefault().Id,
                 CategoryThumb = _category.MapThumb(request.Category),
                 ImageUrl = request.HasImage ? $"/KL_ImagesRepo/Requirement/250_250/{request.Id}.jpeg" : ""
             };
