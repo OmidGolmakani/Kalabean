@@ -9,6 +9,7 @@ namespace Kalabean.MVC.Models
             _basePath = basePath;
         }
         public long Id { get; set; }
+        public long? ImageId { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string FormattedPrice { get; set; }
@@ -16,7 +17,9 @@ namespace Kalabean.MVC.Models
         {
             get
             {
-                return string.Format("{0}/Products/245_205/{1}.jpeg", this._basePath, this.Id);
+                if(this.ImageId.HasValue)
+                    return string.Format("{0}/Products/245_205/{1}.jpeg", this._basePath, this.ImageId);
+                return "";
             }
         }
         

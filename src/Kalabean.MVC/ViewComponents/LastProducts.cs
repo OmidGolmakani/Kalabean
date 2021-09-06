@@ -28,6 +28,7 @@ namespace Kalabean.MVC.ViewComponents
                 List(p => p.IsEnabled && !p.IsDeleted && p.ProductImages != null).
                 OrderByDescending(s => s.Id).
                 Include(s => s.Category).
+                Include(s => s.ProductImages).
                 Take(15).
                 ToList();
             List<ProductViewModel> model = null;
@@ -36,7 +37,9 @@ namespace Kalabean.MVC.ViewComponents
                 model = products.Select(s => new ProductViewModel(_filesConfig.BaseUrl)
                 {
                     Name = s.ProductName,
-                    Id = s.Id
+                    Id = s.Id,
+                    ImageId = s.ProductImages != null && s.ProductImages.Count > 0 ?
+                     s.ProductImages?.ToList()?[0]?.Id : null
                     
                 }).
                 ToList();

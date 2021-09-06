@@ -38,7 +38,7 @@ namespace Kalabean.MVC.ViewComponents
                         model.Add(new AdViewModel()
                         {
                             Id = ad.Id,
-                            ImagePath = string.Format("{0}/Advertise/325_310/{1}.jpeg", _filesConfig.BaseUrl, ad.Id),
+                            ImagePath = string.Format("{0}/Advertising/325_310/{1}.jpeg", _filesConfig.BaseUrl, ad.Id),
                             Link = ad.UrlLink,
                             Name = ad.Title
                         });
