@@ -22,7 +22,7 @@ namespace Kalabean.Domain.Helper
         {
             try
             {
-                if (x == null) return null;
+                if (x == null) return "";
                 return x.Value.Date.ToString("yyyy/MM/dd");
             }
             catch (Exception ex)

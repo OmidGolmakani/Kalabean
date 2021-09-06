@@ -66,9 +66,9 @@ namespace Kalabean.Domain.Mappers
             {
                 Description = request.Description,
                 Id = request.Id,
-                CreatedDate = request.CreatedDate,
+                CreatedDate = request.CreatedDate.ToDate(),
                 CreatedBy = request.CreatedBy,
-                LastModified = request.LastModified,
+                LastModified = request.LastModified.ToDate(),
                 LastModifiedBy = request.LastModifiedBy,
                 OrderStatus = request.OrderStatus,
                 PaymentLink = request.PaymentLink,

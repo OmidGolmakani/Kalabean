@@ -1,4 +1,5 @@
 ﻿using Kalabean.Domain.Entities;
+using Kalabean.Domain.Helper;
 using Kalabean.Domain.Requests.Article;
 using Kalabean.Domain.Responses;
 using System;
@@ -80,11 +81,11 @@ namespace Kalabean.Domain.Mappers
                 Id = Article.Id,
                 Description = Article.Description,
                 Name = Article.Name,
-                CreatedDate = Article.CreatedDate,
+                CreatedDate = Article.CreatedDate.ToDate(),
                 HtmlBody = Article.HtmlBody,
-                PublishDateTime = Article.PublishDateTime?.ToString("yyyy/MM/dd"),
-                ArchiveDateTime = Article.ArchiveDateTime?.ToString("yyyy/MM/dd"),
-                LastModified = Article.LastModified,
+                PublishDateTime = Article.PublishDateTime.ToDate(),
+                ArchiveDateTime = Article.ArchiveDateTime.ToDate(),
+                LastModified = Article.LastModified.ToDate(),
                 KeyWords = Article.KeyWords,
                 ShowInPortal = Article.ShowInPortal,
                 SuggestedContent = Article.SuggestedContent,
