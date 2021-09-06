@@ -48,7 +48,9 @@ namespace Kalabean.Infrastructure.Repositories
                  )))
                  .Skip(request.PageSize * request.PageIndex).Take(request.PageSize)
                  .Include(p => p.ConversationDetails)
-                 .Include(p => p.Requirement);
+                 .Include(p => p.Requirement)
+                 .Include(p => p.SenderUser)
+                 .Include(p => p.RecipientUser);
         }
 
         public Task<Conversation> GetById(GetConversationRequest request, bool includeDeleted = false)
@@ -56,8 +58,10 @@ namespace Kalabean.Infrastructure.Repositories
             return this.DbSet
              .Where(p => p.Id == request.Id && (includeDeleted || !p.IsDeleted))
              .AsNoTracking()
-             .Include(p=> p.ConversationDetails)
+             .Include(p => p.ConversationDetails)
              .Include(p => p.Requirement)
+             .Include(p => p.SenderUser)
+             .Include(p => p.RecipientUser)
              .FirstOrDefaultAsync();
         }
         public override Conversation Add(Conversation entity)
@@ -75,6 +79,18 @@ namespace Kalabean.Infrastructure.Repositories
                 current.ConversationDetails = entity.ConversationDetails;
                 return base.Update(current);
             }
+        }
+
+        public async Task<IQueryable<ConversationDetail>> GetDetail(GetConversationRequest request, bool includeDeleted = false)
+        {
+            var c = await GetById(request, includeDeleted);
+            return c.ConversationDetails.AsQueryable();
+        }
+
+        public async Task<int> CountDetail(GetConversationRequest request, bool includeDeleted = false)
+        {
+            var c = await GetById(request, includeDeleted);
+            return c.ConversationDetails.Count;
         }
     }
 }

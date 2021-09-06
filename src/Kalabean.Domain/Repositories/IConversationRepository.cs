@@ -13,5 +13,7 @@ namespace Kalabean.Domain.Repositories
         Task<Conversation> GetById(GetConversationRequest request, bool includeDeleted = false);
         Task<IQueryable<Conversation>> Get(GetConversationsRequest request, bool includeDeleted = false);
         Task<int> Count(GetConversationsRequest request, bool includeDeleted = false);
+        Task<IQueryable<ConversationDetail>> GetDetail(GetConversationRequest request, bool includeDeleted = false);
+        Task<int> CountDetail(GetConversationRequest request, bool includeDeleted = false);
     }
 }

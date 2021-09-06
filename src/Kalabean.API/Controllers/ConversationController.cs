@@ -33,6 +33,11 @@ namespace Kalabean.API.Controllers
         {
             return Ok(await _ConversationService.GetConversationAsync(new GetConversationRequest { Id = id }));
         }
+        [HttpGet("{id}/messages")]
+        public async Task<IActionResult> GetMessages(int id)
+        {
+            return Ok(await _ConversationService.GetConversationDetailAsync(new GetConversationRequest { Id = id }));
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] AddConversationRequest request)

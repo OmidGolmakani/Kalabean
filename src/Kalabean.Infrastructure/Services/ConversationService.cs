@@ -70,5 +70,22 @@ namespace Kalabean.Infrastructure.Services
             await _unitOfWork.CommitAsync();
             return _conversationMapper.Map(await _conversationRepository.GetById(new GetConversationRequest() { Id = result.Id }));
         }
+
+        public async Task<ListPagingResponse<ConversationDetailResponse>> GetConversationDetailAsync(GetConversationRequest request)
+        {
+            var c = await GetConversationAsync(request);
+            if (c == null || c.FromUser == null || c.ToUser == null) throw new Exception($"Conversation No.{request.Id} was not found");
+            var UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == UserId);
+            var userRoles = await _userManager.GetRolesAsync(user);
+            if (userRoles.FirstOrDefault(u => u == "Administrator") == null && (c.FromUser.Id != UserId && c.ToUser.Id != UserId))
+            {
+                throw new Exception("This conversation is not yours");
+            }
+            var result = await _conversationRepository.GetDetail(request);
+            var list = result.Select(p => _conversationMapper.MapDetail(p));
+            var count = await _conversationRepository.CountDetail(request);
+            return new ListPagingResponse<ConversationDetailResponse>() { Items = list, Total = count };
+        }
     }
 }
