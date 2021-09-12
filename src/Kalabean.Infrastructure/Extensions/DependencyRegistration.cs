@@ -69,6 +69,14 @@ namespace Kalabean.Infrastructure.Extensions
             return services;
         }
 
+        public static IServiceCollection AddMvcServices(this IServiceCollection services)
+        {
+            services.AddScoped<KalabeanFileProvider, KalabeanFileProvider>();
+            services
+                    .AddScoped<IUserService, UserService>();
+
+            return services;
+        }
         public static IServiceCollection AddFileProvider(this IServiceCollection services)
         {
             services

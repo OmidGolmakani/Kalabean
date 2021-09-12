@@ -48,6 +48,7 @@ namespace Kalabean.MVC
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>)).
                 AddScoped<ICityRepository, CityRepository>()
+                .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<ICategoryRepository, CategoryRepository>()
                 .AddScoped<IShoppingCenterTypeRepository, ShoppingCenterTypeRepository>()
                 .AddScoped<IShoppingCenterRepository, ShoppingCenterRepository>()
@@ -68,6 +69,7 @@ namespace Kalabean.MVC
             services.
                 AddFileProvider().
                 AddMappers().
+                AddMvcServices().
                 AddMyIdentity().
                 GetImagesConfigurations(Configuration);
 
@@ -98,6 +100,9 @@ namespace Kalabean.MVC
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("Login", "",
+                   new { controller = "Login", action = "Index" });
+
                 endpoints.MapControllerRoute("Home", "",
                     new { controller = "Home", action = "Index" });
 
