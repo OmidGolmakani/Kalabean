@@ -35,11 +35,10 @@ namespace Kalabean.API.Controllers
                 return RedirectToAction("Index", "Home");
             }
             ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور اشتبا می باشد");
-            return View(new LoginViewModel()
-            {
-                UserName = request.UserName,
-                Password = request.Password
-            });
+            LoginViewModel model = new LoginViewModel();
+            model.UserName = request.UserName;
+            model.Password = request.Password;
+            return View("Login",model);
         }
     }
 }

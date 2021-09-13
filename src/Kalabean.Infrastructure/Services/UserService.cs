@@ -93,7 +93,7 @@ namespace Kalabean.Infrastructure.Services
 
         public Task<SigninResponse> SignIn(LoginRequest request)
         {
-            var _user = _userManager.FindByNameAsync(request.UserName);
+            var _user = _userManager.FindByNameAsync(request.UserName ?? "");
             Tuple<string, double> tokenInfo = null;
             SigninResponse Result = null;
             _user.Wait();
@@ -103,7 +103,7 @@ namespace Kalabean.Infrastructure.Services
             }
             else
             {
-                var SigninResult = _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, true);
+                var SigninResult = _signInManager.PasswordSignInAsync(request.UserName ?? "", request.Password ?? "", false, true);
                 SigninResult.Wait();
                 if (SigninResult.Result.Succeeded)
                 {
@@ -173,7 +173,7 @@ namespace Kalabean.Infrastructure.Services
             if (users.Total == 0) return;
             if (_users.Count(u => u.UserName == user.UserName) != 0)
             {
-                Error.MsgErrors.Add( "نام کاربری تکراری می باشد");
+                Error.MsgErrors.Add("نام کاربری تکراری می باشد");
             }
             if (_users.Count(u => u.PhoneNumber == user.PhoneNumber) != 0)
             {
