@@ -9,6 +9,8 @@ namespace Kalabean.MVC.Models
         public StoreViewModel(string basePath)
         {
             _basePath = basePath;
+            Category = new CategoryViewModel(_basePath);
+            Products = new List<ProductViewModel>();
         }
         public int Id { get; set; }
         public string Name { get; set; }

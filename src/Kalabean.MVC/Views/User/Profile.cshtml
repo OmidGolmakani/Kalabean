@@ -1,0 +1,43 @@
+﻿@{
+	ViewData["Title"] = "پروفایل کاربر";
+}
+@model UserProfileViewModel
+<div>
+ <h3>پروفایل من</h3>
+
+ <form asp-action="UpdateProfile" asp-controller="User" method="post">
+  <input type="hidden" asp-for="Id" />
+  <h2>@Model.UserStatus</h2>
+  <img src="@Model.ImageOriginalPath" />
+  <label>name</label>
+  <input type="text" asp-for="FullName" />
+  <label>username</label>
+  <input type="text" asp-for="UserName" />
+  <label>password</label>
+  <input type="text" asp-for="Password" />
+  <label>mobile</label>
+  <input type="text" asp-for="PhoneNumber" />
+  <label>Email</label>
+  <input type="text" asp-for="Email" />
+  <label>address</label>
+  <input type="text" asp-for="Address" />
+  <label>NationalCode</label>
+  <input type="text" asp-for="NationalCode" />
+  <label>IdCard</label>
+  <input type="text" asp-for="IdCard" />
+  <label>SubscriptionType</label>
+  <div class="form-check">
+   <input class="form-check-input" type="radio" name="PersonRadio" id="PersonRadio">
+   <label class="form-check-label" for="PersonRadio">
+	Person
+   </label>
+  </div>
+  <div class="form-check">
+   <input class="form-check-input" type="radio" name="CommercialRadio" id="CommercialRadio">
+   <label class="form-check-label" for="CommercialRadio">
+	Commercial
+   </label>
+  </div>
+  <input type="submit" />
+ </form>
+</div>

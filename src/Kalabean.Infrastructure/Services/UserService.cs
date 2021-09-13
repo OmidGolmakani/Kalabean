@@ -11,6 +11,7 @@ using Kalabean.Domain.Services;
 using Microsoft.AspNetCore.Identity;
 using Kalabean.Domain.Entities;
 using Kalabean.Infrastructure.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -22,13 +23,15 @@ namespace Kalabean.Infrastructure.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly AppDbContext _dbContext;
         private readonly SignInManager<User> _signInManager;
+        private readonly HttpContext _httpContext;
 
         public UserService(IUserRepository userRepository,
                            IUserMapper userMapper,
                            UserManager<User> userManager,
                            IUnitOfWork unitOfWork,
                            AppDbContext dbContext,
-                           SignInManager<User> signInManager)
+                           SignInManager<User> signInManager,
+                           IHttpContextAccessor httpContext)
         {
             _userRepository = userRepository;
             _userMapper = userMapper;
@@ -36,6 +39,7 @@ namespace Kalabean.Infrastructure.Services
             _unitOfWork = unitOfWork;
             this._dbContext = dbContext;
             this._signInManager = signInManager;
+            this._httpContext = httpContext.HttpContext;
         }
 
         public async Task<ListPagingResponse<UserResponse>> GetUsersAsync(GetUsersRequest request)
@@ -108,6 +112,7 @@ namespace Kalabean.Infrastructure.Services
                 if (SigninResult.Result.Succeeded)
                 {
                     tokenInfo = Helpers.JWTTokenManager.GenerateToken(request.UserName, _dbContext);
+                    _httpContext.Response.Cookies.Append("AccessToken", tokenInfo.Item1);
                     Result = new SigninResponse()
                     {
                         SignIn = SigninResult.Result,

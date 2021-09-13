@@ -26,6 +26,7 @@ namespace Kalabean.MVC
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            JWTTokenManager.configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }

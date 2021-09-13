@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace Kalabean.MVC.Controllers
 {
+    [Route("StoreProfile")]
+
     public class StoresController : Controller
     {
         IStoreRepository _storeRepository;
@@ -28,7 +30,11 @@ namespace Kalabean.MVC.Controllers
         public async Task<IActionResult> StoreProfile(string name, int id)
         {
             Store store = await this._storeRepository.GetById(id);
-
+            var model = new StoreViewModel(_filesConfig.BaseUrl);
+            if (store == null)
+            {
+                return View(model);
+            }
             return View(new StoreViewModel(_filesConfig.BaseUrl) {
                 Id = store.Id,
                 Name = store.Name,

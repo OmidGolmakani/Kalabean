@@ -207,7 +207,7 @@ namespace Kalabean.Infrastructure.Helpers
         {
             try
             {
-                if(HttpContext.Request.Headers
+                if (HttpContext.Request.Headers
                         .Count(x => x.Key == "Authorization") == 0)
                 {
                     return -1;
@@ -217,6 +217,40 @@ namespace Kalabean.Infrastructure.Helpers
                     token = HttpContext.Request.Headers
                         .FirstOrDefault(x => x.Key == "Authorization").Value.
                         ToString().Replace("Bearer", "").Trim();
+                }
+                ClaimsPrincipal principal = GetPrincipal(token);
+                if (principal == null)
+                    return 0;
+                ClaimsIdentity identity = null;
+                try
+                {
+                    identity = (ClaimsIdentity)principal.Identity;
+                }
+                catch (NullReferenceException)
+                {
+                    return 0;
+                }
+                return identity.FindFirst(ClaimTypes.NameIdentifier).Value.ToLong();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public static long GetUserIdByCookie(string token = "")
+        {
+            try
+            {
+                if (HttpContext.Request.Cookies.ContainsKey("AccessToken") == false)
+                {
+                    return -1;
+                }
+                if (token == "")
+                {
+                    token = HttpContext.Request.Cookies
+                        .FirstOrDefault(x => x.Key == "AccessToken").Value.
+                        ToString().Trim();
                 }
                 ClaimsPrincipal principal = GetPrincipal(token);
                 if (principal == null)

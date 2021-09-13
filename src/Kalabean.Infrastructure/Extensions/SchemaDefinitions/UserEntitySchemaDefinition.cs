@@ -27,6 +27,10 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(p => p.TwoFactorEnabled);
             builder.Property(p => p.LockoutEnd);
             builder.Property(p => p.LockoutEnabled);
+            builder.Property(p => p.NationalCode).HasMaxLength(10);
+            builder.Property(p => p.Address).HasMaxLength(200);
+            builder.Property(p => p.Subscriptiontype).HasDefaultValue((byte)Kalabean.Domain.Entities.Subscriptiontype.Personal);
+            builder.Property(p => p.UserStatus).HasDefaultValue((byte)Kalabean.Domain.Entities.UserStatus.AwaitingApproval);
         }
     }
 }

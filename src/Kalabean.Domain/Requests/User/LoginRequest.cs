@@ -10,5 +10,7 @@ namespace Kalabean.Domain.Requests.User
     {
         public string UserName { get; set; }
         public string Password { get; set; }
+        private bool _UseApi = true;
+        public bool UseApi { get { return _UseApi; } set { _UseApi = value; } }
     }
 }
