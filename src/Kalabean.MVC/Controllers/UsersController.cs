@@ -7,6 +7,7 @@ using Kalabean.Infrastructure.AppSettingConfigs;
 using Kalabean.Infrastructure.Helpers;
 using Kalabean.MVC.Filters;
 using Kalabean.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -18,13 +19,13 @@ namespace Kalabean.API.Controllers
 {
 
     [Route("User")]
-    public class UserController : Controller
+    public class UsersController : Controller
     {
         private readonly IUserService _user;
         private readonly Files _filesConfig;
 
-        public UserController(IUserService user,
-                              IOptions<Files> filesConfig)
+        public UsersController(IUserService user,
+                               IOptions<Files> filesConfig)
         {
             this._user = user;
             _filesConfig = filesConfig?.Value;
@@ -48,7 +49,8 @@ namespace Kalabean.API.Controllers
             model.Id = user.Id;
             model.UserName = user.UserName;
             model.Address = user.Address;
-            model.FullName = user.UserFullName;
+            model.Name = user.Name;
+            model.Family = user.Family;
             model.Email = user.Email;
             model.IdCard = user.IdCardNo;
             model.NationalCode = user.NationalCode;
@@ -58,6 +60,7 @@ namespace Kalabean.API.Controllers
             return View(model);
         }
         [HttpPost("Login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(Domain.Requests.User.LoginRequest request)
         {
             request.UseApi = false;
@@ -77,6 +80,23 @@ namespace Kalabean.API.Controllers
         {
             await _user.EditUserAsync(request);
             return RedirectToAction("Profile");
+        }
+        [HttpPost("Register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(Domain.Requests.User.AddUserRequest request)
+        {
+            request.UserName = request.PhoneNumber;
+            request.Password = request.PhoneNumber;
+            await _user.AddUserAsync(request);
+            await _user.SignIn(new LoginRequest() { UserName = request.UserName, Password = request.Password });
+            return RedirectToAction("Profile");
+        }
+        [HttpGet("Register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register()
+        {
+            var model = new UserProfileViewModel(_filesConfig.BaseUrl);
+            return View(model);
         }
     }
 }

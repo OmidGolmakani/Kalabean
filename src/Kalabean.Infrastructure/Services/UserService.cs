@@ -112,7 +112,9 @@ namespace Kalabean.Infrastructure.Services
                 if (SigninResult.Result.Succeeded)
                 {
                     tokenInfo = Helpers.JWTTokenManager.GenerateToken(request.UserName, _dbContext);
-                    _httpContext.Response.Cookies.Append("AccessToken", tokenInfo.Item1);
+                    CookieOptions options = new CookieOptions();
+                    options.Expires = DateTime.MaxValue;
+                    _httpContext.Response.Cookies.Append("AccessToken", tokenInfo.Item1, options);
                     Result = new SigninResponse()
                     {
                         SignIn = SigninResult.Result,
@@ -136,6 +138,7 @@ namespace Kalabean.Infrastructure.Services
         public Task SignOut()
         {
             var Result = _signInManager.SignOutAsync();
+            _httpContext.Response.Cookies.Delete("AccessToken");
             return Result;
         }
 
@@ -184,7 +187,7 @@ namespace Kalabean.Infrastructure.Services
             {
                 Error.MsgErrors.Add("تلفن همراه تکراری می باشد");
             }
-            if (_users.Count(u => u.Email == user.Email) != 0)
+            if (string.IsNullOrEmpty(user.Email) == false && _users.Count(u => u.Email == user.Email) != 0)
             {
                 Error.MsgErrors.Add("پست الکترونیک تکراری می باشد");
             }

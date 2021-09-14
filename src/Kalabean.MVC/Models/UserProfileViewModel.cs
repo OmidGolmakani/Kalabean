@@ -23,7 +23,8 @@ namespace Kalabean.MVC.Models
                 return string.Format("{0}/Users/250_250/{1}.jpeg", this._basePath, this.Id);
             }
         }
-        public string FullName { get; set; }
+        public string Name { get; set; }
+        public string Family { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }

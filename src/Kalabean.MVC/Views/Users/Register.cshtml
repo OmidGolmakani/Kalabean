@@ -1,0 +1,12 @@
+﻿@{
+	ViewData["Title"] = "ایجاد کاربر";
+}
+@model UserProfileViewModel
+<div>
+ <h3>ایجاد کاربر</h3>
+ <form asp-controller="User" asp-action="Register">
+  <label>تلغن همراه</label>
+  <input type="text" asp-for="PhoneNumber" />
+  <input type="submit" />
+ </form>
+</div>

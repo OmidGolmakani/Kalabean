@@ -39,14 +39,26 @@ namespace Kalabean.MVC.Filters
 
 
                 var dbContext = context.HttpContext.RequestServices.GetRequiredService<AppDbContext>();
-
-                var User = JWTTokenManager.ValidateToken(token, dbContext);
+                string User = "";
+                try
+                {
+                    User = JWTTokenManager.ValidateToken(token, dbContext);
+                }
+                catch (Exception)
+                {
+                    context.Result = new RedirectToRouteResult(
+                       new RouteValueDictionary(new
+                       {
+                           controller = "Users",
+                           action = "Login"
+                       }));
+                }
                 if (User == null)
                 {
                     context.Result = new RedirectToRouteResult(
                         new RouteValueDictionary(new
                         {
-                            controller = "User",
+                            controller = "Users",
                             action = "Login"
                         }));
                 }

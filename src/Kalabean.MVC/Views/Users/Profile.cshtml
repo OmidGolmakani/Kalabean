@@ -5,12 +5,14 @@
 <div>
  <h3>پروفایل من</h3>
 
- <form asp-action="UpdateProfile" asp-controller="User" method="post">
+ <form asp-action="UpdateProfile" asp-controller="Users" method="post">
   <input type="hidden" asp-for="Id" />
   <h2>@Model.UserStatus</h2>
   <img src="@Model.ImageOriginalPath" />
   <label>name</label>
-  <input type="text" asp-for="FullName" />
+  <input type="text" asp-for="Name" />
+  <label>family</label>
+  <input type="text" asp-for="Family" />
   <label>username</label>
   <input type="text" asp-for="UserName" />
   <label>password</label>
