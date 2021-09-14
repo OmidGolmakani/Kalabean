@@ -1,0 +1,94 @@
+﻿@{
+    Layout = "_ProfileLayout";
+}
+
+<h2 class="font-weight-bold text-dark mb-3">ایجاد فروشگاه</h2>
+
+<!-- Start Tab -->
+<nav class="nav nav-pills nav-justified pt-2 profile-nav" id="nav-tab" role="tablist">
+    <a class=" profile-nav-item nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">اطلاعات پایه</a>
+    <a class=" profile-nav-item nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">اطلاعات تماس</a>
+    <a class=" profile-nav-item nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">اطلاعات شغلی</a>
+    <a class=" profile-nav-item nav-item nav-link" id="nav-xxx-tab" data-toggle="tab" href="#nav-xxx" role="tab" aria-controls="nav-xxx" aria-selected="false">بسته های تجاری</a>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class=" p-3 tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">محتوا اطلاعات پایه ...</div>
+    <div class=" p-3 tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">محتوای اطلاعات تماس ...</div>
+    <div class=" p-3 tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">محتوای اطلاعات شغلی ...</div>
+    <div class=" p-3 tab-pane fade" id="nav-xxx" role="tabpanel" aria-labelledby="nav-xxx-tab">محتوای بسته های تجاری</div>
+</div>
+<!-- End Tab -->
+<!-- Start input image -->
+<div class="row">
+    <div class="col-12 col-md-2 pt-5">
+        <label for="">لوگوی فروشگاه</label>
+    </div>
+    <div class="col-12 col-md-10">
+        <figure class="preview-fig">
+            <img src="images/img-preview.png" id="preview" />
+        </figure>
+        <div class="d-inline-block mr-2">
+            <span> یک تصویر زیبا از نمای داخلی فروشگاه . سایز 1400*500 px</span>
+            <form method="post" id="image-form">
+                <input type="file" name="img[]" class="input-file" accept="image/*">
+                <div class="input-group my-1">
+                    <div class="input-group-append">
+                        <button type="button" class="browse btn">
+                            <span><i class="fa fa-camera"></i></span>
+                        </button>
+                    </div>
+                    <input type="text" class="form-control profile-file-input" disabled placeholder="آپلود تصویر" id="FileInput">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End input image -->
+<!-- Start input text -->
+<div class="row  pt-5">
+    <div class="col-12 col-md-2">
+        <label for="">نام فروشگاه</label>
+    </div>
+    <div class="col-12 col-md-6">
+        <input type="text" class="form-control profile-text-input" id="">
+        <a data-toggle="tooltip" data-placement="right" title="توضیحات و راهنمایی ها در مورد هر فیلد در اینجا می آید ...." id="#">
+            <span style="color: #fff;font-size: 20px;">
+                <i style="background: #fb8c6b;border-radius: 50%;" class="fal fa-question-circle faa-flash animated"></i>
+            </span>
+        </a>
+    </div>
+</div>
+<!-- End input text -->
+<!-- Start input tel -->
+<div class="row  pt-5">
+    <div class="col-12 col-md-2">
+        <label for="">موبایل</label>
+    </div>
+    <div class="col-8 col-md-4">
+        <input type="text" class="form-control profile-text-input" id="" dir="ltr">
+    </div>
+    <div class="col-4 col-md-2">
+        <input type="text" class="form-control profile-text-input" id="" dir="ltr">
+    </div>
+    <div class="col-12 col-md-3">
+        <button type="button" class="btn profile-code-button my-2">ارسال کد تائید</button>
+    </div>
+</div>
+<!-- End input tel -->
+<!-- Start bottom -->
+<div class="row  pt-5">
+    <div class="col-12 col-md-2">
+        <label for="">به روز رسانی</label>
+    </div>
+    <div class="col-12 col-md-3">
+        <button type="button" class="btn profile-save-button my-2">ارسال کد تائید</button>
+    </div>
+    <div class="col-12 col-md-3 offset-md-2">
+        <div>
+            <span style="font-size: 20px;">
+                <i style="color: #fb8c6b; border-radius: 50%;" class="fa fa-spinner faa-spin animated"></i>
+            </span>
+            <span>در حال به روز رسانی</span>
+        </div>
+    </div>
+</div>

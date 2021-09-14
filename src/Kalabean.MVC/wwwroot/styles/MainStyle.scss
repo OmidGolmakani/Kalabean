@@ -147,6 +147,14 @@ textarea {
     resize: none;
 }
 
+td{
+    vertical-align:middle !important;
+}
+
+.modal {
+    top: 11%;
+}
+
 .text-mainColor {
     color: $DarkMainColor !important;
 }
@@ -422,6 +430,9 @@ textarea {
 #swiper02 {
     .swiper-button-next:after, .swiper-button-prev:after {
         color: $white;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px 13px 8px 15px;
+        border-radius: 50%;
     }
 }
 
@@ -1982,3 +1993,160 @@ footer {
 }
 
 /******************************** end **** صفحه فروشگاه ***************************************/
+
+/******************************** start **** صفحه محصول - جزئیات ***************************/
+.product-discounts {
+    background: #dd0020 !important;
+    border-radius: 8px;
+    position: unset;
+    margin-right: 20px;
+}
+.product-discounts:after {
+    position: absolute;
+    right: 7px;
+    bottom: 14px;
+    width: 13px;
+    content: '';
+    height: 11px;
+    background-color: transparent;
+    z-index: 1;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 9px solid #dd0020;
+    transform: rotate( 180deg);
+}
+/******************************** end **** صفحه محصول - جزئیات ****************************/
+
+/******************************** start **** پروفایل ***************************/
+/* - ستون سمت راست - پنل پروفایل */
+.profile-ul li {
+    margin-bottom: 15px;
+}
+.profile-ul li a {
+    color: #b9b9b9;
+    width: 100%;
+    display: inline-block;
+    font-size: 16px;
+    transition: all .6s ease-in-out;
+}
+.profile-ul li a:hover {
+    transition: all .2s ease-in-out;
+    border-right: 3px solid #fb8c6b;
+    color: #fb8c6b;
+}
+
+/* Tab */
+.profile-nav-item {
+    color: #b9b9b9;
+    width: 100%;
+    display: inline-block;
+    font-size: 16px;
+    transition: all .6s ease-in-out;
+    border-bottom: 3px solid #f7f7f7;
+}
+.profile-nav-item:hover {
+    color: #fb8c6b;
+}
+.profile-nav-item .active {
+    color: #fb8c6b;
+    transition: all .6s ease-in-out;
+    border-bottom: 3px solid #fb8c6b;
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fb8c6b !important;
+    background-color: #ffffff !important;
+    border-bottom: 3px solid #fb8c6b;
+}
+
+/* input image */
+.input-file {
+    visibility: hidden;
+    position: absolute;
+}
+.preview-fig {
+    max-width: 100px;
+    display: contents;
+}
+.profile-file-input:disabled, .profile-file-input[readonly] {
+    background-color: transparent;
+    border: none;
+}
+
+/* input text */
+.profile-text-input {
+    border-radius: 20px;
+}
+.tooltip-inner {
+    padding: 10px;
+    color: #111;
+    text-align: justify;
+    background-color: #f8f8f8;
+    border: 2px solid #fb8c6b;
+    border-radius: 8px;
+}
+
+/* input tel */
+.profile-code-button {
+    background-color: #f8f8f8;
+    box-shadow: 0px 1px 2px #b1b1b1;
+    border-radius: 20px;
+}
+
+.profile-save-button {
+    background-color: #fb8c6b;
+    padding: 14px 30px;
+    border-radius: 25px;
+    color: #fff;
+    transition: all .2s ease-in-out;
+}
+.profile-save-button:hover {
+    background-color: #b1b1b1;
+    color: #111;
+    transition: all .2s ease-in-out;
+}
+
+/* Profile table */
+.Profile-table thead tr {
+    background: #f7f7f7;
+    color: #111;
+}
+.Profile-table tbody tr:nth-child(2n) {
+    background: #f5f5f5;
+}
+.Profile-table td {
+    color: #111;
+}
+.profile-product-fig img {
+    max-width: 115px;
+    height: auto;
+    margin-bottom:5px ;
+}
+.profile-product-name {
+    max-width: 110px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #212121;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 10px;
+    /* white-space: nowrap;*/
+}
+
+.profile-transaction {
+    background-color: #6cbe7d;
+    padding: 5px 10px;
+    border-radius: 25px;
+    color: $bgColor;
+    transition: all .2s ease-in-out;
+    margin: 6px auto;
+    display: inline-block;
+    box-shadow: 1px 1px 1px #ccc;
+}
+.profile-transaction:hover {
+    background-color: $Blue;
+    color: #fff;
+    transition: all .2s ease-in-out;
+}
+
+/******************************** end **** پروفایل ****************************/

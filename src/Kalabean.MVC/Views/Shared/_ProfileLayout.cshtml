@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+}
+
+<div class="bg-white shadow-sm px-3" style="border-radius: 8px;color: #b9b9b9;">
+    <div class="row">
+        <div class="col-md-3 col-12 d-inline-block">
+            <div style="border-left: 1px solid #e6e6e6;">
+                <ul class="profile-ul pt-3">
+                    <li>
+                        <a href="#">
+                            <div class="pr-3">
+                                <span style="font-size: 20px;"><i class="fa fa-user"></i></span>
+                                <p class="mx-2 d-inline-block">پروفایل من</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="pr-3">
+                                <span style="font-size: 20px;"><i class="fa fa-shopping-basket"></i></span>
+                                <p class="mx-2 d-inline-block">سبد خرید</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="pr-3">
+                                <span style="font-size: 20px;"><i class="fa fa-wallet"></i></span>
+                                <p class="mx-2 d-inline-block">کیف پول</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="pr-3">
+                                <span style="font-size: 20px;"><i class="fa fa-envelope-open-text"></i></span>
+                                <p class="mx-2 d-inline-block">پیام ها</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="pr-3">
+                                <span style="font-size: 20px;"><i class="fa fa-heart"></i></span>
+                                <p class="mx-2 d-inline-block">علاقه مندی ها</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="pr-3">
+                                <span style="font-size: 20px;"><i class="fa fa-store"></i></span>
+                                <p class="mx-2 d-inline-block">ایجاد فروشگاه</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="pr-3">
+                                <span style="font-size: 20px;"><i class="fa fa-plus"></i></span>
+                                <p class="mx-2 d-inline-block">ثبت محصول</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="pr-3">
+                                <span style="font-size: 20px;"><i class="fa fa-comment"></i></span>
+                                <p class="mx-2 d-inline-block">درخواست کالا</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <div class="pr-3">
+                                <span style="font-size: 20px;"><i class="fa fa-phone"></i></span>
+                                <p class="mx-2 d-inline-block">پشتیبانی</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-12 d-inline-block">
+            <div class="p-2 p-md-4">
+                @RenderBody()
+            </div>
+        </div>
+
+    </div>
+</div>

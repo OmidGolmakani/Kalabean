@@ -117,6 +117,14 @@ namespace Kalabean.MVC
                 endpoints.MapControllerRoute("Store", "store/{name}-{id}",
                     new { controller = "Stores", action = "StoreProfile" });
 
+                endpoints.MapControllerRoute("Product", "products/{name}-{id}",
+                    new { controller = "Product", action = "Show" });
+
+                endpoints.MapControllerRoute("Profile_CreateStore", "profile/createstore",
+                    new { controller = "Profile", action = "UserStore" });
+                endpoints.MapControllerRoute("Profile_Cart", "profile/cart",
+                    new { controller = "Profile", action = "Cart" });
+
                 endpoints.MapControllers();
             });
         }
