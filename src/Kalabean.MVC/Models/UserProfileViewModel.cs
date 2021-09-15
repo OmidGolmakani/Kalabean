@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace Kalabean.MVC.Models
             _basePath = basePath;
         }
         public long Id { get; set; }
+        public FormFile Image { get; set; }
         public string ImageOriginalPath { get; set; }
         public string ImageListPat
         {

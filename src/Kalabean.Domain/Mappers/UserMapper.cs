@@ -47,7 +47,8 @@ namespace Kalabean.Domain.Mappers
                 Id = request.Id,
                 Name = request.Name,
                 PhoneNumber = request.PhoneNumber,
-                UserName = request.UserName
+                UserName = request.UserName,
+                HasImage = request.ImageEdited && request.Image != null && request.Image.Length > 0
             };
 
             return User;

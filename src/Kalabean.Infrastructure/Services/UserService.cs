@@ -12,6 +12,12 @@ using Microsoft.AspNetCore.Identity;
 using Kalabean.Domain.Entities;
 using Kalabean.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Http;
+using Kalabean.Infrastructure.Files;
+using Kalabean.Infrastructure.AppSettingConfigs.Images;
+using Kalabean.Infrastructure.Services.Image;
+using Microsoft.Extensions.Options;
+using Kalabean.Domain.Requests.ResizeImage;
+using System.Drawing;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -24,14 +30,19 @@ namespace Kalabean.Infrastructure.Services
         private readonly AppDbContext _dbContext;
         private readonly SignInManager<User> _signInManager;
         private readonly HttpContext _httpContext;
-
+        private readonly KalabeanFileProvider _fileProvider;
+        private readonly IResizeImageService<long> _resizeImageService;
+        private readonly List<ImageSize> _imageConfig;
         public UserService(IUserRepository userRepository,
                            IUserMapper userMapper,
                            UserManager<User> userManager,
                            IUnitOfWork unitOfWork,
                            AppDbContext dbContext,
                            SignInManager<User> signInManager,
-                           IHttpContextAccessor httpContext)
+                           IHttpContextAccessor httpContext,
+                           IResizeImageService<long> resizeImageService,
+                           IOptions<ImageSize> ImageConfig,
+                           IFileAccessProvider fileProvider)
         {
             _userRepository = userRepository;
             _userMapper = userMapper;
@@ -40,6 +51,9 @@ namespace Kalabean.Infrastructure.Services
             this._dbContext = dbContext;
             this._signInManager = signInManager;
             this._httpContext = httpContext.HttpContext;
+            _fileProvider = new KalabeanFileProvider(fileProvider);
+            this._resizeImageService = resizeImageService;
+            _imageConfig = ImageConfig.Value.ImageSizes.Where(x => x.ImageType == ImageType.User).ToList();
         }
 
         public async Task<ListPagingResponse<UserResponse>> GetUsersAsync(GetUsersRequest request)
@@ -83,6 +97,39 @@ namespace Kalabean.Infrastructure.Services
             existingRecord.Email = request.Email;
             existingRecord.Name = request.Name;
             existingRecord.Family = request.Family;
+            if (request.ImageEdited)
+            {
+                if ((existingRecord.HasImage ?? false) || request.Image != null)
+                {
+                    Tuple<bool, string> ImgResult = null;
+                    if (request.Image != null)
+                    {
+                        using (var fileContent = request.Image.OpenReadStream())
+                            ImgResult = _fileProvider.SaveUserImage(fileContent, existingRecord.Id);
+                        existingRecord.HasImage = true;
+
+                        foreach (var ImageResize in _imageConfig)
+                        {
+                            if (ImgResult != null && ImgResult.Item1)
+                            {
+                                await _resizeImageService.Resize(new GetImageRequest<long>()
+                                {
+                                    Id = existingRecord.Id,
+                                    ImageSize = new Size(ImageResize.Width, ImageResize.Height),
+                                    ImageUrl = ImgResult.Item2,
+                                    Folder = string.Format("{0}_{1}", ImageResize.Width, ImageResize.Height)
+                                });
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    _fileProvider.DeleteUserImage(existingRecord.Id);
+                    existingRecord.HasImage = false;
+                }
+            }
             await UserValidation(existingRecord);
             var Result = await _userManager.UpdateAsync(existingRecord);
             if (Result.Succeeded)
@@ -176,7 +223,7 @@ namespace Kalabean.Infrastructure.Services
         public async Task UserValidation(User user)
         {
             var users = await GetUsersAsync(new GetUsersRequest());
-            var _users = users.Items.Where(x => x.Id != user.Id);
+            var _users = users.Items.Where(x => x.Id != user.Id).ToList();
             ErrorResponseV2 Error = new ErrorResponseV2() { StatusCode = 400 };
             if (users.Total == 0) return;
             if (_users.Count(u => u.UserName == user.UserName) != 0)

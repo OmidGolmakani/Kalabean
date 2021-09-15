@@ -30,6 +30,7 @@ namespace Kalabean.Domain.Entities
         public string IdCardNo { get; set; }
         public byte? Subscriptiontype { get; set; }
         public string Address { get; set; }
+        public bool? HasImage { get; set; }
         public ICollection<Requirement> RequirementUsers { get; set; }
         public ICollection<Requirement> RequirementAdmins { get; set; }
         public ICollection<OrderHeader> FromOrderHeaders { get; set; }

@@ -26,6 +26,7 @@ namespace Kalabean.Infrastructure.AppSettingConfigs.Images
         Store = 8,
         Advertise = 9,
         PossibilitiesShopCenter = 10,
-        Category = 11
+        Category = 11,
+        User = 12
     }
 }
