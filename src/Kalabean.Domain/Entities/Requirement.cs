@@ -13,6 +13,7 @@ namespace Kalabean.Domain.Entities
         public string ProductName { get; set; }
         public int CategoryId { get; set; }
         public long UserId { get; set; }
+        public int CityId { get; set; }
         public byte RequirementStatus { get; set; }
         public byte TypePricing { get; set; }
         public decimal Price { get; set; }
@@ -24,6 +25,7 @@ namespace Kalabean.Domain.Entities
         public Category Category { get; set; }
         public User RequirementUser { get; set; }
         public User AdminUser { get; set; }
+        public City City { get; set; }
         public RequirementUserSeen RequirementUserSeen { get; set; }
         public ICollection<Conversation> Conversations { get; set; }
 

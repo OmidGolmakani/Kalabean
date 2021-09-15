@@ -11,6 +11,7 @@ namespace Kalabean.Domain.Responses
         public long Id { get; set; }
         public string ProductName { get; set; }
         public int CategoryId { get; set; }
+        public int CityId { get; set; }
         public long UserId { get; set; }
         public byte RequirementStatus { get; set; }
         public byte TypePricing { get; set; }
@@ -22,5 +23,6 @@ namespace Kalabean.Domain.Responses
         public int? ConversationId { get; set; }
         public string DateChangeStatus { get; set; }
         public ThumbResponse<int> CategoryThumb { get; set; }
+        public ThumbResponse<int> CityThumb { get; set; }
     }
 }

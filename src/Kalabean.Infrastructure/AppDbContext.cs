@@ -4,6 +4,8 @@ using Kalabean.Domain.Entities;
 using Kalabean.Infrastructure.Extensions.SchemaDefinitions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Kalabean.Infrastructure.AppSettingConfigs.Images;
 
 namespace Kalabean.Infrastructure
 {
@@ -16,10 +18,13 @@ namespace Kalabean.Infrastructure
                                                   RoleClaim,
                                                   UserToken>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options,IHttpContextAccessor httpContext) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options,
+                            IHttpContextAccessor httpContext,
+                            IOptions<AppSettingConfigs.Files> imagePath) : base(options)
         {
 
             Helpers.JWTTokenManager.HttpContext = httpContext.HttpContext;
+            Helpers.ReturnFilePath.BaseUrl = imagePath.Value.BaseUrl;
         }
         //public DbSet<Category> Categories{ get; set; }
         //public DbSet<Article> Articles { get; set; }

@@ -22,13 +22,10 @@ namespace Kalabean.API.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _user;
-        private readonly Files _filesConfig;
 
-        public UsersController(IUserService user,
-                               IOptions<Files> filesConfig)
+        public UsersController(IUserService user)
         {
             this._user = user;
-            _filesConfig = filesConfig?.Value;
         }
         [Route("Login")]
         public async Task<IActionResult> Login()
@@ -40,7 +37,7 @@ namespace Kalabean.API.Controllers
         [CustomAuthorizationFilter]
         public async Task<IActionResult> Profile()
         {
-            var model = new UserProfileViewModel(_filesConfig.BaseUrl);
+            var model = new UserProfileViewModel(Kalabean.Infrastructure.Helpers.ReturnFilePath.BaseUrl);
             var user = await _user.GetUserAsync(new GetUserRequest() { Id = JWTTokenManager.GetUserIdByCookie() });
             if (user == null)
             {
@@ -95,7 +92,7 @@ namespace Kalabean.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register()
         {
-            var model = new UserProfileViewModel(_filesConfig.BaseUrl);
+            var model = new UserProfileViewModel(Kalabean.Infrastructure.Helpers.ReturnFilePath.BaseUrl);
             return View(model);
         }
     }

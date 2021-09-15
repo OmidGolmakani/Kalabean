@@ -5,6 +5,7 @@ using Kalabean.Infrastructure.AppSettingConfigs;
 using Kalabean.Infrastructure.Extensions;
 using Kalabean.Infrastructure.Helpers;
 using Kalabean.Infrastructure.Repositories;
+using Kalabean.Infrastructure.Services.Image;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -47,8 +48,9 @@ namespace Kalabean.MVC
             services.AddScoped<Func<AppDbContext>>((provider) => () => provider.GetService<AppDbContext>());
             services.AddScoped<DbFactory>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>)).
-                AddScoped<ICityRepository, CityRepository>()
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>))
+                .AddScoped(typeof(IResizeImageService<>), typeof(ResizeImageService<>))
+                .AddScoped<ICityRepository, CityRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<ICategoryRepository, CategoryRepository>()
                 .AddScoped<IShoppingCenterTypeRepository, ShoppingCenterTypeRepository>()

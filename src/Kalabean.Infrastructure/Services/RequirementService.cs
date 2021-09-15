@@ -78,7 +78,10 @@ namespace Kalabean.Infrastructure.Services
         public async Task<RequirementResponse> AddRequirementAsync(AddRequirementRequest request)
         {
             var item = _RequirementMapper.Map(request);
-            item.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            if (item.UserId <= 0)
+            {
+                item.UserId = Helpers.JWTTokenManager.GetUserIdByCookie();
+            }
             item.RequirementStatus = (byte)RequirementStatus.AwaitingApproval;
             item.Expire = (DateTime.Now.AddHours(48) - DateTime.Now).TotalMinutes;
             var result = _RequirementRepository.Add(item);
@@ -115,7 +118,10 @@ namespace Kalabean.Infrastructure.Services
                 throw new ArgumentException($"Entity with {request.Id} is not present");
 
             var entity = _RequirementMapper.Map(request);
-            entity.UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            if (entity.UserId <= 0)
+            {
+                entity.UserId = Helpers.JWTTokenManager.GetUserIdByCookie();
+            }
             entity.CreatedDate = existingRecord.CreatedDate;
             entity.Expire = (existingRecord.CreatedDate.AddHours(48) - existingRecord.CreatedDate).TotalMinutes;
             if (request.ImageEdited)

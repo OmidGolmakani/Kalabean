@@ -1,0 +1,27 @@
+﻿@{
+	Layout = "_ProfileLayout";
+}
+@model ListRequestProductViewModel
+<form asp-controller="Product" asp-action="Request" method="post">
+ <input type="hidden" asp-for="RequestProduct.Id" />
+ <input type="file" asp-for="RequestProduct.Image" />
+ <label>name</label>
+ <input type="text" asp-for="RequestProduct.ProductName" />
+ <label>description</label>
+ <input type="text" asp-for="RequestProduct.Description" />
+ <label>category</label>
+ <select asp-for="RequestProduct.CategoryId">
+		@foreach (var c in Model.Categories)
+		{
+	  <option value="@c.Id">@c.Name</option>
+		}
+ </select>
+ <label>request in </label>
+ <select asp-for="RequestProduct.CityId">
+		@foreach (var c in Model.Cities)
+		{
+	  <option value="@c.Id">@c.Name</option>
+		}
+ </select>
+ <input type="submit" />
+</form>

@@ -22,6 +22,7 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(p => p.UserId).IsRequired();
             builder.Property(p => p.DateChangeStatus);
             builder.Property(p => p.Expire).IsRequired();
+            builder.Property(p => p.CityId);
             builder.Property(c => c.LastModified);
             builder.Property(c => c.LastModifiedBy).HasMaxLength(120);
             builder.Property(c => c.CreatedDate);
@@ -34,6 +35,9 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
 
             builder.HasOne(p => p.AdminUser).WithMany(p => p.RequirementAdmins)
                 .HasForeignKey(p => p.AdminId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(p => p.City).WithMany(p => p.Requirements)
+              .HasForeignKey(p => p.CityId).OnDelete(DeleteBehavior.NoAction);
 
 
 

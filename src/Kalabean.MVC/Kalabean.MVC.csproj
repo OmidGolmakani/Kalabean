@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Ads\" />
-    <Folder Include="Views\Products\" />
   </ItemGroup>
 
 </Project>

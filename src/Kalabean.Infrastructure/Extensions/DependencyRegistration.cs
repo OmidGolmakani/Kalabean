@@ -72,8 +72,10 @@ namespace Kalabean.Infrastructure.Extensions
         public static IServiceCollection AddMvcServices(this IServiceCollection services)
         {
             services.AddScoped<KalabeanFileProvider, KalabeanFileProvider>();
-            services
-                    .AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICityService, CityService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IRequirementService, RequirementService>();
 
             return services;
         }
@@ -103,7 +105,7 @@ namespace Kalabean.Infrastructure.Extensions
             return services;
         }
         public static IServiceCollection GetImagesConfigurations(this IServiceCollection services,
-                                                    IConfiguration configuration)
+                                                                 IConfiguration configuration)
         {
             return services.Configure<AppSettingConfigs.Images.ImageSize>(configuration.GetSection("ImagesConfig"));
         }

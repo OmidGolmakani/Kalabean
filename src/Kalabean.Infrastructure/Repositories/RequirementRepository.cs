@@ -21,6 +21,7 @@ namespace Kalabean.Infrastructure.Repositories
                 .Include(pi => pi.Category)
                 .ThenInclude(pi => pi.Stores)
                 .ThenInclude(pi => pi.StoreUser)
+                .Include(pi => pi.City)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
@@ -45,7 +46,8 @@ namespace Kalabean.Infrastructure.Repositories
             .Include(pi=> pi.Conversations)
             .Include(pi => pi.Category)
             .ThenInclude(pi => pi.Stores)
-            .ThenInclude(pi => pi.StoreUser);
+            .ThenInclude(pi => pi.StoreUser)
+            .Include(pi => pi.City);
         }
         public async Task<int> Count(GetRequirementsRequest request, bool includeDeleted = false)
         {

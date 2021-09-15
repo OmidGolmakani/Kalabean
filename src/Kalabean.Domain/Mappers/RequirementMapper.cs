@@ -14,12 +14,15 @@ namespace Kalabean.Domain.Mappers
     {
         private readonly ICategoryMapper _category;
         private readonly IProductMapper _product;
+        private readonly ICityMapper _city;
 
         public RequirementMapper(ICategoryMapper category,
-                                 IProductMapper product)
+                                 IProductMapper product,
+                                 ICityMapper city)
         {
             this._category = category;
             this._product = product;
+            this._city = city;
         }
 
         public Requirement Map(AddRequirementRequest request)
@@ -35,6 +38,7 @@ namespace Kalabean.Domain.Mappers
                 ProductName = request.ProductName,
                 TypePricing = (byte)request.TypePricing,
                 CreatedDate = DateTime.Now,
+                CityId = request.CityId,
                 HasImage = request.Image != null && request.Image.Length > 0,
             };
             return response;
@@ -52,6 +56,7 @@ namespace Kalabean.Domain.Mappers
                 Price = request.Price,
                 ProductName = request.ProductName,
                 TypePricing = (byte)request.TypePricing,
+                CityId = request.CityId,
                 HasImage = request.ImageEdited && request.Image != null && request.Image.Length > 0
             };
         }
@@ -77,6 +82,8 @@ namespace Kalabean.Domain.Mappers
                 Expire = request.Expire,
                 ConversationId = request.Conversations == null || request.Conversations.Count == 0 ? (int?)null : request.Conversations.FirstOrDefault().Id,
                 CategoryThumb = _category.MapThumb(request.Category),
+                CityThumb = _city.MapThumb(request.City),
+                CityId = request.CityId,
                 ImageUrl = request.HasImage ? $"/KL_ImagesRepo/Requirement/250_250/{request.Id}.jpeg" : ""
             };
         }
