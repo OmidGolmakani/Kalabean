@@ -14,7 +14,9 @@ namespace Kalabean.Domain.Responses
         public string UserFullName { get { return string.Format("{0} {1}", this.Name, this.Family).Trim(); } }
         public string UserName { get; set; }
         public string PhoneNumber { get; set; }
+        public bool PhoneNumberConfirmed { get; set; }
         public string Email { get; set; }
+        public bool EmailConfirmed { get; set; }
         public bool LockoutEnabled { get; set; }
         public string LockoutEnd { get; set; }
         private byte? _UserStatus = 0;

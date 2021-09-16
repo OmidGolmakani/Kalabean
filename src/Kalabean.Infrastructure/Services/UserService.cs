@@ -240,5 +240,12 @@ namespace Kalabean.Infrastructure.Services
             }
             if (Error.MsgErrors.Count != 0) throw new Exception(Error.JsonConvert());
         }
+
+        public async Task<List<string>> GetUserRoles(GetUserRequest request)
+        {
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == request.Id);
+            var roles = await _userManager.GetRolesAsync(user);
+            return roles.ToList();
+        }
     }
 }

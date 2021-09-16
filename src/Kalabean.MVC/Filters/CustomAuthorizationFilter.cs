@@ -19,7 +19,7 @@ namespace Kalabean.MVC.Filters
         public CustomAuthorizationFilter()
         {
         }
-        public override void OnResultExecuting(ResultExecutingContext context)
+        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             bool hasAllowAnonymous = context.ActionDescriptor.EndpointMetadata
                                .Any(em => em.GetType() == typeof(AllowAnonymousAttribute));
@@ -63,7 +63,11 @@ namespace Kalabean.MVC.Filters
                         }));
                 }
             }
-            base.OnResultExecuting(context);
+            return base.OnActionExecutionAsync(context, next);
+        }
+        public override void OnResultExecuting(ResultExecutingContext context)
+        {
+            
         }
     }
 }

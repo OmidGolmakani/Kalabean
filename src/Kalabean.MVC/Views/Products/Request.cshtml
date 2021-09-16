@@ -2,7 +2,7 @@
 	Layout = "_ProfileLayout";
 }
 @model ListRequestProductViewModel
-<form asp-controller="Product" asp-action="Request" method="post">
+<form asp-controller="Products" asp-action="Request" method="post">
  <input type="hidden" asp-for="RequestProduct.Id" />
  <input type="file" asp-for="RequestProduct.Image" />
  <label>name</label>

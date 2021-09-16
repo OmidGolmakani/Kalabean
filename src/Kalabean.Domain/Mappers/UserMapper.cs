@@ -61,11 +61,13 @@ namespace Kalabean.Domain.Mappers
             return new UserResponse()
             {
                 Email = user.Email,
+                EmailConfirmed = user.EmailConfirmed,
                 Family = user.Family,
                 Id = user.Id,
                 Name = user.Name,
                 UserName = user.UserName,
                 PhoneNumber = user.PhoneNumber,
+                PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                 LockoutEnabled = user.LockoutEnabled,
                 Address =user.Address,
                 IdCardNo =user.IdCardNo,
