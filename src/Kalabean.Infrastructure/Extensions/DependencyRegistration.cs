@@ -35,7 +35,8 @@ namespace Kalabean.Infrastructure.Extensions
                 .AddSingleton<IConversationMapper, ConversationMapper>()
                 .AddSingleton<IConversationDetailMapper, ConversationDetailMapper>()
                 .AddSingleton<ITicketMapper, TicketMapper>()
-                .AddSingleton<ITicketDetailMapper, TicketDetailMapper>();
+                .AddSingleton<ITicketDetailMapper, TicketDetailMapper>()
+                .AddSingleton<IFavoriteMapper, FavoriteMapper>();
             return services;
         }
 
@@ -60,7 +61,8 @@ namespace Kalabean.Infrastructure.Extensions
                     .AddScoped<IAdvertiseService, AdvertiseService>()
                     .AddScoped<IPossibilitiesShopCenterService, PossibilitiesShopCenterService>()
                     .AddScoped<IConversationService, ConversationService>()
-                    .AddScoped<ITicketService, TicketService>();
+                    .AddScoped<ITicketService, TicketService>()
+                    .AddScoped<IFavoriteService, FavoritesService>();
             #endregion Data Services
             #region Other Services
             services.AddScoped(typeof(IResizeImageService<>), typeof(ResizeImageService<>));
@@ -76,6 +78,7 @@ namespace Kalabean.Infrastructure.Extensions
             services.AddScoped<ICityService, CityService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IRequirementService, RequirementService>();
+            services.AddScoped<IFavoriteService, FavoritesService>();
 
             return services;
         }

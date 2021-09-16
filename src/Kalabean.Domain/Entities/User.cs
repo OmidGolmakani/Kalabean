@@ -46,5 +46,6 @@ namespace Kalabean.Domain.Entities
         public ICollection<Ticket> SenderTickets { get; set; }
         public ICollection<Ticket> RecipientTickets { get; set; }
         public ICollection<TicketDetail> TicketDetails { get; set; }
+        public ICollection<Favorites> Favorites { get; set; }
     }
 }
