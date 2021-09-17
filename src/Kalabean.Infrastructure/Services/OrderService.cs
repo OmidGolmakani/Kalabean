@@ -105,7 +105,7 @@ namespace Kalabean.Infrastructure.Services
                 item.OrderDetails.Add(_detailMapper.Map(request.OrderDetail));
             }
             item.FromUserId = Helpers.JWTTokenManager.GetUserIdByToken();
-            item.OrderStatus = (byte)Domain.OrderStatus.AwaitingApproval;
+            item.OrderStatus = (byte)Domain.Entities.OrderStatus.AwaitingApproval;
             item.Published = false;
             item.OrderNum = await GetOrderNumAsync();
             var result = _orderRepository.Add(item);
