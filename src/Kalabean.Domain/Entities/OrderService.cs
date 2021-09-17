@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kalabean.Domain
+namespace Kalabean.Domain.Entities
 {
     public enum OrderStatus : byte
     {

@@ -12,5 +12,6 @@ namespace Kalabean.Domain.Requests.Product
         public int? StoreId { get; set; } 
         public int? CategoryId { get; set; }
         public bool? IsEnabled { get; set; }
+        public long[] Ids { get; set; }
     }
 }

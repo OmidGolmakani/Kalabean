@@ -9,5 +9,6 @@ namespace Kalabean.Domain.Requests.Store
         public string Name { get; set; }
         public int? CategoryId { get; set; }
         public bool? IsEnabled { get; set; }
+        public int[] Ids { get; set; }
     }
 }

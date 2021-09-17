@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kalabean.Domain.Requests.Favorites
+namespace Kalabean.MVC.Models
 {
-    public class AddFavoriteRequest
+    public class FavoriteViewModel
     {
         public byte TypeId { get; set; }
-        public long RelatedId { get; set; }
+        public dynamic RelatedInfo { get; set; }
     }
 }

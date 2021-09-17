@@ -11,5 +11,6 @@ namespace Kalabean.Domain.Responses
         public long Id { get; set; }
         public byte TypeId { get; set; }
         public long RelatedId { get; set; }
+        public dynamic RelatedInfo { get; set; }
     }
 }
