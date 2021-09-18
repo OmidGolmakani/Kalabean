@@ -19,5 +19,6 @@ namespace Kalabean.Domain.Requests.Requirement
         public string Description { get; set; }
         public IFormFile Image { get; set; }
         public bool ImageEdited { get; set; }
+        public int? TargetTypeId { get; set; }
     }
 }

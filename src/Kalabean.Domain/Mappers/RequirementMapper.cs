@@ -57,6 +57,7 @@ namespace Kalabean.Domain.Mappers
                 ProductName = request.ProductName,
                 TypePricing = (byte)request.TypePricing,
                 CityId = request.CityId,
+                TargetTypeId=request.TargetTypeId,
                 HasImage = request.ImageEdited && request.Image != null && request.Image.Length > 0
             };
         }

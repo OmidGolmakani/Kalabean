@@ -34,6 +34,8 @@ namespace Kalabean.Domain.Entities
         public string FileExtention { get; set; }
         public bool IsNew { get; set; }
         public bool IsEnabled { get; set; }
+        public int? TargetTypeId { get; set; }
+        public TargetType TargetType { get; set; }
         public Store Store { get; set; }
         public Category Category { get; set; }
         public ICollection<ProductImage> ProductImages { get; set; }

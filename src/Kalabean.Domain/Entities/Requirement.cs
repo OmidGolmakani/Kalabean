@@ -21,7 +21,9 @@ namespace Kalabean.Domain.Entities
         public bool HasImage { get; set; }
         public long? AdminId { get; set; }
         public double Expire { get; set; }
+        public int? TargetTypeId { get; set; }
         public DateTime? DateChangeStatus { get; set; }
+        public TargetType TargetType { get; set; }
         public Category Category { get; set; }
         public User RequirementUser { get; set; }
         public User AdminUser { get; set; }

@@ -27,6 +27,7 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(c => c.LastModifiedBy).HasMaxLength(120);
             builder.Property(c => c.CreatedDate);
             builder.Property(c => c.CreatedBy).HasMaxLength(120);
+            builder.Property(c => c.TargetTypeId);
             builder.HasOne(p => p.Category).WithMany(p => p.Requirements)
                 .HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.NoAction);
 
@@ -38,6 +39,9 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
 
             builder.HasOne(p => p.City).WithMany(p => p.Requirements)
               .HasForeignKey(p => p.CityId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(p => p.TargetType).WithMany(p => p.Requirements)
+              .HasForeignKey(p => p.TargetTypeId).OnDelete(DeleteBehavior.NoAction);
 
 
 

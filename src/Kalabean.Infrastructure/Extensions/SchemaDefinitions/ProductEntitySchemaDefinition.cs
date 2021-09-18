@@ -32,10 +32,15 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
             builder.Property(c => c.LastModifiedBy).HasMaxLength(120);
             builder.Property(c => c.CreatedDate);
             builder.Property(c => c.CreatedBy).HasMaxLength(120);
+            builder.Property(c => c.TargetTypeId);
+
             builder.HasOne(p => p.Category).WithMany(p => p.Products)
                 .HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(p => p.Store).WithMany(p => p.Products)
                 .HasForeignKey(p => p.StoreId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(p => p.TargetType).WithMany(p => p.Products)
+              .HasForeignKey(p => p.TargetTypeId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

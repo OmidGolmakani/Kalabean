@@ -24,5 +24,7 @@ namespace Kalabean.Domain.Responses
         public string DateChangeStatus { get; set; }
         public ThumbResponse<int> CategoryThumb { get; set; }
         public ThumbResponse<int> CityThumb { get; set; }
+        public ThumbResponse<int> TargenType { get; set; }
+
     }
 }

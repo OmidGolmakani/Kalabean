@@ -32,5 +32,6 @@ namespace Kalabean.Domain.Requests.Product
         public bool IsEnabled { get; set; }
         public IEnumerable<IFormFile> Images { get; set; }
         public IFormFile File { get; set; }
+        public int? TargetTypeId { get; set; }
     }
 }

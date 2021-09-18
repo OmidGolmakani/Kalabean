@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kalabean.Domain.Entities
+namespace Kalabean.Domain.Requests.TargetType
 {
-    public class TargetGender
+    public class AddTargetTypeRequest
     {
-        
+        public string Name { get; set; }
     }
 }

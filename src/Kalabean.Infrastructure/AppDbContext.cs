@@ -72,6 +72,7 @@ namespace Kalabean.Infrastructure
             modelBuilder.ApplyConfiguration(new ConversationDetailEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new TicketEntitySchemaDefinition());
             modelBuilder.ApplyConfiguration(new TicketDetailEntitySchemaDefinition());
+            modelBuilder.ApplyConfiguration(new TargetTypeEntitySchemaDefinition());
 
             base.OnModelCreating(modelBuilder);
 

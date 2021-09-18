@@ -17,5 +17,6 @@ namespace Kalabean.Domain.Requests.Requirement
         public decimal Price { get; set; }
         public string Description { get; set; }
         public IFormFile Image { get; set; }
+        public int? TargetTypeId { get; set; }
     }
 }
