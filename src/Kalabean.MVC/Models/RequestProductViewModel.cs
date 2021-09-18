@@ -12,7 +12,9 @@ namespace Kalabean.MVC.Models
         public long Id { get; set; }
         public string ProductName { get; set; }
         public int CategoryId { get; set; }
+        public string Category { get; set; }
         public int CityId { get; set; }
+        public string City { get; set; }
         public Kalabean.Domain.Entities.RequirementTypePriceing TypePricing { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }

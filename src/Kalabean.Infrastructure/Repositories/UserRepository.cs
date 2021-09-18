@@ -24,11 +24,11 @@ namespace Kalabean.Infrastructure.Repositories
                                    string.IsNullOrEmpty(request.PhoneNUmber) || string.IsNullOrEmpty(u.PhoneNumber) || u.Name.Contains(request.PhoneNUmber) &&
                                    string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(u.Email) || u.Name.Contains(request.Email))
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize);
-                //.Include(u => u.RequirementUsers)
-                //.Include(u => u.Stores);
-                //.Include(u => u.RequirementAdmins);
-                //.Include(u => u.FromOrderHeaders);
-                //.Include(u => u.ToOrderHeaders);
+            //.Include(u => u.RequirementUsers)
+            //.Include(u => u.Stores);
+            //.Include(u => u.RequirementAdmins);
+            //.Include(u => u.FromOrderHeaders);
+            //.Include(u => u.ToOrderHeaders);
         }
 
         public Task<User> GetById(long id, bool includeDeleted = false)
@@ -48,7 +48,8 @@ namespace Kalabean.Infrastructure.Repositories
             return this.List(u =>
                                     string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(u.Name) || u.Name.Contains(request.Name) &&
                                     string.IsNullOrEmpty(request.PhoneNUmber) || string.IsNullOrEmpty(u.PhoneNumber) || u.Name.Contains(request.PhoneNUmber) &&
-                                    string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(u.Email) || u.Name.Contains(request.Email))
+                                    string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(u.Email) || u.Name.Contains(request.Email) &&
+                                    string.IsNullOrEmpty(request.UserName) || u.UserName == request.UserName)
                 .Skip(request.PageSize * request.PageIndex).Take(request.PageSize).Count();
         }
     }

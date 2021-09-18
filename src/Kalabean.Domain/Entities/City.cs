@@ -12,6 +12,10 @@ namespace Kalabean.Domain.Entities
         public byte? Order { get; set; }
         public string Description { get; set; }
         public bool HasImage { get; set; }
+        public int? ParentId { get; set; }
+        public Byte? State { get; set; }
+        public City Parent { get; set; }
+        public ICollection<City> Child { get; set; }
         public ICollection<ShoppingCenter> ShoppingCenters { get; set; }
         public ICollection<Requirement> Requirements { get; set; }
     }

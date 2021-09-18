@@ -1,0 +1,15 @@
+﻿@{
+	Layout = "_ProfileLayout";
+}
+@model ListRequestProductViewModel1
+<table>
+	<thead>
+	 <tr>product name</tr>
+ </thead>
+ <tbody>
+		@foreach(var r in Model.Lst)
+		{
+			<tr>@r.ProductName</tr>
+		}
+ </tbody>
+</table>

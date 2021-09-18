@@ -15,7 +15,6 @@ namespace Kalabean.Controllers
 {
 
     [Route("Product")]
-    [ComprleteUserProfileFilter]
     public class ProductsController : Controller
     {
         private readonly ICityService _city;
@@ -90,6 +89,24 @@ namespace Kalabean.Controllers
                 });
             }
             return RedirectToAction("Request", "Product");
+        }
+        [HttpGet("ListRequest")]
+        public async Task<IActionResult> ListRequest([FromQuery] Domain.Requests.Requirement.GetRequirementsRequest request)
+        {
+            var model = new ListRequestProductViewModel1();
+            var requirements = await _requirement.GetRequirementsAsync(request);
+            model.Lst = (from r in requirements.Items
+                         select new RequestProductViewModel() 
+                         {
+                             CategoryId = r.CategoryId,
+                             Category = r.CategoryThumb.Name,
+                             City =r.CityThumb.Name,
+                             CityId =r.CityId,
+                             Description =r.Description,
+                             Id = r.Id,
+                             ProductName = r.ProductName
+                         }).ToList();
+            return View("ListRequest", model);
         }
     }
 }

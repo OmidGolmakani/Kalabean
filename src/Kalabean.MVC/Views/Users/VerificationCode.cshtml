@@ -1,0 +1,12 @@
+﻿@{
+	ViewData["Title"] = "";
+	Layout = "_ProfileLayout";
+}
+@model VerifyViewModel
+<form method="post" asp-controller="User" asp-action="PostVerificationCode">
+ <input type="hidden" asp-for="VerifyType" />
+ <input type="hidden" asp-for="PhoneNumber" />
+ <label>کد فعال سازی</label>
+ <input type="number" asp-for="VerificationCode" />
+ <input type="submit" />
+</form>

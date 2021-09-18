@@ -22,10 +22,13 @@ namespace Kalabean.API.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _user;
+        private readonly ISMSService _sms;
 
-        public UsersController(IUserService user)
+        public UsersController(IUserService user,
+                               ISMSService sms)
         {
             this._user = user;
+            this._sms = sms;
         }
         [Route("Login")]
         public async Task<IActionResult> Login()
@@ -60,6 +63,19 @@ namespace Kalabean.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(Domain.Requests.User.LoginRequest request)
         {
+            var user = await _user.GetUsersAsync(new GetUsersRequest() { UserName = request.UserName });
+            if (user.Total == 0)
+            {
+                ModelState.AddModelError("", "کاربر مورد نظر یافت نشد");
+                return View();
+            }
+            if (user.Items.FirstOrDefault().PhoneNumberConfirmed == false)
+            {
+                return RedirectToAction("SendVerificationCode", new
+                {
+                    PhoneNumber = user.Items.FirstOrDefault().PhoneNumber
+                });
+            }
             request.UseApi = false;
             var Result = await _user.SignIn(request);
             if (Result.SignIn.Succeeded)
@@ -85,8 +101,12 @@ namespace Kalabean.API.Controllers
             request.UserName = request.PhoneNumber;
             request.Password = request.PhoneNumber;
             await _user.AddUserAsync(request);
-            await _user.SignIn(new LoginRequest() { UserName = request.UserName, Password = request.Password });
-            return RedirectToAction("Profile");
+            //await _user.SignIn(new LoginRequest() { UserName = request.UserName, Password = request.Password });
+            //return RedirectToAction("Profile");
+            return RedirectToAction("SendVerificationCode", new
+            {
+                PhoneNumber = request.PhoneNumber
+            });
         }
         [HttpGet("Register")]
         [AllowAnonymous]
@@ -94,6 +114,44 @@ namespace Kalabean.API.Controllers
         {
             var model = new UserProfileViewModel(Kalabean.Infrastructure.Helpers.ReturnFilePath.BaseUrl);
             return View(model);
+        }
+        [HttpGet("SendVerificationCode")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SendVerificationCode(string PhoneNumber)
+        {
+            var model = new Kalabean.MVC.Models.VerifyViewModel();
+            model.PhoneNumber = PhoneNumber;
+            return View("VerificationCode", model);
+        }
+        [HttpPost("PostVerificationCode")]
+        [AllowAnonymous]
+        public async Task<IActionResult> PostVerificationCode(string PhoneNumber)
+        {
+            var model = new Kalabean.MVC.Models.VerifyViewModel();
+            try
+            {
+                var Code = await _user.PhoneNumberConfirmation(PhoneNumber);
+                await _sms.SendPattern(Code, PhoneNumber);
+            }
+            catch (Exception ex) { ModelState.AddModelError(string.Empty, ex.Message); }
+            model.PhoneNumber = PhoneNumber;
+            model.VerifyType = 1;
+            return View("VerificationCode", model);
+        }
+        [HttpPost("VerificationCode")]
+        [AllowAnonymous]
+        public async Task<IActionResult> VerificationCode(VerifyViewModel model)
+        {
+            var result = await _user.VerifyPhoneNumber(model.PhoneNumber, model.VerificationCode);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                ModelState.AddModelError("", "کد فعال سازی نامعتبر می باشد");
+                return View();
+            }
         }
     }
 }

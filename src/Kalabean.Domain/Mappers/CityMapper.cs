@@ -55,7 +55,10 @@ namespace Kalabean.Domain.Mappers
                 Name = city.Name,
                 Order = city.Order,
                 Description = city.Description,
-                ImageUrl = null
+                ImageUrl = null,
+                ParentId = city.ParentId,
+                State = city.State,
+                ParentThumb = city.Parent == null ? null : MapThumb(city.Parent)
             };
             if (city.HasImage)
                 response.ImageUrl = $"/KL_ImagesRepo/Cities/250_250/{city.Id}.jpeg";

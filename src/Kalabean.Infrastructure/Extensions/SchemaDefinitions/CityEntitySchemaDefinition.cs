@@ -18,8 +18,15 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
 
             builder.Property(c => c.Name)
                 .IsRequired();
+            builder.Property(c => c.Order);
+            builder.Property(c => c.ParentId);
+            builder.Property(c => c.HasImage).HasDefaultValue(false);
+            builder.Property(c => c.State).HasDefaultValue((byte)CityState.State);
+            builder.Property(c => c.Name)
+                .IsRequired();
             builder.Property(c => c.IsDeleted)
                 .HasDefaultValue(false);
+            builder.HasOne(c => c.Parent).WithMany(c => c.Child).HasForeignKey(c => c.ParentId);
 
         }
     }

@@ -12,5 +12,6 @@ namespace Kalabean.Domain.Requests.User
         public string Family { get; set; }
         public string PhoneNUmber { get; set; }
         public string Email { get; set; }
+        public string UserName { get; set; }
     }
 }

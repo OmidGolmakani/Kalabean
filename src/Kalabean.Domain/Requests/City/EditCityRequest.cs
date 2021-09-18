@@ -11,5 +11,7 @@ namespace Kalabean.Domain.Requests.City
         public string Description { get; set; }
         public IFormFile Image { get; set; }
         public bool ImageEdited { get; set; }
+        public int? ParentId { get; set; }
+        public byte State { get; set; }
     }
 }

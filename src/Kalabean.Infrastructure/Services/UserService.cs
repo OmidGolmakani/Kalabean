@@ -18,6 +18,7 @@ using Kalabean.Infrastructure.Services.Image;
 using Microsoft.Extensions.Options;
 using Kalabean.Domain.Requests.ResizeImage;
 using System.Drawing;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kalabean.Infrastructure.Services
 {
@@ -74,10 +75,11 @@ namespace Kalabean.Infrastructure.Services
             var item = _userMapper.Map(request);
             await UserValidation(item);
             item.PhoneNumberConfirmed = true;
-            item.EmailConfirmed = true;
+            //item.EmailConfirmed = true;
             var Result = await _userManager.CreateAsync(item, request.Password);
             if (Result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(item, "User");
                 return _userMapper.Map(item);
             }
             else
@@ -246,6 +248,26 @@ namespace Kalabean.Infrastructure.Services
             var user = _userManager.Users.FirstOrDefault(u => u.Id == request.Id);
             var roles = await _userManager.GetRolesAsync(user);
             return roles.ToList();
+        }
+
+        public async Task<string> PhoneNumberConfirmation(string PhoneNumber)
+        {
+            var _user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == PhoneNumber);
+            if (_user == null)
+            {
+                throw new Exception("کاربر مورد نظر یافت نشد");
+            }
+            return await _userManager.GenerateChangePhoneNumberTokenAsync(_user, PhoneNumber);
+            
+        }
+        public async Task<IdentityResult> VerifyPhoneNumber(string PhoneNumber,string Token)
+        {
+            var _user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == PhoneNumber);
+            if (_user == null)
+            {
+                throw new Exception("کاربر مورد نظر یافت نشد");
+            }
+            return await _userManager.ChangePhoneNumberAsync(_user, PhoneNumber, Token);
         }
     }
 }

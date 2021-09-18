@@ -19,5 +19,7 @@ namespace Kalabean.Domain.Services
         Task BatchDeleteUsersAsync(long[] Ids);
         Task SignOut();
         Task UserValidation(Entities.User user);
+        Task<string> PhoneNumberConfirmation(string PhoneNumber);
+        Task<IdentityResult> VerifyPhoneNumber(string PhoneNumber, string Token);
     }
 }

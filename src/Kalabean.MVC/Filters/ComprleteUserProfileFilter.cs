@@ -22,6 +22,16 @@ namespace Kalabean.MVC.Filters
         {
             var user = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
             var UserId = Kalabean.Infrastructure.Helpers.JWTTokenManager.GetUserIdByCookie();
+            if (UserId <= 0)
+            {
+                context.Result = new RedirectToRouteResult(
+                    new RouteValueDictionary(new
+                    {
+                        controller = "Users",
+                        action = "Login"
+                    }));
+                return;
+            }
             var entity = await user.GetUserAsync(new Domain.Requests.User.GetUserRequest()
             {
                 Id = UserId
@@ -34,6 +44,7 @@ namespace Kalabean.MVC.Filters
                           controller = "Users",
                           action = "Login"
                       }));
+                return;
             }
             var userRoles = await user.GetUserRoles(new Domain.Requests.User.GetUserRequest() { Id = UserId });
             if (userRoles.Count(u => u == "Administrator") == 1)
@@ -56,6 +67,7 @@ namespace Kalabean.MVC.Filters
                           controller = "Users",
                           action = "Profile"
                       }));
+                return;
             }
             await base.OnActionExecutionAsync(context, next);
         }

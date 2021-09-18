@@ -51,7 +51,7 @@ namespace Kalabean.Infrastructure.Services
 
         public async Task<ListPagingResponse<RequirementResponse>> GetRequirementsAsync(GetRequirementsRequest request)
         {
-            var UserId = Helpers.JWTTokenManager.GetUserIdByToken();
+            var UserId = Helpers.JWTTokenManager.GetUserIdByCookie();
             var user = _UserManager.Users.FirstOrDefault(u => u.Id == UserId);
             var userRoles = await _UserManager.GetRolesAsync(user);
             if (userRoles.FirstOrDefault(u => u == "Administrator") == null)
