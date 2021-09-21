@@ -48,6 +48,7 @@ namespace Kalabean.MVC.Controllers
                     Id = p.Id,
                     Name = p.ProductName,
                     Price = p.Price,
+                    Discount =p.Discount,
                     FormattedPrice = string.Format("{0:n0}", p.Price)
                     }).ToList(),
                 Address = store.Address,

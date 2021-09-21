@@ -41,6 +41,9 @@ namespace Kalabean.Infrastructure.Extensions.SchemaDefinitions
 
             builder.HasOne(p => p.TargetType).WithMany(p => p.Products)
               .HasForeignKey(p => p.TargetTypeId).OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(p => p.User).WithMany(p => p.ProductUsers)
+                .HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

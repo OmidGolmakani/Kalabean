@@ -1,4 +1,38 @@
 ﻿@{
 	Layout = "_ProfileLayout";
 }
-@model ProductViewModel
+@model ListProductViewModel
+<form asp-controller="Products" asp-action="Product" method="post">
+ <input type="file" />
+ <lable>name</lable>
+ <input type="text" asp-for="Current.Name" />
+ <lable>price</lable>
+ <input type="text" asp-for="Current.Price" />
+ <label>Discont</label>
+ <div>
+  <input type="radio" id="Yes" name="Discont" value="1"
+			   checked>
+  <label for="Yes">Yes</label>
+ </div>
+
+ <div>
+  <input type="radio" id="No" name="Discont" value="0">
+  <label for="No">No</label>
+ </div>
+ <input type="number" asp-for="Current.Discount" />
+ <label>Category</label>
+ <select asp-for="Current.CategoryId" name="CategoryId"
+			asp-items="Model.Categories">
+ </select>
+ <label>Target Type</label>
+ <select asp-for="Current.TargetId" name="TargetId" asp-items="Model.LstTargtType">
+ </select>
+ <label>Payment Link</label>
+ <input asp-for="Current.FormattedPrice" />
+ <label>Images</label>
+	@foreach (var i in Model.Current.Images)
+	{
+	 <img src="@(i.ImageUrl)">
+	}
+ <input type="submit" />
+</form>

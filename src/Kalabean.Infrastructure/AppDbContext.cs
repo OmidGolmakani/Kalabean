@@ -47,6 +47,7 @@ namespace Kalabean.Infrastructure
         public DbSet<PossibilitiesShopCenter> PossibilitiesShopCenters { get; set; }
         public DbSet<Conversation> Conversations { get; set; }
         public DbSet<ConversationDetail> ConversationDetails { get; set; }
+        public DbSet<TargetType> TargetTypes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CategoryEntitySchemaDefinition());

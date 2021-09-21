@@ -64,16 +64,20 @@ namespace Kalabean.API.Controllers
         public async Task<IActionResult> Login(Domain.Requests.User.LoginRequest request)
         {
             var user = await _user.GetUsersAsync(new GetUsersRequest() { UserName = request.UserName });
-            if (user.Total == 0)
+            user.Items = user.Items.Where(u => u.UserName == request.UserName);
+            if (user.Items.Count() == 0)
             {
                 ModelState.AddModelError("", "کاربر مورد نظر یافت نشد");
                 return View();
             }
             if (user.Items.FirstOrDefault().PhoneNumberConfirmed == false)
             {
+                var Code = await _user.PhoneNumberConfirmation(user.Items.FirstOrDefault().PhoneNumber);
+                await _sms.SendPattern(Code, user.Items.FirstOrDefault().PhoneNumber);
                 return RedirectToAction("SendVerificationCode", new
                 {
-                    PhoneNumber = user.Items.FirstOrDefault().PhoneNumber
+                    PhoneNumber = user.Items.FirstOrDefault().PhoneNumber,
+                    VerifyType = 1
                 });
             }
             request.UseApi = false;
@@ -100,12 +104,18 @@ namespace Kalabean.API.Controllers
         {
             request.UserName = request.PhoneNumber;
             request.Password = request.PhoneNumber;
-            await _user.AddUserAsync(request);
+            var User = await _user.AddUserAsync(request);
+            ///Send sms 
+            ///
+            var Code = await _user.PhoneNumberConfirmation(User.PhoneNumber);
+            await _sms.SendPattern(Code, request.PhoneNumber);
+
             //await _user.SignIn(new LoginRequest() { UserName = request.UserName, Password = request.Password });
             //return RedirectToAction("Profile");
             return RedirectToAction("SendVerificationCode", new
             {
-                PhoneNumber = request.PhoneNumber
+                PhoneNumber = request.PhoneNumber,
+                VerifyType = 1
             });
         }
         [HttpGet("Register")]
@@ -117,26 +127,21 @@ namespace Kalabean.API.Controllers
         }
         [HttpGet("SendVerificationCode")]
         [AllowAnonymous]
-        public async Task<IActionResult> SendVerificationCode(string PhoneNumber)
+        public async Task<IActionResult> SendVerificationCode(VerifyViewModel request)
         {
-            var model = new Kalabean.MVC.Models.VerifyViewModel();
-            model.PhoneNumber = PhoneNumber;
-            return View("VerificationCode", model);
+            return View("VerificationCode", request);
         }
         [HttpPost("PostVerificationCode")]
         [AllowAnonymous]
-        public async Task<IActionResult> PostVerificationCode(string PhoneNumber)
+        public async Task<IActionResult> PostVerificationCode(VerifyViewModel request)
         {
-            var model = new Kalabean.MVC.Models.VerifyViewModel();
             try
             {
-                var Code = await _user.PhoneNumberConfirmation(PhoneNumber);
-                await _sms.SendPattern(Code, PhoneNumber);
+                var Code = await _user.PhoneNumberConfirmation(request.PhoneNumber);
+                await _sms.SendPattern(Code, request.PhoneNumber);
             }
             catch (Exception ex) { ModelState.AddModelError(string.Empty, ex.Message); }
-            model.PhoneNumber = PhoneNumber;
-            model.VerifyType = 1;
-            return View("VerificationCode", model);
+            return View("VerificationCode", request);
         }
         [HttpPost("VerificationCode")]
         [AllowAnonymous]
@@ -145,7 +150,7 @@ namespace Kalabean.API.Controllers
             var result = await _user.VerifyPhoneNumber(model.PhoneNumber, model.VerificationCode);
             if (result.Succeeded)
             {
-                return RedirectToAction("Login", "User");
+                return RedirectToAction("Login", "Users");
             }
             else
             {

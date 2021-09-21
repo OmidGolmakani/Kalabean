@@ -29,6 +29,8 @@ namespace Kalabean.Domain.Responses
         public bool IsNew { get; set; }
         public bool IsEnabled { get; set; }
         public string FileUrl { get; set; }
+        public TargetTypeResponse TargetType { get; set; }
+        public ThumbResponse<long> UserThumb { get; set; }
         public List<ProductImageResponse> Images { get; set; }
         public ThumbResponse<int> StoreThumb { get; set; }
         public ThumbResponse<int> CategoryThumb { get; set; }

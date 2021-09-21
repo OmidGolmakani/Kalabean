@@ -15,6 +15,7 @@ namespace Kalabean.Domain.Mappers
         private readonly ICategoryMapper _categoryMapper;
         private readonly IStoreMapper _storeMapper;
         private readonly IProductImageMapper _productImageMapper;
+        private readonly IUserMapper _userMapper;
 
         public ProductMapper(ICategoryMapper categoryMapper,
                              IStoreMapper storeMapper,
@@ -51,7 +52,8 @@ namespace Kalabean.Domain.Mappers
                 Barcode = request.Barcode,
                 CompanyName = request.CompanyName,
                 HtmlContent = request.HtmlContent,
-                Keywords = request.Keywords
+                Keywords = request.Keywords,
+                UserId = request.UserId,
             };
 
             product.HasFile = request.File != null && request.File.Length > 0;
@@ -102,7 +104,8 @@ namespace Kalabean.Domain.Mappers
                 Barcode = request.Barcode,
                 CompanyName = request.CompanyName,
                 HtmlContent = request.HtmlContent,
-                Keywords = request.Keywords
+                Keywords = request.Keywords,
+                UserId = request.UserId
             };
             if (request.FileEdited)
             {
@@ -142,7 +145,9 @@ namespace Kalabean.Domain.Mappers
                 Barcode = product.Barcode,
                 CompanyName = product.CompanyName,
                 HtmlContent = product.HtmlContent,
-                Keywords = product.Keywords
+                Keywords = product.Keywords,
+                UserThumb = product.User == null ? null : new ThumbResponse<long>() { Id = (product.UserId ?? 0), Name = string.Format("{0} {1}", product.User.Name, product.User.Family).Trim() },
+                TargetType = product.TargetType != null ? new TargetTypeResponse() { Id = product.TargetTypeId, Name = product.TargetType.Name } : null
             };
 
             if (product.ProductImages != null && product.ProductImages.Count > 0)
@@ -158,14 +163,14 @@ namespace Kalabean.Domain.Mappers
             return response;
         }
 
-    public ThumbResponse<long> MapThumb(Product request)
-    {
-        var response = new ThumbResponse<long>()
+        public ThumbResponse<long> MapThumb(Product request)
         {
-            Id = request.Id,
-            Name = request.ProductName
-        };
-        return response;
+            var response = new ThumbResponse<long>()
+            {
+                Id = request.Id,
+                Name = request.ProductName
+            };
+            return response;
+        }
     }
-}
 }

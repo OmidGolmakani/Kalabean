@@ -36,5 +36,6 @@ namespace Kalabean.Domain.Requests.Product
         public IFormFile File { get; set; }
         public bool FileEdited { get; set; }
         public int? TargetTypeId { get; set; }
+        public long? UserId { get; set; }
     }
 }

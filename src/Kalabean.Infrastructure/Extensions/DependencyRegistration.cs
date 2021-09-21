@@ -79,6 +79,7 @@ namespace Kalabean.Infrastructure.Extensions
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IRequirementService, RequirementService>();
             services.AddScoped<IFavoriteService, FavoritesService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ISMSService, SMSService>();
 
             return services;
